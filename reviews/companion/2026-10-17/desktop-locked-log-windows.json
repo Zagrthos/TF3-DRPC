@@ -1,0 +1,196 @@
+{
+  "scenario": "LockedLog",
+  "initialInputs": [
+    {
+      "rect": {
+        "y": 350,
+        "width": 585.3,
+        "offscreen": false,
+        "height": 40,
+        "x": 60.7
+      },
+      "name": "",
+      "type": "ControlType.ComboBox",
+      "labelledBy": null
+    },
+    {
+      "rect": {
+        "y": 432.7,
+        "width": 585.3,
+        "offscreen": false,
+        "height": 40,
+        "x": 60.7
+      },
+      "name": "",
+      "type": "ControlType.ComboBox",
+      "labelledBy": null
+    },
+    {
+      "rect": {
+        "y": 511.3,
+        "width": 577.3,
+        "offscreen": false,
+        "height": 32.7,
+        "x": 64.7
+      },
+      "name": "",
+      "type": "ControlType.Edit",
+      "labelledBy": null
+    },
+    {
+      "rect": {
+        "y": 578.7,
+        "width": 577.3,
+        "offscreen": false,
+        "height": 32.7,
+        "x": 64.7
+      },
+      "name": "",
+      "type": "ControlType.Edit",
+      "labelledBy": null
+    },
+    {
+      "rect": {
+        "y": 645.3,
+        "width": 577.3,
+        "offscreen": false,
+        "height": 32.7,
+        "x": 64.7
+      },
+      "name": "",
+      "type": "ControlType.Edit",
+      "labelledBy": null
+    },
+    {
+      "rect": {
+        "y": null,
+        "width": null,
+        "offscreen": true,
+        "height": null,
+        "x": null
+      },
+      "name": "",
+      "type": "ControlType.CheckBox",
+      "labelledBy": null
+    }
+  ],
+  "buttonNames": [
+    "Minimize",
+    "Maximize",
+    "Close",
+    ""
+  ],
+  "exitButtonName": "",
+  "storageWarningVisible": false,
+  "normal": {
+    "exit": {
+      "y": 882,
+      "width": 46.7,
+      "offscreen": false,
+      "height": 32,
+      "x": 595.3
+    },
+    "window": {
+      "y": 33.3,
+      "width": 640,
+      "offscreen": false,
+      "height": 900,
+      "x": 33.3
+    }
+  },
+  "longTemplatesAtMinimum": {
+    "exit": {
+      "y": null,
+      "width": null,
+      "offscreen": true,
+      "height": null,
+      "x": null
+    },
+    "scrolls": [
+      {
+        "y": 33.3,
+        "width": 385.3,
+        "offscreen": false,
+        "height": 48,
+        "x": 40.7
+      },
+      {
+        "y": 33.3,
+        "width": 144,
+        "offscreen": false,
+        "height": 48,
+        "x": 282
+      },
+      {
+        "y": 33.3,
+        "width": 385.3,
+        "offscreen": false,
+        "height": 492.7,
+        "x": 40.7
+      },
+      {
+        "y": 33.3,
+        "width": 385.3,
+        "offscreen": false,
+        "height": 492.7,
+        "x": 40.7
+      },
+      {
+        "y": 414.7,
+        "width": 337.3,
+        "offscreen": false,
+        "height": 114,
+        "x": 64.7
+      }
+    ],
+    "window": {
+      "y": 33.3,
+      "width": 400,
+      "offscreen": false,
+      "height": 500,
+      "x": 33.3
+    }
+  },
+  "longTextBlocks": [
+    {
+      "rect": {
+        "y": 173.3,
+        "width": 337.3,
+        "offscreen": false,
+        "height": 112,
+        "x": 64.7
+      },
+      "nameLength": 128
+    },
+    {
+      "rect": {
+        "y": 289.3,
+        "width": 337.3,
+        "offscreen": false,
+        "height": 112,
+        "x": 64.7
+      },
+      "nameLength": 128
+    },
+    {
+      "rect": {
+        "y": 435.3,
+        "width": 337.3,
+        "offscreen": false,
+        "height": 90.7,
+        "x": 64.7
+      },
+      "nameLength": 128
+    }
+  ],
+  "windowExitCompleted": true,
+  "savedTemplateLength": 150,
+  "nativeExe": {
+    "bytes": 25717248,
+    "secondInstanceExitCode": 0
+  },
+  "R07": true,
+  "R08": true,
+  "logBytes": 0,
+  "R10": true
+}

@@ -1,0 +1,93 @@
+[
+  {
+    "Id": "R01",
+    "Kind": "REPRODUCED",
+    "Passed": true,
+    "Detail": "8 valid JSON fixtures with wrong-type language/preset: every unrelated setting reset to defaults, including custom templates and storeButton.",
+    "Milliseconds": 85.7766
+  },
+  {
+    "Id": "R02",
+    "Kind": "REPRODUCED",
+    "Passed": true,
+    "Detail": "tray: saved=False; window: saved=True; timer: saved=True. Actual production tray callback, ViewModel, settings and lifecycle executed; native tray/control objects are boundary stubs.",
+    "Milliseconds": 38.6612
+  },
+  {
+    "Id": "R03",
+    "Kind": "REPRODUCED",
+    "Passed": true,
+    "Detail": "150-character custom state -> playing and paused presences are equal; state is 128 UTF-16 units and has no Paused suffix. Discord de-duplicates this update.",
+    "Milliseconds": 0.7205
+  },
+  {
+    "Id": "R04",
+    "Kind": "REPRODUCED",
+    "Passed": true,
+    "Detail": "Valid v1 JSON accepted; Network raises OverflowException; two actual monitor ticks skip Discord completely. Career control recovers, but the actual Network tooltip description callback still throws OverflowException on its UI render path. Fixture is corrupt/extreme input, not an observed game value.",
+    "Milliseconds": 40.7416
+  },
+  {
+    "Id": "R05",
+    "Kind": "REPRODUCED",
+    "Passed": true,
+    "Detail": "1 MiB of blank lines produced 0 events but allocated 59.780.320 bytes; TimedGameLogEventStruct size=48. Separate worker with 134.217.728-byte GC heap: 4 MiB blank log plus Game is ready raises OutOfMemoryException; next poll returns 0 events, permanently losing Game is ready. Later mod status is read but state still says Starting after 3 minutes.",
+    "Milliseconds": 251.5607
+  },
+  {
+    "Id": "R06",
+    "Kind": "REPRODUCED",
+    "Passed": true,
+    "Detail": "After a failed startup probe and repairing DATA, SetLanguage returned True, CanSave remained False, and no settings file was written. A fresh path service sees the same directory as writable.",
+    "Milliseconds": 5.8774
+  },
+  {
+    "Id": "R09",
+    "Kind": "REPRODUCED",
+    "Passed": true,
+    "Detail": "Actual file read: both Lua line comments and block comments naming French override active German; Same as the game resolves to French. Removing the comment resolves German.",
+    "Milliseconds": 4.5
+  },
+  {
+    "Id": "R11",
+    "Kind": "REPRODUCED",
+    "Passed": true,
+    "Detail": "Two real Steam account fixtures: old account log/mtime 1 hour in the future wins over the active account; its old shutdown drives Closing and clears presence for 20 subsequent ticks/5 minutes. After 2 more hours the active log is newer and the real path selector chooses it, but the running monitor still never re-resolves and stays Closing. Normal timestamp control chooses the active account.",
+    "Milliseconds": 13.8177
+  },
+  {
+    "Id": "P01",
+    "Kind": "PROBE",
+    "Passed": true,
+    "Detail": "Exclusive file lock: 0 events, no exception (bounded fallback can run).",
+    "Milliseconds": 1.6292
+  },
+  {
+    "Id": "P02",
+    "Kind": "PROBE",
+    "Passed": true,
+    "Detail": "60 JSON boundary inputs; uncaught exceptions: ",
+    "Milliseconds": 2.3842
+  },
+  {
+    "Id": "C01",
+    "Kind": "PASS",
+    "Passed": true,
+    "Detail": "Unicode settings round-trip exactly; wrong-type storeButton resets only itself.",
+    "Milliseconds": 3.4231
+  },
+  {
+    "Id": "C02",
+    "Kind": "PASS",
+    "Passed": true,
+    "Detail": "Actual monitor -> reader/parser -> state -> presence -> Discord boundary gives Mechanic / September 1905; game exit clears it.",
+    "Milliseconds": 2.3973
+  },
+  {
+    "Id": "C03",
+    "Kind": "PASS",
+    "Passed": true,
+    "Detail": "Clock rollback preserves inferred pause; short state includes September 1905 · Paused; no-log fallback works.",
+    "Milliseconds": 0.3259
+  }
+]

@@ -1,0 +1,100 @@
+# Builds and tests the companion app on Windows and macOS for every pull request and every push
+# to main that changes what the build reads. A push to main also builds the release zips with
+# tools/build-release.ps1, so each merge leaves downloadable zips (14 days) and AOT problems show
+# before a release.
+name: CI
+
+# Only the paths the build, the tests and the zips read: a change to the docs, the mod or the
+# test-run scripts needs no build, and a run takes a runner for about 6 minutes on Windows and 3
+# on macOS. Run it by hand with workflow_dispatch.
+on:
+  pull_request:
+    paths: &build-paths
+      - 'companion/**'
+      - 'docs/log-samples/**'
+      - 'assets/discord/cover.png'
+      - 'tools/build-release.ps1'
+      - 'tools/new-third-party-notices.ps1'
+      - 'tools/licences/**'
+      - 'LICENSE'
+      - '.editorconfig'
+      - '.gitattributes'
+      - '.github/workflows/ci.yml'
+  push:
+    branches: [main]
+    paths: *build-paths
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+jobs:
+  build:
+    name: ${{ matrix.name }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Windows
+            os: windows-2025
+            workload: maui-windows
+          # The RC2 Mac Catalyst SDK needs Xcode 27, which only the xcode-27 image has (a preview image).
+          - name: macOS
+            os: xcode-27
+            workload: maui-maccatalyst
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: pwsh
+        working-directory: companion
+    steps:
+      # .editorconfig wants CRLF; without this, macOS checks out LF and the analysers warn on every line.
+      - name: Check out with CRLF line endings
+        working-directory: .
+        run: git config --global core.autocrlf true
+
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Select Xcode 27.0
+        if: runner.os == 'macOS'
+        run: sudo xcode-select -s /Applications/Xcode_27.0.app
+
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: companion/global.json
+
+      # Run in companion/, so the workload set pinned in global.json is the one installed.
+      - name: Install the MAUI workload
+        run: dotnet workload install ${{ matrix.workload }}
+
+      - name: Build Debug
+        run: dotnet build TF3-DRPC.slnx -c Debug
+
+      - name: Build Release
+        run: dotnet build TF3-DRPC.slnx -c Release
+
+      - name: Test
+        run: dotnet test TF3-DRPC.slnx
+
+      - name: Build the release zip
+        if: github.event_name == 'push'
+        working-directory: .
+        run: ./tools/build-release.ps1 -SkipTests
+
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: github.event_name == 'push'
+        with:
+          name: TF3-DRPC-${{ matrix.name }}
+          path: artifacts/*.zip
+          if-no-files-found: error
+          retention-days: 14

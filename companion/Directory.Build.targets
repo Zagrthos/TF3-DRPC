@@ -1,0 +1,28 @@
+<Project>
+
+  <!-- Delete the docs of the project and of its project references after the build (if not publishing) -->
+  <Target Name="DeleteXmlFileAfterBuild" AfterTargets="Build" Condition="'$(IsPublishing)' != 'true'">
+    <ItemGroup>
+      <_XmlDocFile Include="$(OutDir)$(AssemblyName).xml" />
+      <_XmlDocFile Include="@(_ResolvedProjectReferencePaths->'%(RootDir)%(Directory)%(Filename).xml')" />
+      <_XmlDocFile Include="@(_ResolvedProjectReferencePaths->'$(OutDir)%(Filename).xml')" />
+    </ItemGroup>
+    <Delete Files="@(_XmlDocFile)" />
+  </Target>
+
+  <!-- Exclude XML docs from being copied to the publish directory -->
+  <Target Name="ExcludeXmlFromPublish" BeforeTargets="ComputeFilesToPublish">
+    <ItemGroup>
+      <ResolvedFileToPublish Remove="@(ResolvedFileToPublish)" Condition="'%(Extension)' == '.xml'" />
+    </ItemGroup>
+  </Target>
+
+  <!-- Delete the docs from the publish directory if they somehow got copied -->
+  <Target Name="DeleteXmlFileAfterPublish" AfterTargets="Publish" Condition="'$(PublishDir)' != ''">
+    <ItemGroup>
+      <_PublishedXmlFile Include="$(PublishDir)*.xml" />
+    </ItemGroup>
+    <Delete Files="@(_PublishedXmlFile)" />
+  </Target>
+
+</Project>

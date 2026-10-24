@@ -1,0 +1,569 @@
+{
+  "kind": "read-only static inspection of the installed game",
+  "sourceHashes": {
+    "api/tealdef/api/engine/util.d.tl": "b5ba8c2467c6247866fe4b3088ef7adf2388e1b71528db9082c12b71558973f4",
+    "api/tealdef/api/engine.d.tl": "7e524d16108fc5f0663397d4001d46ab1386ec3e340af7d4e5a7edbe47fa237a",
+    "api/tealdef/api/util.d.tl": "68b29c87cd4f22675ad810872d33f53b1cb1c36b78f0545fad01a6d177cf97e0",
+    "api/tealdef/api/gui.d.tl": "03326a59f342682720c991b82775dcbefb944786ba0b98aee22c6f7836b55d58",
+    "api/tealdef/api/res.d.tl": "9a1ed5ba132817b7f1936d7938af1248f5b14d27f37fe158d4ef7f3dfc326501",
+    "api/tealdef/main.d.tl": "c92a96fb107974bdd602ec6f700679a6746d02f350cfb573f285ee597a0a4ae0",
+    "base/tealdef/scripts/log.d.tl": "5d4769d3fd1e15c24c19b2515431231c18ff72edccf4ec980592a0478779c6b8",
+    "api/tealdef/api/type.d.tl": "02d45a7864c7b6973324b87630fe209d9fd460148d9c9d8e0af364d90da2ea48",
+    "base/tealdef/game_mechanics/company/company_progression_util.d.tl": "acb878738596a8a3c284112f816023a7e19b2e7b2e9a1e3b18aab9648fc2e2b3",
+    "base/tealdef/game_mechanics/company/company_static_util.d.tl": "7c470c31803966d22c66f9f807129a68736f04f739eec4f3dcedd3d52d867183",
+    "base/content/game_mechanics.zip!game_mechanics/company/company_progression_util.tl": "ed2c587b5e20dc95519489992fcda911593861705e0e23bbb0f5177bd900eae6",
+    "base/content/game_mechanics.zip!game_mechanics/company/company_growth.script.tl": "b6c88367481e9d6d0642cac0fdcdad3b45a40e94ecea09e6a0e49ed942a45d3d",
+    "base/content/game_mechanics.zip!game_mechanics/company/company_static_util.tl": "f28f3c10e2e00a33be5aa6334a6287328033e7cb24be76ed82544ad5ed770b7c",
+    "base/content/gui.zip!gui/game_bar/game_bar.tl": "fec8bc9ad1c5d9018658ddc6763cf8429c217acf5e5b9c0fa8e665d3c5587504",
+    "mods/release/urbangames_tycoon/content/mod.script.tl": "d54427997d54ef9d8e2dc31a0705c2c19e1c2f4d56f353d8beb5e911246abdab",
+    "mods/release/urbangames_sandbox/content/mod.script.tl": "fbda5bfe4f774a24c34a3ac09f24ccd8e9856acabcad39d28930e5559fc274f9",
+    "base/tealdef/scripts/gamescript.d.tl": "67d326b893b3eb5187c26338d1dc40d5b46c3d9212463767aa03c18201fdc463",
+    "TransportFever3.exe": "74861ac43b041aebc5179154345b3cf1ec83154c8e6cc58e0d9e02ff5fa602e4"
+  },
+  "checks": [
+    {
+      "source": "api/tealdef/api/engine/util.d.tl",
+      "pattern": "getWorld\\s*:\\s*function",
+      "matches": [
+        {
+          "line": 1026,
+          "text": "getWorld : function() : Engine.Entity"
+        }
+      ]
+    },
+    {
+      "source": "api/tealdef/api/engine/util.d.tl",
+      "pattern": "getPlayer\\s*:\\s*function",
+      "matches": [
+        {
+          "line": 1023,
+          "text": "getPlayer : function() : Engine.Entity"
+        }
+      ]
+    },
+    {
+      "source": "api/tealdef/api/engine/util.d.tl",
+      "pattern": "getCalendarDate\\s*:\\s*function",
+      "matches": [
+        {
+          "line": 1030,
+          "text": "getCalendarDate : function(gameTime : number) : Date"
+        }
+      ]
+    },
+    {
+      "source": "api/tealdef/api/engine/util.d.tl",
+      "pattern": "getPlayersBalance\\s*:\\s*function",
+      "matches": [
+        {
+          "line": 861,
+          "text": "getPlayersBalance : function(playerEntity : Engine.Entity) : integer"
+        }
+      ]
+    },
+    {
+      "source": "api/tealdef/api/engine/util.d.tl",
+      "pattern": "getTransportedData\\s*:\\s*function",
+      "matches": [
+        {
+          "line": 898,
+          "text": "getTransportedData : function() : TransportationStats"
+        }
+      ]
+    },
+    {
+      "source": "api/tealdef/api/engine/util.d.tl",
+      "pattern": "getCompaniesValue\\s*:\\s*function",
+      "matches": [
+        {
+          "line": 901,
+          "text": "getCompaniesValue : function() : CompanyValue"
+        }
+      ]
+    },
+    {
+      "source": "api/tealdef/api/engine/util.d.tl",
+      "pattern": "balance or nil, if player has won the lottery",
+      "matches": [
+        {
+          "line": 860,
+          "text": "-- @return balance or nil, if player has won the lottery and money is infinite"
+        }
+      ]
+    },
+    {
+      "source": "api/tealdef/api/engine.d.tl",
+      "pattern": "getComponent\\s*:",
+      "matches": [
+        {
+          "line": 1690,
+          "text": "getComponent : function<T>(Entity, ComponentType) : T"
+        }
+      ]
+    },
+    {
+      "source": "api/tealdef/api/engine.d.tl",
+      "pattern": "getConfigDict\\s*:",
+      "matches": [
+        {
+          "line": 1804,
+          "text": "getConfigDict : function() : { string : string }"
+        }
+      ]
+    },
+    {
+      "source": "api/tealdef/api/engine.d.tl",
+      "pattern": "GAME_TIME\\s*:",
+      "matches": [
+        {
+          "line": 1632,
+          "text": "GAME_TIME : ComponentType"
+        }
+      ]
+    },
+    {
+      "source": "api/tealdef/api/engine.d.tl",
+      "pattern": "GAME_SPEED\\s*:",
+      "matches": [
+        {
+          "line": 1633,
+          "text": "GAME_SPEED : ComponentType"
+        }
+      ]
+    },
+    {
+      "source": "api/tealdef/api/engine.d.tl",
+      "pattern": "ACCOUNT\\s*:",
+      "matches": [
+        {
+          "line": 1668,
+          "text": "ACCOUNT : ComponentType"
+        }
+      ]
+    },
+    {
+      "source": "api/tealdef/api/engine.d.tl",
+      "pattern": "WORLD\\s*:",
+      "matches": [
+        {
+          "line": 1675,
+          "text": "WORLD : ComponentType"
+        }
+      ]
+    },
+    {
+      "source": "api/tealdef/api/engine.d.tl",
+      "pattern": "gameTime\\s*:\\s*integer",
+      "matches": [
+        {
+          "line": 429,
+          "text": "gameTime : integer"
+        }
+      ]
+    },
+    {
+      "source": "api/tealdef/api/engine.d.tl",
+      "pattern": "timeOfDaySec\\s*:\\s*integer",
+      "matches": [
+        {
+          "line": 433,
+          "text": "timeOfDaySec : integer"
+        }
+      ]
+    },
+    {
+      "source": "api/tealdef/api/engine.d.tl",
+      "pattern": "speedup\\s*:\\s*integer",
+      "matches": [
+        {
+          "line": 419,
+          "text": "speedup : integer"
+        }
+      ]
+    },
+    {
+      "source": "api/tealdef/api/engine.d.tl",
+      "pattern": "loan\\s*:\\s*integer",
+      "matches": [
+        {
+          "line": 28,
+          "text": "loan : integer"
+        }
+      ]
+    },
+    {
+      "source": "api/tealdef/api/engine.d.tl",
+      "pattern": "cloudCoverage\\s*:\\s*number",
+      "matches": [
+        {
+          "line": 1616,
+          "text": "cloudCoverage : number"
+        }
+      ]
+    },
+    {
+      "source": "api/tealdef/api/util.d.tl",
+      "pattern": "getLocalTime\\s*:\\s*function\\(\\)\\s*:\\s*integer",
+      "matches": [
+        {
+          "line": 151,
+          "text": "getLocalTime : function() : integer"
+        }
+      ]
+    },
+    {
+      "source": "api/tealdef/api/gui.d.tl",
+      "pattern": "getDefaultSavegameId\\s*:\\s*function",
+      "matches": [
+        {
+          "line": 794,
+          "text": "getDefaultSavegameId : function() : string"
+        }
+      ]
+    },
+    {
+      "source": "api/tealdef/api/gui.d.tl",
+      "pattern": "isMapEditor\\s*:\\s*function",
+      "matches": [
+        {
+          "line": 790,
+          "text": "isMapEditor : function() : boolean"
+        }
+      ]
+    },
+    {
+      "source": "api/tealdef/api/res.d.tl",
+      "pattern": "getBaseConfig\\s*:",
+      "matches": [
+        {
+          "line": 172,
+          "text": "getBaseConfig : function() : BaseConfig"
+        }
+      ]
+    },
+    {
+      "source": "api/tealdef/api/res.d.tl",
+      "pattern": "find\\s*:\\s*function",
+      "matches": [
+        {
+          "line": 28,
+          "text": "find : function(resName : string) : K"
+        }
+      ]
+    },
+    {
+      "source": "api/tealdef/api/res.d.tl",
+      "pattern": "get\\s*:\\s*function",
+      "matches": [
+        {
+          "line": 18,
+          "text": "get : function(id : K) : T"
+        }
+      ]
+    },
+    {
+      "source": "api/tealdef/api/res.d.tl",
+      "pattern": "genericRep\\s*:",
+      "matches": [
+        {
+          "line": 129,
+          "text": "genericRep : GenericRep"
+        }
+      ]
+    },
+    {
+      "source": "api/tealdef/main.d.tl",
+      "pattern": "ug_require",
+      "matches": [
+        {
+          "line": 6,
+          "text": "global ug_require : function(string) : any"
+        }
+      ]
+    },
+    {
+      "source": "base/tealdef/scripts/log.d.tl",
+      "pattern": "message\\s*:\\s*function\\(string\\)",
+      "matches": [
+        {
+          "line": 5,
+          "text": "message : function(string)"
+        }
+      ]
+    },
+    {
+      "source": "base/tealdef/scripts/log.d.tl",
+      "pattern": "warning\\s*:\\s*function\\(string\\)",
+      "matches": [
+        {
+          "line": 6,
+          "text": "warning : function(string)"
+        }
+      ]
+    },
+    {
+      "source": "api/tealdef/api/type.d.tl",
+      "pattern": "record CompanyValue",
+      "matches": [
+        {
+          "line": 113,
+          "text": "global record CompanyValue"
+        }
+      ]
+    },
+    {
+      "source": "api/tealdef/api/type.d.tl",
+      "pattern": "record TransportationStats",
+      "matches": [
+        {
+          "line": 149,
+          "text": "global record TransportationStats"
+        }
+      ]
+    },
+    {
+      "source": "api/tealdef/api/type.d.tl",
+      "pattern": "sandboxMode\\s*:\\s*boolean",
+      "matches": [
+        {
+          "line": 3722,
+          "text": "sandboxMode : boolean"
+        }
+      ]
+    },
+    {
+      "source": "api/tealdef/api/type.d.tl",
+      "pattern": "guiUpdateScript\\s*:",
+      "matches": [
+        {
+          "line": 1368,
+          "text": "guiUpdateScript : ScriptRef"
+        }
+      ]
+    },
+    {
+      "check": "all copied CompanyValue fields exist and are numeric",
+      "count": 24,
+      "fields": [
+        "totalScore",
+        "totalAssets",
+        "debt",
+        "railVehicles",
+        "trams",
+        "roadVehicles",
+        "aircrafts",
+        "ships",
+        "numberOfLines",
+        "totalStations",
+        "railStations",
+        "tramStations",
+        "roadStations",
+        "aircraftStations",
+        "shipStations",
+        "trackTotalLength",
+        "trackElectricLength",
+        "roadTotalLength",
+        "bridgeTotalLength",
+        "tunnelTotalLength",
+        "suppliedTowns",
+        "connectedIndustries",
+        "topSpeed",
+        "topLength"
+      ]
+    },
+    {
+      "source": "base/tealdef/game_mechanics/company/company_progression_util.d.tl",
+      "pattern": "potentialLevel\\s*:",
+      "matches": [
+        {
+          "line": 7,
+          "text": "potentialLevel : integer"
+        }
+      ]
+    },
+    {
+      "source": "base/tealdef/game_mechanics/company/company_progression_util.d.tl",
+      "pattern": "level\\s*:",
+      "matches": [
+        {
+          "line": 6,
+          "text": "level : integer"
+        },
+        {
+          "line": 16,
+          "text": "getTicketPriceMultiplierForLevel: function(level : integer) : number"
+        }
+      ]
+    },
+    {
+      "source": "base/tealdef/game_mechanics/company/company_progression_util.d.tl",
+      "pattern": "experience\\s*:",
+      "matches": [
+        {
+          "line": 5,
+          "text": "experience : integer"
+        }
+      ]
+    },
+    {
+      "source": "base/tealdef/game_mechanics/company/company_progression_util.d.tl",
+      "pattern": "getCompanyProgressionState\\s*:",
+      "matches": [
+        {
+          "line": 19,
+          "text": "getCompanyProgressionState : function(entity : Engine.Entity) : CompaniesGrowthState.CompanyData"
+        }
+      ]
+    },
+    {
+      "source": "base/tealdef/game_mechanics/company/company_progression_util.d.tl",
+      "pattern": "enforcedLevel\\s*:",
+      "matches": [
+        {
+          "line": 26,
+          "text": "enforcedLevel : integer -- default/vanilla is nil"
+        }
+      ]
+    },
+    {
+      "source": "base/tealdef/game_mechanics/company/company_static_util.d.tl",
+      "pattern": "getRole\\s*:",
+      "matches": [
+        {
+          "line": 31,
+          "text": "getRole : function(companyLevel : integer) : string"
+        }
+      ]
+    },
+    {
+      "source": "base/content/game_mechanics.zip!game_mechanics/company/company_progression_util.tl",
+      "pattern": "potentialLevel = companyGrowthConfig.enforcedLevel",
+      "matches": [
+        {
+          "line": 88,
+          "text": "potentialLevel = companyGrowthConfig.enforcedLevel,"
+        }
+      ]
+    },
+    {
+      "source": "base/content/game_mechanics.zip!game_mechanics/company/company_progression_util.tl",
+      "pattern": "return companyData",
+      "matches": [
+        {
+          "line": 92,
+          "text": "return companyData"
+        }
+      ]
+    },
+    {
+      "source": "base/content/game_mechanics.zip!game_mechanics/company/company_growth.script.tl",
+      "pattern": "potentialLevel = newLevel",
+      "matches": [
+        {
+          "line": 47,
+          "text": "scriptState.companyState[companyEntity].potentialLevel = newLevel"
+        }
+      ]
+    },
+    {
+      "source": "base/content/game_mechanics.zip!game_mechanics/company/company_growth.script.tl",
+      "pattern": "level = levelToApply",
+      "matches": [
+        {
+          "line": 60,
+          "text": "scriptState.companyState[companyEntity].level = levelToApply"
+        }
+      ]
+    },
+    {
+      "source": "base/content/game_mechanics.zip!game_mechanics/company/company_static_util.tl",
+      "pattern": "company_static_util.getRole",
+      "matches": [
+        {
+          "line": 26,
+          "text": "company_static_util.getRole = function(companyLevel : integer) : string"
+        }
+      ]
+    },
+    {
+      "source": "base/content/game_mechanics.zip!game_mechanics/company/company_static_util.tl",
+      "pattern": "\\_\\(\"Junior\"\\)",
+      "matches": [
+        {
+          "line": 8,
+          "text": "_(\"Junior\"),"
+        }
+      ]
+    },
+    {
+      "source": "base/content/game_mechanics.zip!game_mechanics/company/company_static_util.tl",
+      "pattern": "\\_\\(\"Tycoon\"\\)",
+      "matches": [
+        {
+          "line": 22,
+          "text": "_(\"Tycoon\"),"
+        }
+      ]
+    },
+    {
+      "source": "base/content/gui.zip!gui/game_bar/game_bar.tl",
+      "pattern": "result.rank = potentialLevel",
+      "matches": [
+        {
+          "line": 403,
+          "text": "result.rank = potentialLevel"
+        }
+      ]
+    },
+    {
+      "source": "base/content/gui.zip!gui/game_bar/game_bar.tl",
+      "pattern": "getCompanyProgressionState",
+      "matches": [
+        {
+          "line": 389,
+          "text": "local companyProgressionState = company_progression_util.getCompanyProgressionState(api.engine.util.getPlayer())"
+        }
+      ]
+    },
+    {
+      "source": "mods/release/urbangames_tycoon/content/mod.script.tl",
+      "pattern": "enforcedLevel = 15",
+      "matches": [
+        {
+          "line": 7,
+          "text": "companyGrowthConfig.enforcedLevel = 15"
+        }
+      ]
+    },
+    {
+      "source": "mods/release/urbangames_tycoon/content/mod.script.tl",
+      "pattern": "configDict\\s*:\\s*\\{\\{string, string\\}\\}",
+      "matches": [
+        {
+          "line": 4,
+          "text": "mod.postRunFn = function(captureParams, _configDict : {{string, string}}, _allModParams : {string : {string : integer}}, _baseConfig : BaseConfig)"
+        }
+      ]
+    },
+    {
+      "source": "mods/release/urbangames_sandbox/content/mod.script.tl",
+      "pattern": "sandboxMode = true",
+      "matches": [
+        {
+          "line": 5,
+          "text": "baseConfig.sandboxMode = true"
+        }
+      ]
+    },
+    {
+      "source": "base/tealdef/scripts/gamescript.d.tl",
+      "pattern": "guiUpdate\\s*:",
+      "matches": [
+        {
+          "line": 66,
+          "text": "guiUpdate : function(userParams : table, state : GameScriptStateReadOnly<StateT>, guiState : GameScriptState<GuiStateT>)"
+        }
+      ]
+    }
+  ]
+}

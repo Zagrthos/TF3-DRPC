@@ -1,0 +1,53 @@
+<Project>
+
+  <!-- Build stuff -->
+  <PropertyGroup>
+    <AnalysisLevel>latest-all</AnalysisLevel>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <Features>Strict</Features>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile> <!-- The analysers need it; Directory.Build.targets removes the .xml files again -->
+    <ImplicitUsings>disable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+    <UseArtifactsOutput>true</UseArtifactsOutput> <!-- Everything goes to artifacts/ -->
+    <WarningsAsErrors>nullable</WarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'!='Release'">
+    <DebuggerSupport>true</DebuggerSupport>
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <DebuggerSupport>false</DebuggerSupport>
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+
+  <!-- Development stuff -->
+  <PropertyGroup>
+    <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting> <!-- Needed for macOS development -->
+    <JsonSerializerIsReflectionEnabledByDefault>false</JsonSerializerIsReflectionEnabledByDefault> <!-- Source generated JSON only -->
+    <NuGetAudit>true</NuGetAudit>
+    <NuGetAuditMode>all</NuGetAuditMode>
+    <SatelliteResourceLanguages>de;en;es;fr;it;ja;ko;nl;pl;pt-BR;ru;zh-CN;zh-TW</SatelliteResourceLanguages> <!-- Our 13 languages; the Windows App SDK ships 119 -->
+    <SuppressTrimAnalysisWarnings>false</SuppressTrimAnalysisWarnings>
+    <TrimmerSingleWarn>false</TrimmerSingleWarn> <!-- Show every trim warning instead of one per assembly -->
+  </PropertyGroup>
+
+  <!-- File Properties -->
+  <PropertyGroup>
+    <Authors>Zagrthos</Authors>
+    <CopyrightYears>2026</CopyrightYears>
+    <CopyrightYears Condition="'$([System.DateTimeOffset]::Now.Year)' != '2026'">2026–$([System.DateTimeOffset]::Now.Year)</CopyrightYears>
+    <Copyright>© $(CopyrightYears) $(Authors). MIT Licence.</Copyright>
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+    <NeutralLanguage>en</NeutralLanguage>
+    <Product>TF3-DRPC</Product>
+    <VersionPrefix>0.1.0</VersionPrefix>
+  </PropertyGroup>
+
+</Project>

@@ -1,0 +1,14 @@
+[2026-10-13 21:03:53Z - MESSAGE  - Main Thread      - Main           ]  Main menu is ready
+[2026-10-13 21:04:38Z - MESSAGE  - Main Thread      - Main           ]  Loading config from file savegame
+[2026-10-13 21:04:38Z - MESSAGE  - Main Thread      - Main           ]+ Active mods:
+    +   urbangames_campaign_mission_01 (rev. 1) (Kampagnenmission 01)
+[2026-10-13 21:04:38Z - MESSAGE  - Main Thread      - Main           ]+ Active mods:
+    |   urbangames_campaign_mission_01 (rev. 1) (Kampagnenmission 01)
+    | Config dict:
+    |   climate: urbangames_campaign_mission_01::/clima/mission1/mission1_tropical.clima
+    |   economy: ::/economy/tropic.eco
+    +   nameList: ::/names/usa/usa.names
+[2026-10-13 21:04:38Z - MESSAGE  - Main Thread      - Main           ]  Campaign/mission: urbangames_campaign::/info.campaign/urbangames_campaign_mission_01::/info.mission
+[2026-10-13 21:04:38Z - MESSAGE  - Load Game Pool 1 - Main           ]  Loading game from file savegame
+[2026-10-13 21:04:41Z - MESSAGE  - Load Game Pool 1 - Main           ]  Reset company progression due to initNewGameFromMap/initMission event
+[2026-10-13 21:04:52Z - MESSAGE  - Main Thread      - Main           ]  Game is ready

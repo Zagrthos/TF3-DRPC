@@ -1,0 +1,30 @@
+<Project>
+
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+
+  <!-- The analysers and the assembly information that every project uses -->
+  <ItemGroup>
+    <GlobalPackageReference Include="Meziantou.Analyzer" Version="3.0.303" />
+    <GlobalPackageReference Include="Roslynator.Analyzers" Version="5.0.1" />
+    <GlobalPackageReference Include="Roslynator.Formatting.Analyzers" Version="5.0.1" />
+    <GlobalPackageReference Include="SonarAnalyzer.CSharp" Version="10.35.0.4138" />
+    <GlobalPackageReference Include="ThisAssembly.AssemblyInfo" Version="2.1.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Debug" Version="11.0.0-rc.2.26504.105" />
+    <PackageVersion Include="Microsoft.Web.WebView2" Version="1.0.4078.44" /> <!-- Comes in through MAUI; the app has no WebView, so its assets are excluded -->
+    <PackageVersion Include="Microsoft.Windows.AI.MachineLearning" Version="2.1.74" /> <!-- Comes in through Microsoft.WindowsAppSDK.ML and carries onnxruntime.dll and DirectML.dll -->
+    <!-- These three come in through Microsoft.Maui.Core and the Windows App SDK meta package. The app does not use them, so it excludes their assets. -->
+    <PackageVersion Include="Microsoft.WindowsAppSDK.AI" Version="2.3.4" />
+    <PackageVersion Include="Microsoft.WindowsAppSDK.ML" Version="2.1.74" />
+    <PackageVersion Include="Microsoft.WindowsAppSDK.Widgets" Version="2.0.5" />
+    <PackageVersion Include="NReco.Logging.File" Version="1.4.0" />
+    <PackageVersion Include="WinUIEx" Version="2.9.3" />
+    <PackageVersion Include="xunit.v3" Version="4.0.2" />
+  </ItemGroup>
+
+</Project>

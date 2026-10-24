@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="StartingTheGame" xml:space="preserve">
+    <value>Uruchamianie gry</value>
+  </data>
+  <data name="InTheMainMenu" xml:space="preserve">
+    <value>W menu głównym</value>
+  </data>
+  <data name="Playing" xml:space="preserve">
+    <value>W grze</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Język</value>
+  </data>
+  <data name="SameAsTheGame" xml:space="preserve">
+    <value>Jak w grze</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Ustawienia…</value>
+  </data>
+  <data name="Exit" xml:space="preserve">
+    <value>Zakończ</value>
+  </data>
+  <data name="NotWritable" xml:space="preserve">
+    <value>TF3-DRPC nie może zapisywać w swoim folderze, więc ustawienia nie będą zapisywane. Przenieś folder TF3-DRPC w miejsce, w którym możesz zapisywać pliki, na przykład do folderu Dokumenty.</value>
+  </data>
+  <data name="Translocated" xml:space="preserve">
+    <value>System macOS uruchomił TF3-DRPC z ukrytej kopii tymczasowej, więc ustawienia nie zostaną zapisane. Przenieś plik TF3-DRPC.app raz za pomocą Findera, na przykład do innego folderu, a potem uruchom go ponownie.</value>
+  </data>
+  <data name="GameNotRunning" xml:space="preserve">
+    <value>Transport Fever 3 nie jest uruchomiony</value>
+  </data>
+  <data name="DiscordConnected" xml:space="preserve">
+    <value>Połączono z Discord</value>
+  </data>
+  <data name="DiscordNotConnected" xml:space="preserve">
+    <value>Brak połączenia z Discord</value>
+  </data>
+  <data name="StatusAppearance" xml:space="preserve">
+    <value>Wygląd statusu</value>
+  </data>
+  <data name="PresetCareer" xml:space="preserve">
+    <value>Kariera</value>
+  </data>
+  <data name="PresetNetwork" xml:space="preserve">
+    <value>Sieć</value>
+  </data>
+  <data name="PresetEra" xml:space="preserve">
+    <value>Era</value>
+  </data>
+  <data name="PresetAlternating" xml:space="preserve">
+    <value>Naprzemiennie</value>
+  </data>
+  <data name="PresetMinimal" xml:space="preserve">
+    <value>Minimalny</value>
+  </data>
+  <data name="InGame" xml:space="preserve">
+    <value>W grze</value>
+  </data>
+  <data name="PresetCustom" xml:space="preserve">
+    <value>Niestandardowe</value>
+  </data>
+  <data name="TemplateFirstLine" xml:space="preserve">
+    <value>Wiersz 1</value>
+  </data>
+  <data name="TemplateSecondLine" xml:space="preserve">
+    <value>Wiersz 2</value>
+  </data>
+  <data name="TemplateHoverText" xml:space="preserve">
+    <value>Opis obrazka</value>
+  </data>
+  <data name="Preview" xml:space="preserve">
+    <value>Podgląd</value>
+  </data>
+  <data name="PreviewExample" xml:space="preserve">
+    <value>Przykładowe wartości</value>
+  </data>
+  <data name="Placeholders" xml:space="preserve">
+    <value>Symbole zastępcze</value>
+  </data>
+  <data name="PrivateHint" xml:space="preserve">
+    <value>Dane osobowe: widoczne dla wszystkich osób, które widzą Twój status na Discordzie</value>
+  </data>
+  <data name="PlaceholderRank" xml:space="preserve">
+    <value>Pozycja twojej firmy transportowej, jak widać na pasku gry</value>
+  </data>
+  <data name="PlaceholderMode" xml:space="preserve">
+    <value>Tryby gry, takie jak „Tycoon” czy „Sandbox”; w zwykłej rozgrywce są puste</value>
+  </data>
+  <data name="PlaceholderDate" xml:space="preserve">
+    <value>Miesiąc i rok w grze</value>
+  </data>
+  <data name="PlaceholderMonth" xml:space="preserve">
+    <value>Miesiąc w grze</value>
+  </data>
+  <data name="PlaceholderYear" xml:space="preserve">
+    <value>Rok w grze</value>
+  </data>
+  <data name="PlaceholderClimate" xml:space="preserve">
+    <value>Klimat na mapie</value>
+  </data>
+  <data name="PlaceholderLines" xml:space="preserve">
+    <value>Liczba linii transportowych</value>
+  </data>
+  <data name="PlaceholderStations" xml:space="preserve">
+    <value>Liczba stacji</value>
+  </data>
+  <data name="PlaceholderTrains" xml:space="preserve">
+    <value>Liczba pociągów</value>
+  </data>
+  <data name="PlaceholderVehicles" xml:space="preserve">
+    <value>Liczba wszystkich pojazdów</value>
+  </data>
+  <data name="PlaceholderPassengers" xml:space="preserve">
+    <value>Liczba przewiezionych dotychczas pasażerów</value>
+  </data>
+  <data name="PlaceholderCargo" xml:space="preserve">
+    <value>Ładunki przewiezione do tej pory</value>
+  </data>
+  <data name="PlaceholderCompanyValue" xml:space="preserve">
+    <value>Wartość firmy: aktywa plus gotówka minus zadłużenie</value>
+  </data>
+  <data name="PlaceholderBalance" xml:space="preserve">
+    <value>Pieniądze na koncie bankowym</value>
+  </data>
+  <data name="PlaceholderSaveName" xml:space="preserve">
+    <value>Nazwa zapisu gry</value>
+  </data>
+  <data name="StoreButton" xml:space="preserve">
+    <value>Pobierz Transport Fever 3</value>
+  </data>
+  <data name="ShowStoreButton" xml:space="preserve">
+    <value>Pokaż przycisk prowadzący do sklepu Steam</value>
+  </data>
+  <data name="StoreButtonHint" xml:space="preserve">
+    <value>Inni widzą ten przycisk pod twoim statusem; Discord ci go nie pokazuje.</value>
+  </data>
+  <data name="LogNotWritable" xml:space="preserve">
+    <value>TF3-DRPC nie może zapisać swojego pliku dziennika, więc nie są przechowywane żadne dane potrzebne do rozwiązywania problemów.</value>
+  </data>
+  <data name="Theme" xml:space="preserve">
+    <value>Motyw</value>
+  </data>
+  <data name="ThemeSystem" xml:space="preserve">
+    <value>Jak w systemie</value>
+  </data>
+  <data name="ThemeLight" xml:space="preserve">
+    <value>Tryb jasny</value>
+  </data>
+  <data name="ThemeDark" xml:space="preserve">
+    <value>Tryb ciemny</value>
+  </data>
+</root>

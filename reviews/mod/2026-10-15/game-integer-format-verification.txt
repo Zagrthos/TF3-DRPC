@@ -1,0 +1,212 @@
+Executable SHA-256: 74861ac43b041aebc5179154345b3cf1ec83154c8e6cc58e0d9e02ff5fa602e4
+Range-error reference: 0x142fd9275
+%d switch target: 0x142fd924a
+%i switch target: 0x142fd924a
+
+<game>/TransportFever3.exe:     file format pei-x86-64
+
+
+Disassembly of section .text:
+
+0000000142fd9117 <.text+0x2fd8117>:
+   142fd9117:	88 00                	mov    %al,(%rax)
+   142fd9119:	41 8b d5             	mov    %r13d,%edx
+   142fd911c:	49 8b cc             	mov    %r12,%rcx
+   142fd911f:	e8 bc 16 fe ff       	call   0x142fba7e0
+   142fd9124:	0f b6 0f             	movzbl (%rdi),%ecx
+   142fd9127:	48 8b f7             	mov    %rdi,%rsi
+   142fd912a:	84 c9                	test   %cl,%cl
+   142fd912c:	74 21                	je     0x142fd914f
+   142fd912e:	66 90                	xchg   %ax,%ax
+   142fd9130:	0f be d1             	movsbl %cl,%edx
+   142fd9133:	48 8d 0d 4a fa 88 00 	lea    0x88fa4a(%rip),%rcx        # 0x143868b84
+   142fd913a:	e8 f6 64 1b 00       	call   0x14318f635
+   142fd913f:	48 85 c0             	test   %rax,%rax
+   142fd9142:	74 0b                	je     0x142fd914f
+   142fd9144:	0f b6 4e 01          	movzbl 0x1(%rsi),%ecx
+   142fd9148:	48 ff c6             	inc    %rsi
+   142fd914b:	84 c9                	test   %cl,%cl
+   142fd914d:	75 e1                	jne    0x142fd9130
+   142fd914f:	48 8b c6             	mov    %rsi,%rax
+   142fd9152:	48 2b c7             	sub    %rdi,%rax
+   142fd9155:	48 83 f8 06          	cmp    $0x6,%rax
+   142fd9159:	72 0f                	jb     0x142fd916a
+   142fd915b:	48 8d 15 2e fa 88 00 	lea    0x88fa2e(%rip),%rdx        # 0x143868b90
+   142fd9162:	49 8b cc             	mov    %r12,%rcx
+   142fd9165:	e8 86 1c fe ff       	call   0x142fbadf0
+   142fd916a:	0f b6 0e             	movzbl (%rsi),%ecx
+   142fd916d:	ff 15 ad 5d 69 00    	call   *0x695dad(%rip)        # 0x14366ef20
+   142fd9173:	85 c0                	test   %eax,%eax
+   142fd9175:	74 03                	je     0x142fd917a
+   142fd9177:	48 ff c6             	inc    %rsi
+   142fd917a:	0f b6 0e             	movzbl (%rsi),%ecx
+   142fd917d:	ff 15 9d 5d 69 00    	call   *0x695d9d(%rip)        # 0x14366ef20
+   142fd9183:	85 c0                	test   %eax,%eax
+   142fd9185:	74 03                	je     0x142fd918a
+   142fd9187:	48 ff c6             	inc    %rsi
+   142fd918a:	80 3e 2e             	cmpb   $0x2e,(%rsi)
+   142fd918d:	75 24                	jne    0x142fd91b3
+   142fd918f:	0f b6 4e 01          	movzbl 0x1(%rsi),%ecx
+   142fd9193:	48 ff c6             	inc    %rsi
+   142fd9196:	ff 15 84 5d 69 00    	call   *0x695d84(%rip)        # 0x14366ef20
+   142fd919c:	85 c0                	test   %eax,%eax
+   142fd919e:	74 03                	je     0x142fd91a3
+   142fd91a0:	48 ff c6             	inc    %rsi
+   142fd91a3:	0f b6 0e             	movzbl (%rsi),%ecx
+   142fd91a6:	ff 15 74 5d 69 00    	call   *0x695d74(%rip)        # 0x14366ef20
+   142fd91ac:	85 c0                	test   %eax,%eax
+   142fd91ae:	74 03                	je     0x142fd91b3
+   142fd91b0:	48 ff c6             	inc    %rsi
+   142fd91b3:	0f b6 0e             	movzbl (%rsi),%ecx
+   142fd91b6:	ff 15 64 5d 69 00    	call   *0x695d64(%rip)        # 0x14366ef20
+   142fd91bc:	85 c0                	test   %eax,%eax
+   142fd91be:	74 0f                	je     0x142fd91cf
+   142fd91c0:	48 8d 15 e9 f9 88 00 	lea    0x88f9e9(%rip),%rdx        # 0x143868bb0
+   142fd91c7:	49 8b cc             	mov    %r12,%rcx
+   142fd91ca:	e8 21 1c fe ff       	call   0x142fbadf0
+   142fd91cf:	48 8b de             	mov    %rsi,%rbx
+   142fd91d2:	c6 85 70 01 00 00 25 	movb   $0x25,0x170(%rbp)
+   142fd91d9:	48 2b df             	sub    %rdi,%rbx
+   142fd91dc:	48 8d 8d 71 01 00 00 	lea    0x171(%rbp),%rcx
+   142fd91e3:	48 8b d7             	mov    %rdi,%rdx
+   142fd91e6:	4c 8d 43 01          	lea    0x1(%rbx),%r8
+   142fd91ea:	e8 ec 63 1b 00       	call   0x14318f5db
+   142fd91ef:	44 88 bc 1d 72 01 00 	mov    %r15b,0x172(%rbp,%rbx,1)
+   142fd91f6:	00 
+   142fd91f7:	44 0f be 06          	movsbl (%rsi),%r8d
+   142fd91fb:	41 8d 40 bf          	lea    -0x41(%r8),%eax
+   142fd91ff:	83 f8 37             	cmp    $0x37,%eax
+   142fd9202:	0f 87 46 04 00 00    	ja     0x142fd964e
+   142fd9208:	48 8d 15 f1 6d 02 fd 	lea    -0x2fd920f(%rip),%rdx        # 0x140000000
+   142fd920f:	48 98                	cltq
+   142fd9211:	0f b6 84 02 7c 96 fd 	movzbl 0x2fd967c(%rdx,%rax,1),%eax
+   142fd9218:	02 
+   142fd9219:	8b 8c 82 60 96 fd 02 	mov    0x2fd9660(%rdx,%rax,4),%ecx
+   142fd9220:	48 03 ca             	add    %rdx,%rcx
+   142fd9223:	ff e1                	jmp    *%rcx
+   142fd9225:	41 8b d5             	mov    %r13d,%edx
+   142fd9228:	49 8b cc             	mov    %r12,%rcx
+   142fd922b:	e8 50 17 fe ff       	call   0x142fba980
+   142fd9230:	4c 8b c0             	mov    %rax,%r8
+   142fd9233:	48 8d 95 70 01 00 00 	lea    0x170(%rbp),%rdx
+   142fd923a:	49 8b ce             	mov    %r14,%rcx
+   142fd923d:	e8 5e 9f f2 ff       	call   0x142f031a0
+   142fd9242:	44 8b f8             	mov    %eax,%r15d
+   142fd9245:	e9 9f 03 00 00       	jmp    0x142fd95e9
+   142fd924a:	41 8b d5             	mov    %r13d,%edx
+   142fd924d:	49 8b cc             	mov    %r12,%rcx
+   142fd9250:	e8 4b 18 fe ff       	call   0x142fbaaa0
+   142fd9255:	c5 fb 2c d8          	vcvttsd2si %xmm0,%ebx
+   142fd9259:	c5 f0 57 c9          	vxorps %xmm1,%xmm1,%xmm1
+   142fd925d:	c5 f3 2a cb          	vcvtsi2sd %ebx,%xmm1,%xmm1
+   142fd9261:	c5 fb 5c d1          	vsubsd %xmm1,%xmm0,%xmm2
+   142fd9265:	c5 f9 2f 15 8b 06 6a 	vcomisd 0x6a068b(%rip),%xmm2        # 0x1436798f8
+   142fd926c:	00 
+   142fd926d:	76 06                	jbe    0x142fd9275
+   142fd926f:	c5 f9 2f f2          	vcomisd %xmm2,%xmm6
+   142fd9273:	77 12                	ja     0x142fd9287
+   142fd9275:	4c 8d 05 64 f9 88 00 	lea    0x88f964(%rip),%r8        # 0x143868be0
+   142fd927c:	41 8b d5             	mov    %r13d,%edx
+   142fd927f:	49 8b cc             	mov    %r12,%rcx
+   142fd9282:	e8 59 15 fe ff       	call   0x142fba7e0
+   142fd9287:	48 8d 8d 70 01 00 00 	lea    0x170(%rbp),%rcx
+   142fd928e:	48 c7 c0 ff ff ff ff 	mov    $0xffffffffffffffff,%rax
+   142fd9295:	48 ff c0             	inc    %rax
+   142fd9298:	44 38 3c 01          	cmp    %r15b,(%rcx,%rax,1)
+   142fd929c:	75 f7                	jne    0x142fd9295
+   142fd929e:	48 8d 15 b7 69 76 00 	lea    0x7669b7(%rip),%rdx        # 0x14373fc5c
+   142fd92a5:	4c 8d 85 70 01 00 00 	lea    0x170(%rbp),%r8
+   142fd92ac:	48 8b ca             	mov    %rdx,%rcx
+   142fd92af:	4c 03 c0             	add    %rax,%r8
+   142fd92b2:	48 2b c2             	sub    %rdx,%rax
+   142fd92b5:	45 0f b6 48 ff       	movzbl -0x1(%r8),%r9d
+   142fd92ba:	48 8d 94 05 6f 01 00 	lea    0x16f(%rbp,%rax,1),%rdx
+   142fd92c1:	00 
+   142fd92c2:	0f b6 01             	movzbl (%rcx),%eax
+   142fd92c5:	88 04 11             	mov    %al,(%rcx,%rdx,1)
+   142fd92c8:	48 8d 49 01          	lea    0x1(%rcx),%rcx
+   142fd92cc:	84 c0                	test   %al,%al
+   142fd92ce:	75 f2                	jne    0x142fd92c2
+   142fd92d0:	45 88 08             	mov    %r9b,(%r8)
+   142fd92d3:	48 8d 95 70 01 00 00 	lea    0x170(%rbp),%rdx
+   142fd92da:	45 88 78 01          	mov    %r15b,0x1(%r8)
+   142fd92de:	49 8b ce             	mov    %r14,%rcx
+   142fd92e1:	44 8b c3             	mov    %ebx,%r8d
+   142fd92e4:	e8 b7 9e f2 ff       	call   0x142f031a0
+   142fd92e9:	44 8b f8             	mov    %eax,%r15d
+   142fd92ec:	e9 f8 02 00 00       	jmp    0x142fd95e9
+   142fd92f1:	41 8b d5             	mov    %r13d,%edx
+   142fd92f4:	49 8b cc             	mov    %r12,%rcx
+   142fd92f7:	e8 a4 17 fe ff       	call   0x142fbaaa0
+   142fd92fc:	c4 e1 fb 2c d8       	vcvttsd2si %xmm0,%rbx
+   142fd9301:	8b c3                	mov    %ebx,%eax
+   142fd9303:	c5 f0 57 c9          	vxorps %xmm1,%xmm1,%xmm1
+   142fd9307:	c4 e1 f3 2a c8       	vcvtsi2sd %rax,%xmm1,%xmm1
+   142fd930c:	c5 fb 5c d1          	vsubsd %xmm1,%xmm0,%xmm2
+   142fd9310:	c5 f9 2f 15 e0 05 6a 	vcomisd 0x6a05e0(%rip),%xmm2        # 0x1436798f8
+   142fd9317:	00 
+   142fd9318:	76 06                	jbe    0x142fd9320
+   142fd931a:	c5 f9 2f f2          	vcomisd %xmm2,%xmm6
+   142fd931e:	77 12                	ja     0x142fd9332
+   142fd9320:	4c 8d 05 d9 f8 88 00 	lea    0x88f8d9(%rip),%r8        # 0x143868c00
+   142fd9327:	41 8b d5             	mov    %r13d,%edx
+   142fd932a:	49 8b cc             	mov    %r12,%rcx
+   142fd932d:	e8 ae 14 fe ff       	call   0x142fba7e0
+   142fd9332:	48 8d 8d 70 01 00 00 	lea    0x170(%rbp),%rcx
+   142fd9339:	48 c7 c0 ff ff ff ff 	mov    $0xffffffffffffffff,%rax
+   142fd9340:	48 ff c0             	inc    %rax
+   142fd9343:	44 38 3c 01          	cmp    %r15b,(%rcx,%rax,1)
+   142fd9347:	75 f7                	jne    0x142fd9340
+   142fd9349:	48 8d 15 0c 69 76 00 	lea    0x76690c(%rip),%rdx        # 0x14373fc5c
+   142fd9350:	4c 8d 85 70 01 00 00 	lea    0x170(%rbp),%r8
+   142fd9357:	48 8b ca             	mov    %rdx,%rcx
+   142fd935a:	4c 03 c0             	add    %rax,%r8
+   142fd935d:	48 2b c2             	sub    %rdx,%rax
+   142fd9360:	45 0f b6 48 ff       	movzbl -0x1(%r8),%r9d
+   142fd9365:	48 8d 94 05 6f 01 00 	lea    0x16f(%rbp,%rax,1),%rdx
+   142fd936c:	00 
+   142fd936d:	0f 1f 00             	nopl   (%rax)
+   142fd9370:	0f b6 01             	movzbl (%rcx),%eax
+   142fd9373:	88 04 11             	mov    %al,(%rcx,%rdx,1)
+   142fd9376:	48 8d 49 01          	lea    0x1(%rcx),%rcx
+   142fd937a:	84 c0                	test   %al,%al
+   142fd937c:	75 f2                	jne    0x142fd9370
+   142fd937e:	e9 4d ff ff ff       	jmp    0x142fd92d0
+   142fd9383:	48 8d 85 70 01 00 00 	lea    0x170(%rbp),%rax
+   142fd938a:	48 c7 c1 ff ff ff ff 	mov    $0xffffffffffffffff,%rcx
+   142fd9391:	44 38 7c 08 01       	cmp    %r15b,0x1(%rax,%rcx,1)
+   142fd9396:	48 8d 49 01          	lea    0x1(%rcx),%rcx
+   142fd939a:	75 f5                	jne    0x142fd9391
+   142fd939c:	44 0f b6 94 0d 6f 01 	movzbl 0x16f(%rbp,%rcx,1),%r10d
+   142fd93a3:	00 00 
+   142fd93a5:	4c 8d 8c 0d 6f 01 00 	lea    0x16f(%rbp,%rcx,1),%r9
+   142fd93ac:	00 
+   142fd93ad:	4d 8b c1             	mov    %r9,%r8
+   142fd93b0:	48 8d 15 7c 10 6a 00 	lea    0x6a107c(%rip),%rdx        # 0x14367a433
+   142fd93b7:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
+   142fd93be:	00 00 
+   142fd93c0:	0f b6 02             	movzbl (%rdx),%eax
+   142fd93c3:	48 8d 52 01          	lea    0x1(%rdx),%rdx
+   142fd93c7:	41 88 00             	mov    %al,(%r8)
+   142fd93ca:	4d 8d 40 01          	lea    0x1(%r8),%r8
+   142fd93ce:	84 c0                	test   %al,%al
+   142fd93d0:	75 ee                	jne    0x142fd93c0
+   142fd93d2:	44 88 bc 0d 70 01 00 	mov    %r15b,0x170(%rbp,%rcx,1)
+   142fd93d9:	00 
+   142fd93da:	41 8b d5             	mov    %r13d,%edx
+   142fd93dd:	49 8b cc             	mov    %r12,%rcx
+   142fd93e0:	45 88 11             	mov    %r10b,(%r9)
+   142fd93e3:	e8 b8 16 fe ff       	call   0x142fbaaa0
+   142fd93e8:	c5 f8 28 d0          	vmovaps %xmm0,%xmm2
+   142fd93ec:	c4 c1 f9 7e c0       	vmovq  %xmm0,%r8
+   142fd93f1:	48 8d 95 70 01 00 00 	lea    0x170(%rbp),%rdx
+   142fd93f8:	49 8b ce             	mov    %r14,%rcx
+   142fd93fb:	e8 a0 9d f2 ff       	call   0x142f031a0
+   142fd9400:	44 8b f8             	mov    %eax,%r15d
+   142fd9403:	e9 e1 01 00 00       	jmp    0x142fd95e9
+   142fd9408:	4c 8d 44 24 20       	lea    0x20(%rsp),%r8
+   142fd940d:	41 8b d5             	mov    %r13d,%edx
+   142fd9410:	49 8b cc             	mov    %r12,%rcx
+   142fd9413:	e8 f8 15 fe ff       	call   0x142fbaa10
+   142fd9418:	48                   	rex.W
+

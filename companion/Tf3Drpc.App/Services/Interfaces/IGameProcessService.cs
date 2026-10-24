@@ -1,0 +1,8 @@
+using Tf3Drpc.Core.Monitor;
+
+namespace Tf3Drpc.App.Services.Interfaces;
+
+/// <summary>
+/// Checks whether the game runs.
+/// </summary>
+internal interface IGameProcessService : IGameProcessSource;

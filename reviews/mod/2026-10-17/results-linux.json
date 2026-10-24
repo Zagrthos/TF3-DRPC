@@ -1,0 +1,482 @@
+{
+  "productionSha256": {
+    "mod/zagrthos_drpc/_metadata/modinfo.json": "c401699cc8862405fdb36394f2c5756bca25c6f964a8cfeeb4474b260c382003",
+    "mod/zagrthos_drpc/content/drpc/drpc.gs.lua": "fb3b4d0fd42ca0a8f0eb6383a40b8159c32d54c312c84a18f72f9d68295e8b6e",
+    "mod/zagrthos_drpc/content/drpc/drpc.script.lua": "c40c377329685003878346a2ffcc87ffbf08d642eb941aab4f23227dea9d13d1",
+    "mod/zagrthos_drpc/mod.json": "ff3e4598138d7d1279ee1e007c61ad447182e118553ec5aad4321e7e6a277d29"
+  },
+  "python": "3.12.3",
+  "platform": "linux",
+  "lupa": "2.8",
+  "lua": "Lua 5.2",
+  "results": [
+    {
+      "id": "C01",
+      "kind": "control",
+      "result": "PASS",
+      "detail": {
+        "fields": 46,
+        "matchesRealSample": true
+      },
+      "seconds": 0.003
+    },
+    {
+      "id": "C02",
+      "kind": "control",
+      "result": "PASS",
+      "detail": {
+        "nameLength": 21,
+        "summaryLength": 82,
+        "files": 4
+      },
+      "seconds": 0.0594
+    },
+    {
+      "id": "C03",
+      "kind": "control",
+      "result": "PASS",
+      "detail": "10 s cadence, repeated frames, forward jump, backward jump and 10,000 paused-clock frames",
+      "seconds": 0.0141
+    },
+    {
+      "id": "C04",
+      "kind": "control",
+      "result": "PASS",
+      "detail": "1,000 throwing clock calls contained; one warning; writing resumes after recovery",
+      "seconds": 0.0019
+    },
+    {
+      "id": "C05",
+      "kind": "control",
+      "result": "PASS",
+      "detail": {
+        "strings": 1005,
+        "seed": 40420,
+        "includesAllASCII": true
+      },
+      "seconds": 1.0692
+    },
+    {
+      "id": "C06",
+      "kind": "control",
+      "result": "PASS",
+      "detail": {
+        "numbers": 3018,
+        "seed": 40420,
+        "exactIntegerBoundary": "abs(n) < 2^53",
+        "fractionRelativeTolerance": 6e-06
+      },
+      "seconds": 1.4566
+    },
+    {
+      "id": "C07",
+      "kind": "control",
+      "result": "PASS",
+      "detail": {
+        "cases": 15,
+        "omitted": [
+          "balance",
+          "cloudCoverage",
+          "company_topSpeed",
+          "cargoTransported",
+          "speedup"
+        ]
+      },
+      "seconds": 0.0076
+    },
+    {
+      "id": "C08",
+      "kind": "control",
+      "result": "SKIP",
+      "detail": [
+        {
+          "category": "numeric",
+          "result": "UNAVAILABLE"
+        },
+        {
+          "category": "ctype",
+          "result": "UNAVAILABLE"
+        },
+        {
+          "category": "all",
+          "result": "UNAVAILABLE"
+        }
+      ],
+      "seconds": 0.0016
+    },
+    {
+      "id": "C09",
+      "kind": "control",
+      "result": "PASS",
+      "detail": "4 mode configurations; all 15 earned ranks, legacy level fallback, initial/missing sources and infinite money",
+      "seconds": 0.0102
+    },
+    {
+      "id": "C10",
+      "kind": "control",
+      "result": "PASS",
+      "detail": {
+        "cases": 56,
+        "recovery": "all resumed",
+        "warningCounts": [
+          {
+            "point": "getWorld",
+            "warnings": 4
+          },
+          {
+            "point": "getPlayer",
+            "warnings": 4
+          },
+          {
+            "point": "getDefaultSavegameId",
+            "warnings": 1
+          },
+          {
+            "point": "isMapEditor",
+            "warnings": 1
+          },
+          {
+            "point": "getBaseConfig",
+            "warnings": 1
+          },
+          {
+            "point": "baseConfig.sandboxMode",
+            "warnings": 1
+          },
+          {
+            "point": "genericRep.find",
+            "warnings": 1
+          },
+          {
+            "point": "genericRep.get",
+            "warnings": 1
+          },
+          {
+            "point": "growthConfig.enforcedLevel",
+            "warnings": 1
+          },
+          {
+            "point": "component_GAME_TIME",
+            "warnings": 1
+          },
+          {
+            "point": "gameTime.gameTime",
+            "warnings": 1
+          },
+          {
+            "point": "gameTime.timeOfDaySec",
+            "warnings": 1
+          },
+          {
+            "point": "getCalendarDate",
+            "warnings": 1
+          },
+          {
+            "point": "component_GAME_SPEED",
+            "warnings": 1
+          },
+          {
+            "point": "gameSpeed.speedup",
+            "warnings": 1
+          },
+          {
+            "point": "require_progression",
+            "warnings": 1
+          },
+          {
+            "point": "getCompanyProgressionState",
+            "warnings": 1
+          },
+          {
+            "point": "companyData.potentialLevel",
+            "warnings": 1
+          },
+          {
+            "point": "companyData.level",
+            "warnings": 1
+          },
+          {
+            "point": "companyData.experience",
+            "warnings": 1
+          },
+          {
+            "point": "require_static",
+            "warnings": 1
+          },
+          {
+            "point": "getRole",
+            "warnings": 1
+          },
+          {
+            "point": "getPlayersBalance",
+            "warnings": 1
+          },
+          {
+            "point": "component_ACCOUNT",
+            "warnings": 1
+          },
+          {
+            "point": "account.loan",
+            "warnings": 1
+          },
+          {
+            "point": "getTransportedData",
+            "warnings": 1
+          },
+          {
+            "point": "transported.passengersTransported",
+            "warnings": 1
+          },
+          {
+            "point": "transported.cargoTransported",
+            "warnings": 1
+          },
+          {
+            "point": "getCompaniesValue",
+            "warnings": 1
+          },
+          {
+            "point": "component_WORLD",
+            "warnings": 1
+          },
+          {
+            "point": "world.cloudCoverage",
+            "warnings": 1
+          },
+          {
+            "point": "getConfigDict",
+            "warnings": 1
+          },
+          {
+            "point": "companyValue.totalScore",
+            "warnings": 1
+          },
+          {
+            "point": "companyValue.totalAssets",
+            "warnings": 1
+          },
+          {
+            "point": "companyValue.debt",
+            "warnings": 1
+          },
+          {
+            "point": "companyValue.railVehicles",
+            "warnings": 1
+          },
+          {
+            "point": "companyValue.trams",
+            "warnings": 1
+          },
+          {
+            "point": "companyValue.roadVehicles",
+            "warnings": 1
+          },
+          {
+            "point": "companyValue.aircrafts",
+            "warnings": 1
+          },
+          {
+            "point": "companyValue.ships",
+            "warnings": 1
+          },
+          {
+            "point": "companyValue.numberOfLines",
+            "warnings": 1
+          },
+          {
+            "point": "companyValue.totalStations",
+            "warnings": 1
+          },
+          {
+            "point": "companyValue.railStations",
+            "warnings": 1
+          },
+          {
+            "point": "companyValue.tramStations",
+            "warnings": 1
+          },
+          {
+            "point": "companyValue.roadStations",
+            "warnings": 1
+          },
+          {
+            "point": "companyValue.aircraftStations",
+            "warnings": 1
+          },
+          {
+            "point": "companyValue.shipStations",
+            "warnings": 1
+          },
+          {
+            "point": "companyValue.trackTotalLength",
+            "warnings": 1
+          },
+          {
+            "point": "companyValue.trackElectricLength",
+            "warnings": 1
+          },
+          {
+            "point": "companyValue.roadTotalLength",
+            "warnings": 1
+          },
+          {
+            "point": "companyValue.bridgeTotalLength",
+            "warnings": 1
+          },
+          {
+            "point": "companyValue.tunnelTotalLength",
+            "warnings": 1
+          },
+          {
+            "point": "companyValue.suppliedTowns",
+            "warnings": 1
+          },
+          {
+            "point": "companyValue.connectedIndustries",
+            "warnings": 1
+          },
+          {
+            "point": "companyValue.topSpeed",
+            "warnings": 1
+          },
+          {
+            "point": "companyValue.topLength",
+            "warnings": 1
+          }
+        ]
+      },
+      "seconds": 0.0366
+    },
+    {
+      "id": "C11",
+      "kind": "control",
+      "result": "PASS",
+      "detail": {
+        "sharedSourcesReadOnce": [
+          "getWorld",
+          "getPlayer",
+          "getCalendarDate",
+          "component_GAME_TIME",
+          "getPlayersBalance",
+          "getCompaniesValue",
+          "getTransportedData",
+          "getConfigDict",
+          "getCompanyProgressionState"
+        ],
+        "stateParametersUntouched": true,
+        "clockReadsPerWrite": 2
+      },
+      "seconds": 0.0005
+    },
+    {
+      "id": "C12",
+      "kind": "control",
+      "result": "PASS",
+      "detail": "write failure contained, deduplicated and retried on the next interval",
+      "seconds": 0.0006
+    },
+    {
+      "id": "C13",
+      "kind": "control",
+      "result": "PASS",
+      "detail": "1x, 2x, 4x, pause-button 0, continued pause and resume all keep the real-time cadence",
+      "seconds": 0.001
+    },
+    {
+      "id": "R1",
+      "kind": "finding",
+      "result": "REPRODUCED",
+      "detail": [
+        {
+          "throwingField": "year",
+          "missingFields": [
+            "year",
+            "month",
+            "day"
+          ]
+        },
+        {
+          "throwingField": "month",
+          "missingFields": [
+            "month",
+            "day"
+          ]
+        },
+        {
+          "throwingField": "day",
+          "missingFields": [
+            "day"
+          ]
+        }
+      ],
+      "seconds": 0.0046
+    },
+    {
+      "id": "O1",
+      "kind": "boundary",
+      "result": "REPRODUCED",
+      "detail": [
+        {
+          "case": "rankName_number",
+          "key": "rankName",
+          "emittedType": "int",
+          "warnings": 0
+        },
+        {
+          "case": "vehicle_string",
+          "key": "company_roadVehicles",
+          "emittedType": "str",
+          "warnings": 0
+        },
+        {
+          "case": "climate_boolean",
+          "key": "climate",
+          "emittedType": "bool",
+          "warnings": 0
+        },
+        {
+          "case": "speed_boolean",
+          "key": "speedup",
+          "emittedType": "bool",
+          "warnings": 0
+        },
+        {
+          "case": "cloud_string",
+          "key": "cloudCoverage",
+          "emittedType": "str",
+          "warnings": 0
+        }
+      ],
+      "seconds": 0.0028
+    },
+    {
+      "id": "O2",
+      "kind": "boundary",
+      "result": "REPRODUCED",
+      "detail": {
+        "initialLines": 1,
+        "linesAfterFiniteClockRecovers": 1,
+        "warnings": 0,
+        "apiContract": "getLocalTime is declared integer; NaN is deliberately outside that contract"
+      },
+      "seconds": 0.0005
+    },
+    {
+      "id": "O3",
+      "kind": "boundary",
+      "result": "REPRODUCED",
+      "detail": {
+        "validEntries": [
+          "climate",
+          "economy"
+        ],
+        "missingFields": [
+          "climate",
+          "economy"
+        ],
+        "apiContract": "all config entries are string/string pairs; this deliberately violates that shape"
+      },
+      "seconds": 0.0004
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+[2026-10-13 20:51:59Z - VERBOSE  - Main             - Main           ]+ Exception type: Lua error
+    | This error is usually caused by modding. Some game resources contain incorrect data.
+    | In file: framework/src/framework/lua/State.cpp:514
+    + In function: lua::State::DoString
+[2026-10-13 20:52:01Z - MESSAGE  - Main             - Main           ]  Shutting down PDX SDK
+[2026-10-13 20:52:01Z - ERROR    - Main             - Main           ]+ Ungraceful exit
+    + Location: train_fever/src/Game/Application.cpp(1111): operator ()

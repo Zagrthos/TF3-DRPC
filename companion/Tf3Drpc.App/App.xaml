@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Application
+    x:Class="Tf3Drpc.App.CompanionApplication"
+    x:ClassModifier="Internal"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converters="clr-namespace:Tf3Drpc.App.Converters">
+    <Application.Resources>
+        <ResourceDictionary>
+            <x:String x:Key="PrivateMarker">🔒</x:String>
+            <converters:IsNotNullConverter x:Key="IsNotNull" />
+            <Style x:Key="SecondaryLabel" TargetType="Label">
+                <Setter Property="TextColor" Value="{AppThemeBinding Light=#5C5C5C, Dark=#A6A6A6}" />
+            </Style>
+            <Style x:Key="Separator" TargetType="BoxView">
+                <Setter Property="HeightRequest" Value="1" />
+                <Setter Property="Opacity" Value="0.3" />
+                <Setter Property="Color" Value="Gray" />
+                <!-- macOS separates by the grouped boxes below instead. -->
+                <Setter Property="IsVisible">
+                    <Setter.Value>
+                        <OnPlatform x:TypeArguments="x:Boolean" Default="True">
+                            <On Platform="MacCatalyst" Value="False" />
+                        </OnPlatform>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <!-- Windows keeps its flat layout on the Mica backdrop; macOS groups the settings in boxes, like System Settings. -->
+            <Style x:Key="PlainPage" TargetType="ContentPage">
+                <Setter Property="BackgroundColor" Value="Transparent" />
+            </Style>
+            <Style x:Key="MacPage" TargetType="ContentPage">
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=#F2F2F7, Dark=#1C1C1E}" />
+            </Style>
+            <Style x:Key="PlainGroup" TargetType="Border">
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="StrokeThickness" Value="0" />
+            </Style>
+            <Style x:Key="MacGroup" TargetType="Border">
+                <Setter Property="Margin" Value="16,8" />
+                <Setter Property="VerticalOptions" Value="Start" />
+                <Setter Property="Padding" Value="16,12" />
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=White, Dark=#2C2C2E}" />
+                <Setter Property="Stroke" Value="{AppThemeBinding Light=#E5E5EA, Dark=#3A3A3C}" />
+                <Setter Property="StrokeThickness" Value="1" />
+                <Setter Property="StrokeShape" Value="RoundRectangle 10" />
+            </Style>
+            <!-- MAUI's text field draws no border in the Mac idiom; WinUI's text box has its own. -->
+            <Style x:Key="PlainField" TargetType="Border">
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="StrokeThickness" Value="0" />
+            </Style>
+            <Style x:Key="MacField" TargetType="Border">
+                <Setter Property="Padding" Value="4,0" />
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=White, Dark=#1C1C1E}" />
+                <Setter Property="Stroke" Value="{AppThemeBinding Light=#C7C7CC, Dark=#48484A}" />
+                <Setter Property="StrokeThickness" Value="1" />
+                <Setter Property="StrokeShape" Value="RoundRectangle 6" />
+            </Style>
+            <!-- The typed OnPlatform<T>; the OnPlatform markup extension isn't trim safe. -->
+            <OnPlatform x:Key="PageStyle" x:TypeArguments="Style">
+                <On Platform="WinUI" Value="{StaticResource PlainPage}" />
+                <On Platform="MacCatalyst" Value="{StaticResource MacPage}" />
+            </OnPlatform>
+            <OnPlatform x:Key="GroupStyle" x:TypeArguments="Style">
+                <On Platform="WinUI" Value="{StaticResource PlainGroup}" />
+                <On Platform="MacCatalyst" Value="{StaticResource MacGroup}" />
+            </OnPlatform>
+            <OnPlatform x:Key="FieldStyle" x:TypeArguments="Style">
+                <On Platform="WinUI" Value="{StaticResource PlainField}" />
+                <On Platform="MacCatalyst" Value="{StaticResource MacField}" />
+            </OnPlatform>
+            <OnPlatform x:Key="HeaderPadding" x:TypeArguments="Thickness" Default="24,16,24,12">
+                <On Platform="MacCatalyst" Value="0" />
+            </OnPlatform>
+            <OnPlatform x:Key="SettingsPadding" x:TypeArguments="Thickness" Default="24,16">
+                <On Platform="MacCatalyst" Value="0" />
+            </OnPlatform>
+            <OnPlatform x:Key="CheckBoxWidth" x:TypeArguments="x:Double" Default="-1">
+                <On Platform="WinUI" Value="32" />
+            </OnPlatform>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

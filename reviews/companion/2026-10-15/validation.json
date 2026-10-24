@@ -1,0 +1,110 @@
+{
+  "sdk": "11.0.100-rc.2.26504.105",
+  "core_tests": {
+    "command": "dotnet.exe test --project Tf3Drpc.Core.Tests/Tf3Drpc.Core.Tests.csproj",
+    "cwd": "companion",
+    "exit_code": 0,
+    "passed": 265,
+    "failed": 0,
+    "skipped": 1,
+    "skipped_case": "LiveDiscord_ShowsAndClearsAPresenceAsync"
+  },
+  "builds": [
+    {
+      "configuration": "Debug",
+      "ide0005_enabled": false,
+      "command": "dotnet.exe build TF3-DRPC.slnx -c Debug",
+      "cwd": "companion",
+      "exit_code": 0,
+      "zero_warnings_and_errors": true
+    },
+    {
+      "configuration": "Release",
+      "ide0005_enabled": false,
+      "command": "dotnet.exe build TF3-DRPC.slnx -c Release",
+      "cwd": "companion",
+      "exit_code": 0,
+      "zero_warnings_and_errors": true
+    },
+    {
+      "configuration": "Debug",
+      "ide0005_enabled": true,
+      "command": "dotnet.exe build TF3-DRPC.slnx -c Debug",
+      "cwd": "companion",
+      "exit_code": 0,
+      "zero_warnings_and_errors": true
+    },
+    {
+      "configuration": "Release",
+      "ide0005_enabled": true,
+      "command": "dotnet.exe build TF3-DRPC.slnx -c Release",
+      "cwd": "companion",
+      "exit_code": 0,
+      "zero_warnings_and_errors": true
+    }
+  ],
+  "publish": {
+    "command": "dotnet.exe publish Tf3Drpc.App/Tf3Drpc.App.csproj -c Release -r win-x64",
+    "cwd": "companion",
+    "exit_code": 0,
+    "bytes": 86140658,
+    "known_upstream_warning": "IL2070 in Microsoft.Maui.Controls Windows CollectionView drag/drop",
+    "published_pdb_files": 0,
+    "german_starting_text_occurrences": 1,
+    "exe_sha256": "8280329a28156d6e7a09afaaef0141963379e815d31a786178ed2e1b2b4cca5e"
+  },
+  "integrity": {
+    "original_file_count": 135,
+    "all_original_hashes_unchanged": true,
+    "temporary_globalconfig_removed": true
+  },
+  "unverified": [
+    "live game and Discord end-to-end run",
+    "macOS",
+    "native UI rendering/accessibility/DPI",
+    "actual UI-thread scheduling in headless cases"
+  ],
+  "harness": {
+    "command": "dotnet.exe run --project ReviewHarness.csproj",
+    "cwd": "reviews/companion/2026-10-15/harness",
+    "exit_code": 0,
+    "reproduced": 12,
+    "controls": 8,
+    "failed": 0,
+    "build_warnings": 0
+  },
+  "published_app": {
+    "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File reviews/companion/2026-10-15/smoke.ps1",
+    "cwd": "repository root",
+    "exit_code": 0,
+    "cases": [
+      {
+        "case": "baseline",
+        "exited": false,
+        "exit_code": null,
+        "main_window_visible": true
+      },
+      {
+        "case": "missing-tray",
+        "exited": false,
+        "exit_code": null,
+        "main_window_visible": false
+      },
+      {
+        "case": "blocked-log-folder",
+        "exited": true,
+        "exit_code": -1073741189,
+        "main_window_visible": false
+      },
+      {
+        "case": "blocked-data-folder",
+        "exited": false,
+        "exit_code": null,
+        "main_window_visible": true
+      }
+    ],
+    "intact_copy_second_instance_exits_and_opens_first_window": true,
+    "fixture_copies_removed": true
+  },
+  "protocol_reference": "https://docs.discord.com/developers/topics/rpc"
+}

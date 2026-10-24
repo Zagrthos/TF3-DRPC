@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Installation and usage
+    url: https://github.com/Zagrthos/TF3-DRPC#installation
+    about: How to install the mod and the app, turn the mod on and use the settings.
+  - name: Troubleshooting
+    url: https://github.com/Zagrthos/TF3-DRPC#troubleshooting
+    about: Solutions for the most common problems, such as an empty Discord status.

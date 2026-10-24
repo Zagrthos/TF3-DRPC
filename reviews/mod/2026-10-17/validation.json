@@ -1,0 +1,109 @@
+{
+  "reviewDate": "2026-10-17",
+  "scope": "All four mod files; documented protocol; installed-game API and relevant base scripts; production companion parser/template impact",
+  "commands": [
+    {
+      "cwd": "repository root",
+      "command": "PYTHONPATH=/tmp/tf3-mod-review-2026-10-17-deps python3 reviews/mod/2026-10-17/review.py",
+      "exitCode": 0,
+      "evidence": "results-linux.json",
+      "summary": {
+        "controlPassed": 12,
+        "skipped": 1,
+        "findingReproduced": 1,
+        "boundaryReproduced": 3,
+        "failed": 0
+      }
+    },
+    {
+      "cwd": "repository root",
+      "command": "py.exe -3 reviews/mod/2026-10-17/review.py",
+      "exitCode": 0,
+      "evidence": "results-windows.json",
+      "summary": {
+        "controlPassed": 13,
+        "skipped": 0,
+        "findingReproduced": 1,
+        "boundaryReproduced": 3,
+        "failed": 0
+      }
+    },
+    {
+      "cwd": "reviews/mod/2026-10-17/receiver",
+      "command": "dotnet.exe run --project Receiver.csproj -- ../artifacts/latest-results-win32-messages.json ../artifacts/latest-receiver-results.json",
+      "exitCode": 0,
+      "purpose": "Initial build and execution of the unchanged-Core receiver harness; completed without warnings or errors"
+    },
+    {
+      "cwd": "reviews/mod/2026-10-17/receiver",
+      "command": "dotnet.exe run --no-build --project Receiver.csproj -- ../artifacts/latest-results-win32-messages.json ../artifacts/latest-receiver-results.json",
+      "exitCode": 0,
+      "assertedOutcomes": 19,
+      "evidence": [
+        "receiver-results.json",
+        "receiver-output.txt"
+      ]
+    },
+    {
+      "cwd": "repository root",
+      "command": "python3 reviews/mod/2026-10-17/inspect_game.py '<game>'",
+      "exitCode": 0,
+      "staticChecks": 52,
+      "companyFields": 24,
+      "evidence": "game-inspection.json"
+    },
+    {
+      "cwd": "repository root",
+      "command": "/tmp/tf3-mod-review-luals-3.19.2/bin/lua-language-server --check=<repo>/mod --configpath=<repo>/.luarc.json --checklevel=Hint --check_format=json --check_out_path=/tmp/tf3-mod-review-luals.json --logpath=/tmp/tf3-mod-review-luals-log --metapath=/tmp/tf3-mod-review-luals-meta",
+      "exitCode": 0,
+      "diagnostics": 0,
+      "evidence": "luals-check.json"
+    },
+    {
+      "cwd": "repository root",
+      "command": "git -c core.safecrlf=false diff --exit-code -- mod companion docs AGENTS.md",
+      "exitCode": 0,
+      "trackedProductionOrDocumentationChanges": false
+    }
+  ],
+  "toolchain": {
+    "linuxPython": "3.12.3",
+    "windowsPython": "3.14.8",
+    "lupa": "2.8",
+    "lua": "Lua 5.2",
+    "luals": "3.19.2",
+    "lualsExecutableSha256": "1ea9f1063daa2d136af6fcb95f4354e227fc1a55482a101a84fd02907ff1c96d",
+    "windowsDotnetSdk": "11.0.100-rc.2.26504.105",
+    "tf3ModdingSkillLocalVersion": "2026.10.12.1",
+    "tf3ModdingSkillFetchedVersion": "2026.10.12.1",
+    "testRuntimeDownloads": [
+      {
+        "filename": "lupa-2.8-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl",
+        "sha256": "8cf4f064a0e5531afce2d7d750120c10c10f9529139af6ca6150d13151034398"
+      },
+      {
+        "filename": "lupa-2.8-cp314-cp314-win_amd64.whl",
+        "sha256": "3903c9cf628dae2f56405503247b77a61a3a61bd2dda470e336950c74776d55d"
+      }
+    ],
+    "downloadIntegrity": "Both wheel payload hashes were verified against PyPI 2.8 metadata before extraction; dependencies are not committed"
+  },
+  "integrity": {
+    "trackedInputHashCount": 106,
+    "allTrackedInputHashesStillMatch": true,
+    "allReviewSourceHashesStillMatch": true,
+    "modHashesMatchBothRuntimeRuns": true,
+    "linuxAndWindowsExportedMessagesIdentical": true,
+    "exportedMessageCount": 19,
+    "reviewOutputsAddedOnlyUnder": "reviews/mod/2026-10-17/",
+    "otherUntrackedWork": "reviews/companion/2026-10-17/ appeared during the review and was left untouched"
+  },
+  "limits": [
+    "No live game or Discord session",
+    "No macOS or console runtime",
+    "No mod.io validator or publishing",
+    "No MAUI run or Native AOT publish",
+    "No xunit suite run; receiver is a console reproduction harness",
+    "Injected failures and malformed returns are not observations of real native binding failures"
+  ]
+}

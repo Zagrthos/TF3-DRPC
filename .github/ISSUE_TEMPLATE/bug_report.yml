@@ -1,0 +1,91 @@
+name: Bug report
+description: Something doesn't work as described in the README.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a problem. Please check the [troubleshooting table](https://github.com/Zagrthos/TF3-DRPC#troubleshooting) first; most problems with an empty status are solved there.
+
+        Everything you write here is public. Remove personal details (your user name in paths, account IDs, your savegame's name if you like) from logs before you paste them.
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options:
+        - Windows 11
+        - Windows 10
+        - macOS
+    validations:
+      required: true
+  - type: input
+    id: app-version
+    attributes:
+      label: App version
+      description: Shown in the title of the settings window, for example 0.1.0.
+    validations:
+      required: true
+  - type: input
+    id: game-version
+    attributes:
+      label: Game version
+      description: The build number shown in the app's settings window while the game runs, and at the bottom right of the game's main menu, for example "Build 40420".
+    validations:
+      required: true
+  - type: dropdown
+    id: part
+    attributes:
+      label: Where does the problem appear?
+      options:
+        - Discord shows the wrong status or none
+        - The settings window or the tray / menu bar icon
+        - The mod in the game
+        - Installation or starting the app
+        - Something else
+    validations:
+      required: true
+  - type: checkboxes
+    id: basics
+    attributes:
+      label: Basics
+      description: Tick what applies.
+      options:
+        - label: The Discord desktop app was running and logged in.
+        - label: The mod was turned on in the savegame, and the savegame was saved once after that.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What you saw, and what you expected instead.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: What you did, step by step, so we can see it too. Include the status appearance (preset) and language you chose.
+      placeholder: |
+        1. Start the app, then the game.
+        2. Load a savegame with the mod.
+        3. ...
+    validations:
+      required: true
+  - type: textarea
+    id: app-log
+    attributes:
+      label: App log
+      description: The lines around the problem from today's file in the `DATA/logs/` folder next to the app.
+      render: text
+  - type: textarea
+    id: game-log
+    attributes:
+      label: Game log
+      description: Optional. Lines from the game's `stdout.txt` that start with `[drpc` or mention the problem. Where to find it is described in [docs/game-log.md](https://github.com/Zagrthos/TF3-DRPC/blob/main/docs/game-log.md).
+      render: text
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy
+      options:
+        - label: I removed personal details from everything I pasted above.
+          required: true

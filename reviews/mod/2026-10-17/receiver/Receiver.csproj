@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>Tf3Drpc.Core.Tests</AssemblyName>
+    <BaseOutputPath>../artifacts/receiver-bin/</BaseOutputPath>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <JsonSerializerIsReflectionEnabledByDefault>false</JsonSerializerIsReflectionEnabledByDefault>
+    <Nullable>enable</Nullable>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net11.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../../../companion/Tf3Drpc.Core/Tf3Drpc.Core.csproj" />
+  </ItemGroup>
+</Project>

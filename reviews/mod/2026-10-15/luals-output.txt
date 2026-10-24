@@ -1,0 +1,7 @@
+Initializing ...
+                                                                                
+>>>>>>>>>>>>>>>>>>>= 12/13
+                                                                                
+>>>>>>>>>>>>>>>>>>>> 13/13
+                                                                                
+Diagnosis completed, no problems found

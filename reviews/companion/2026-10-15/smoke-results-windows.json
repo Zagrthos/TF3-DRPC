@@ -1,0 +1,41 @@
+[
+  {
+    "Case": "baseline",
+    "SingleInstanceControl": {
+      "SecondExited": true,
+      "FirstWindowVisible": true
+    },
+    "HasExited": false,
+    "ExitCode": null,
+    "MainWindowHandle": 987504,
+    "Log": "2026-10-14T22:48:17.5050625Z\tINFO\t[Tf3Drpc.App.CompanionApplication]\t[AppStarted]\tTF3-DRPC 0.1.0.0 started. Data folder: <repo>\\reviews\\companion\\2026-10-15\\artifacts\\smoke-2fac4e06d0074542b9471c04193945d8\\baseline\\DATA.\r\n2026-10-14T22:48:17.5257006Z\tINFO\t[Tf3Drpc.App.Platforms.Windows.WindowsTrayService]\t[TrayCreated]\tTray icon created: True.\r\n2026-10-14T22:48:17.5303860Z\tINFO\t[Tf3Drpc.App.Services.MonitorService]\t[GamePathsResolved]\tGame paths: log c:\\program files (x86)\\steam\\userdata\\<steam-account>\\3493540\\local\\crash_dump\\stdout.txt, profile c:\\program files (x86)\\steam\\userdata\\<steam-account>\\3493540\\local\\profile.lua, game folder c:\\program files (x86)\\steam\\steamapps\\common\\Transport Fever 3.\r\n2026-10-14T22:48:17.5306309Z\tINFO\t[Tf3Drpc.App.Services.MonitorService]\t[LanguageChanged]\tLanguage: de.\r\n2026-10-14T22:48:17.5327047Z\tINFO\t[Tf3Drpc.App.Services.TranslationService]\t[GameTextsLoaded]\tGame texts for de loaded from c:\\program files (x86)\\steam\\steamapps\\common\\Transport Fever 3\\base\\strings\\de\\LC_MESSAGES\\base.mo.\r\n",
+    "StandardError": null
+  },
+  {
+    "Case": "missing-tray",
+    "SingleInstanceControl": null,
+    "HasExited": false,
+    "ExitCode": null,
+    "MainWindowHandle": 0,
+    "Log": "2026-10-14T22:48:30.2507882Z\tINFO\t[Tf3Drpc.App.CompanionApplication]\t[AppStarted]\tTF3-DRPC 0.1.0.0 started. Data folder: <repo>\\reviews\\companion\\2026-10-15\\artifacts\\smoke-2fac4e06d0074542b9471c04193945d8\\missing-tray\\DATA.\r\n2026-10-14T22:48:30.2654167Z\tFAIL\t[Tf3Drpc.App.Platforms.Windows.WindowsTrayService]\t[TrayFailed]\tThe tray icon could not be created.System.ArgumentException: Failed to load icon from <repo>\\reviews\\companion\\2026-10-15\\artifacts\\smoke-2fac4e06d0074542b9471c04193945d8\\missing-tray\\tray.ico (Parameter 'iconPath')\r\n   at WinUIEx.TrayIcon.SetIcon(String)\r\n   at Tf3Drpc.App.Platforms.Windows.WindowsTrayService.Show()\r\n\r\n2026-10-14T22:48:30.2736462Z\tINFO\t[Tf3Drpc.App.Services.MonitorService]\t[GamePathsResolved]\tGame paths: log c:\\program files (x86)\\steam\\userdata\\<steam-account>\\3493540\\local\\crash_dump\\stdout.txt, profile c:\\program files (x86)\\steam\\userdata\\<steam-account>\\3493540\\local\\profile.lua, game folder c:\\program files (x86)\\steam\\steamapps\\common\\Transport Fever 3.\r\n2026-10-14T22:48:30.2738277Z\tINFO\t[Tf3Drpc.App.Services.MonitorService]\t[LanguageChanged]\tLanguage: de.\r\n2026-10-14T22:48:30.2756250Z\tINFO\t[Tf3Drpc.App.Services.TranslationService]\t[GameTextsLoaded]\tGame texts for de loaded from c:\\program files (x86)\\steam\\steamapps\\common\\Transport Fever 3\\base\\strings\\de\\LC_MESSAGES\\base.mo.\r\n",
+    "StandardError": null
+  },
+  {
+    "Case": "blocked-log-folder",
+    "SingleInstanceControl": null,
+    "HasExited": true,
+    "ExitCode": -1073741189,
+    "MainWindowHandle": 0,
+    "Log": "",
+    "StandardError": null
+  },
+  {
+    "Case": "blocked-data-folder",
+    "SingleInstanceControl": null,
+    "HasExited": false,
+    "ExitCode": null,
+    "MainWindowHandle": 1315232,
+    "Log": "",
+    "StandardError": null
+  }
+]

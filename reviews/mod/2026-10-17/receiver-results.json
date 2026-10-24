@@ -1,0 +1,97 @@
+[
+  {
+    "id": "baseline",
+    "accepted": true,
+    "monthTemplate": "September"
+  },
+  {
+    "id": "missing_optional_sources",
+    "accepted": true,
+    "monthTemplate": null
+  },
+  {
+    "id": "calendar_year",
+    "accepted": true,
+    "monthTemplate": null
+  },
+  {
+    "id": "calendar_year_retained_month_control",
+    "accepted": true,
+    "monthTemplate": "September"
+  },
+  {
+    "id": "calendar_month",
+    "accepted": true,
+    "monthTemplate": null
+  },
+  {
+    "id": "calendar_day",
+    "accepted": true,
+    "monthTemplate": "September"
+  },
+  {
+    "id": "calendar_year_nil_control",
+    "accepted": true,
+    "monthTemplate": "September"
+  },
+  {
+    "id": "rankName_number",
+    "accepted": false,
+    "monthTemplate": null
+  },
+  {
+    "id": "rankName_number_omitted_control",
+    "accepted": true,
+    "monthTemplate": "September"
+  },
+  {
+    "id": "vehicle_string",
+    "accepted": false,
+    "monthTemplate": null
+  },
+  {
+    "id": "vehicle_string_omitted_control",
+    "accepted": true,
+    "monthTemplate": "September"
+  },
+  {
+    "id": "climate_boolean",
+    "accepted": false,
+    "monthTemplate": null
+  },
+  {
+    "id": "climate_boolean_omitted_control",
+    "accepted": true,
+    "monthTemplate": "September"
+  },
+  {
+    "id": "speed_boolean",
+    "accepted": false,
+    "monthTemplate": null
+  },
+  {
+    "id": "speed_boolean_omitted_control",
+    "accepted": true,
+    "monthTemplate": "September"
+  },
+  {
+    "id": "cloud_string",
+    "accepted": false,
+    "monthTemplate": null
+  },
+  {
+    "id": "cloud_string_omitted_control",
+    "accepted": true,
+    "monthTemplate": "September"
+  },
+  {
+    "id": "nan_clock_initial_status",
+    "accepted": true,
+    "monthTemplate": "September"
+  },
+  {
+    "id": "malformed_unused_config_entry",
+    "accepted": true,
+    "monthTemplate": "September"
+  }
+]

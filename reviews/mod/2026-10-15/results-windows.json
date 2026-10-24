@@ -1,0 +1,62 @@
+[
+  {
+    "test": "baseline",
+    "result": "PASS",
+    "detail": "46 fields exactly match first real log sample"
+  },
+  {
+    "test": "scheduling",
+    "result": "PASS",
+    "detail": "10-second cadence; no duplicates; recovery after clock moves backwards"
+  },
+  {
+    "test": "strings",
+    "result": "PASS",
+    "detail": "ASCII including NUL/control bytes, Unicode and combining marks round-trip"
+  },
+  {
+    "test": "nonfinite",
+    "result": "PASS",
+    "detail": "NaN and both infinities omitted without losing rank/date"
+  },
+  {
+    "test": "modes_and_missing_values",
+    "result": "PASS",
+    "detail": "normal/sandbox/tycoon/editor flags; infinite money; missing account/progression"
+  },
+  {
+    "test": "API_exceptions_and_recovery",
+    "result": "PASS",
+    "detail": "14 API exceptions contained; warnings deduplicated; clock failure/recovery"
+  },
+  {
+    "test": "fractional_and_exponential_numbers",
+    "result": "PASS",
+    "detail": "sample fractional speed and 200 deterministic fractional/exponential money values"
+  },
+  {
+    "test": "metadata_and_hook",
+    "result": "PASS",
+    "detail": "metadata constraints, UTF-8/no BOM, lowercase filenames, valid hook reference"
+  },
+  {
+    "test": "F3_grouped_reads",
+    "result": "REPRODUCED",
+    "detail": "save-name getter fails -> loses isMapEditor; base config fails -> loses isTycoon; unused rank-name helper fails -> loses experience; unused rank-name module fails to load -> loses rank, experience; WORLD component absent -> loses climate, economy; calendar conversion fails -> loses timeOfDaySec; one native company field fails -> loses company_roadVehicles, company_numberOfLines, company_totalStations"
+  },
+  {
+    "test": "F1_windows_integer_overflow",
+    "result": "REPRODUCED",
+    "detail": "BALANCE=2147483648 -> no status lines; one warning; COMPANY_VALUE.totalAssets=3000000000 -> no status lines; one warning; BALANCE=-2147483649 -> no status lines; one warning"
+  },
+  {
+    "test": "F2_numeric_locale",
+    "result": "REPRODUCED",
+    "detail": "German_Germany.1252 -> cloudCoverage:0,522476; invalid JSON emitted with no warning"
+  },
+  {
+    "test": "F4_ctype_locale",
+    "result": "REPRODUCED",
+    "detail": "German_Germany.1252 -> Tokyo UTF-8 bytes E6 9D B1 become E6 \\u009d B1; saveName corrupted"
+  }
+]

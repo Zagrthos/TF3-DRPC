@@ -1,0 +1,21 @@
+{
+  "id": "R12",
+  "foreground": "#808080",
+  "background": "#272727",
+  "ratio": 3.7824147848863596,
+  "minimumForNormalText": 4.5,
+  "solidForegroundPixels": 425,
+  "label": {
+    "rect": {
+      "y": 120,
+      "width": 577.3,
+      "offscreen": false,
+      "height": 18.7,
+      "x": 64.7
+    },
+    "name": "Not connected to Discord",
+    "fontSize": 14
+  },
+  "reproduced": true,
+  "blackWhiteControl": 21
+}

@@ -1,0 +1,30 @@
+name: Feature request
+description: An idea for what TF3-DRPC could show or do.
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the idea. Keep in mind that the mod can only report what the game's scripting API offers, and Discord shows two lines of text, one image tooltip and up to two buttons.
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would you like?
+      description: Describe what you'd like to see in your status or in the app.
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why?
+      description: What would it help you or others with? If something can be done with a custom status already, say why that isn't enough.
+    validations:
+      required: true
+  - type: textarea
+    id: example
+    attributes:
+      label: Example
+      description: Optional. How it could look, for example the two lines of the status.
+      placeholder: |
+        Mechanic · 12 trains
+        September 1905

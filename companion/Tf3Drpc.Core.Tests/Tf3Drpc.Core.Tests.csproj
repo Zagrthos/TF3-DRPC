@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Project-Specific Build Properties -->
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <OutputType>Exe</OutputType> <!-- xunit v3 on Microsoft.Testing.Platform runs as an executable -->
+    <TargetFramework>net11.0</TargetFramework>
+  </PropertyGroup>
+
+  <!-- Content Files -->
+  <ItemGroup>
+    <None Include="..\..\docs\log-samples\*.log" CopyToOutputDirectory="PreserveNewest" LinkBase="log-samples" />
+  </ItemGroup>
+
+  <!-- Shared Projects -->
+  <ItemGroup>
+    <ProjectReference Include="..\Tf3Drpc.Core\Tf3Drpc.Core.csproj" />
+  </ItemGroup>
+
+  <!-- NuGets -->
+  <ItemGroup>
+    <PackageReference Include="xunit.v3" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    x:Class="Tf3Drpc.App.Views.SettingsPage"
+    x:ClassModifier="Internal"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:appconstants="clr-namespace:Tf3Drpc.App.Constants"
+    xmlns:constants="clr-namespace:Tf3Drpc.Core.Constants;assembly=Tf3Drpc.Core"
+    xmlns:enums="clr-namespace:Tf3Drpc.Core.Enums;assembly=Tf3Drpc.Core"
+    xmlns:vm="clr-namespace:Tf3Drpc.App.ViewModels"
+    x:DataType="vm:SettingsViewModel"
+    Style="{StaticResource PageStyle}"
+    Title="TF3-DRPC">
+    <!-- Status and preview stay at the top and Exit at the bottom; the header has a height limit and scrolls beyond it, so Exit never leaves the window. -->
+    <Grid RowDefinitions="Auto,Auto,*,Auto,Auto">
+        <ScrollView MaximumHeightRequest="240">
+            <Border Style="{StaticResource GroupStyle}">
+                <VerticalStackLayout Padding="{StaticResource HeaderPadding}" Spacing="4">
+                    <Label
+                        IsVisible="{Binding IsNotWritableVisible}"
+                        Text="{Binding NotWritableText}"
+                        TextColor="Red" />
+                    <Label
+                        IsVisible="{Binding IsLogNotWritableVisible}"
+                        Text="{Binding LogNotWritableText}"
+                        TextColor="Red" />
+                    <Label
+                        LineBreakMode="TailTruncation"
+                        MaxLines="2"
+                        Text="{Binding GameStatus}" />
+                    <Label
+                        IsVisible="{Binding GameBuild, Converter={StaticResource IsNotNull}}"
+                        MaxLines="1"
+                        Style="{StaticResource SecondaryLabel}"
+                        Text="{Binding GameBuild, StringFormat='Transport Fever 3 · Build {0}'}" />
+                    <Label Style="{StaticResource SecondaryLabel}" Text="{Binding DiscordStatus}" />
+                    <Label
+                        Margin="0,8,0,0"
+                        FontAttributes="Bold"
+                        Text="{Binding PreviewLabel}" />
+                    <Label
+                        LineBreakMode="TailTruncation"
+                        MaxLines="2"
+                        Text="{Binding PreviewDetails}" />
+                    <Label
+                        LineBreakMode="TailTruncation"
+                        MaxLines="2"
+                        Text="{Binding PreviewState}">
+                        <Label.Triggers>
+                            <DataTrigger
+                                Binding="{Binding PreviewState}"
+                                TargetType="Label"
+                                Value="">
+                                <Setter Property="IsVisible" Value="False" />
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                    <Border
+                        Padding="12,4"
+                        HorizontalOptions="Start"
+                        Stroke="Gray"
+                        StrokeThickness="1">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="4" />
+                        </Border.StrokeShape>
+                        <Border.Triggers>
+                            <DataTrigger
+                                Binding="{Binding PreviewButton}"
+                                TargetType="Border"
+                                Value="">
+                                <Setter Property="IsVisible" Value="False" />
+                            </DataTrigger>
+                        </Border.Triggers>
+                        <Label FontSize="12" Text="{Binding PreviewButton}" />
+                    </Border>
+                    <Label
+                        LineBreakMode="TailTruncation"
+                        MaxLines="2"
+                        Style="{StaticResource SecondaryLabel}"
+                        Text="{Binding PreviewHover}" />
+                    <Label
+                        IsVisible="{Binding IsPreviewExampleVisible}"
+                        Style="{StaticResource SecondaryLabel}"
+                        Text="{Binding PreviewExampleText}" />
+                </VerticalStackLayout>
+            </Border>
+        </ScrollView>
+        <BoxView Grid.Row="1" Style="{StaticResource Separator}" />
+        <ScrollView Grid.Row="2">
+            <Border Style="{StaticResource GroupStyle}">
+                <VerticalStackLayout Padding="{StaticResource SettingsPadding}" Spacing="16">
+                    <Label FontAttributes="Bold" Text="{Binding ThemeLabel}" />
+                    <Picker
+                        ItemDisplayBinding="{Binding DisplayName, x:DataType=vm:ThemeOption}"
+                        ItemsSource="{Binding Themes}"
+                        SemanticProperties.Description="{Binding ThemeLabel}"
+                        SelectedItem="{Binding SelectedTheme}" />
+                    <Label FontAttributes="Bold" Text="{Binding LanguageLabel}" />
+                    <Picker
+                        ItemDisplayBinding="{Binding DisplayName, x:DataType=vm:LanguageOption}"
+                        ItemsSource="{Binding Languages}"
+                        SemanticProperties.Description="{Binding LanguageLabel}"
+                        SelectedItem="{Binding SelectedLanguage}" />
+                    <Label FontAttributes="Bold" Text="{Binding PresetLabel}" />
+                    <Picker
+                        ItemDisplayBinding="{Binding DisplayName, x:DataType=vm:PresetOption}"
+                        ItemsSource="{Binding Presets}"
+                        SemanticProperties.Description="{Binding PresetLabel}"
+                        SelectedItem="{Binding SelectedPreset}" />
+                    <VerticalStackLayout IsVisible="False" Spacing="8">
+                        <VerticalStackLayout.Triggers>
+                            <DataTrigger
+                                Binding="{Binding SelectedPreset.Preset}"
+                                TargetType="VerticalStackLayout"
+                                Value="{x:Static enums:PresencePreset.Custom}">
+                                <Setter Property="IsVisible" Value="True" />
+                            </DataTrigger>
+                        </VerticalStackLayout.Triggers>
+                        <Label Text="{Binding TemplateFirstLineLabel}" />
+                        <Border Style="{StaticResource FieldStyle}">
+                            <Entry
+                                MaxLength="{x:Static constants:PresenceConstants.MaxTemplateLength}"
+                                SemanticProperties.Description="{Binding TemplateFirstLineLabel}"
+                                Text="{Binding DetailsTemplate}" />
+                        </Border>
+                        <Label Text="{Binding TemplateSecondLineLabel}" />
+                        <Border Style="{StaticResource FieldStyle}">
+                            <Entry
+                                MaxLength="{x:Static constants:PresenceConstants.MaxTemplateLength}"
+                                SemanticProperties.Description="{Binding TemplateSecondLineLabel}"
+                                Text="{Binding StateTemplate}" />
+                        </Border>
+                        <Label Text="{Binding TemplateHoverLabel}" />
+                        <Border Style="{StaticResource FieldStyle}">
+                            <Entry
+                                MaxLength="{x:Static constants:PresenceConstants.MaxTemplateLength}"
+                                SemanticProperties.Description="{Binding TemplateHoverLabel}"
+                                Text="{Binding HoverTemplate}" />
+                        </Border>
+                        <Label Text="{Binding PlaceholdersLabel}" />
+                        <VerticalStackLayout BindableLayout.ItemsSource="{Binding Placeholders}" Spacing="4">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="vm:PlaceholderOption">
+                                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                                        <HorizontalStackLayout Spacing="4">
+                                            <Label Style="{StaticResource SecondaryLabel}" Text="{Binding Name}" />
+                                            <Label
+                                                IsVisible="{Binding IsPrivate}"
+                                                Style="{StaticResource SecondaryLabel}"
+                                                Text="{StaticResource PrivateMarker}" />
+                                        </HorizontalStackLayout>
+                                        <Label
+                                            Grid.Column="1"
+                                            LineBreakMode="WordWrap"
+                                            Style="{StaticResource SecondaryLabel}"
+                                            Text="{Binding Description}" />
+                                    </Grid>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </VerticalStackLayout>
+                        <Label Style="{StaticResource SecondaryLabel}">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{StaticResource PrivateMarker}" />
+                                    <Span Text=" " />
+                                    <Span Text="{Binding PrivateHint}" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Spacing="4">
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                            <!-- WinUI gives a check box a minimum width of 120 for its own content, which MAUI doesn't use. -->
+                            <CheckBox
+                                IsChecked="{Binding ShowStoreButton}"
+                                MinimumWidthRequest="0"
+                                SemanticProperties.Description="{Binding ShowStoreButtonLabel}"
+                                VerticalOptions="Center"
+                                WidthRequest="{StaticResource CheckBoxWidth}" />
+                            <Label
+                                Grid.Column="1"
+                                LineBreakMode="WordWrap"
+                                Text="{Binding ShowStoreButtonLabel}"
+                                VerticalOptions="Center" />
+                        </Grid>
+                        <Label Style="{StaticResource SecondaryLabel}" Text="{Binding StoreButtonHint}" />
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+        </ScrollView>
+        <BoxView Grid.Row="3" Style="{StaticResource Separator}" />
+        <Grid
+            Grid.Row="4"
+            Padding="24,12"
+            ColumnDefinitions="*,Auto">
+            <HorizontalStackLayout Spacing="8">
+                <Button
+                    Command="{Binding OpenUrlCommand}"
+                    CommandParameter="{x:Static appconstants:AppConstants.RepositoryUrl}"
+                    SemanticProperties.Description="{x:Static appconstants:AppConstants.RepositoryButtonText}"
+                    SemanticProperties.Hint="{x:Static appconstants:AppConstants.RepositoryUrl}"
+                    Text="{x:Static appconstants:AppConstants.RepositoryButtonText}"
+                    ToolTipProperties.Text="{x:Static appconstants:AppConstants.RepositoryUrl}" />
+                <Button
+                    Command="{Binding OpenUrlCommand}"
+                    CommandParameter="{x:Static appconstants:AppConstants.ModIoUrl}"
+                    SemanticProperties.Description="{x:Static appconstants:AppConstants.ModIoButtonText}"
+                    SemanticProperties.Hint="{x:Static appconstants:AppConstants.ModIoUrl}"
+                    Text="{x:Static appconstants:AppConstants.ModIoButtonText}"
+                    ToolTipProperties.Text="{x:Static appconstants:AppConstants.ModIoUrl}" />
+            </HorizontalStackLayout>
+            <Button
+                Grid.Column="1"
+                Command="{Binding ExitCommand}"
+                SemanticProperties.Description="{Binding ExitText}"
+                Text="{Binding ExitText}" />
+        </Grid>
+    </Grid>
+</ContentPage>

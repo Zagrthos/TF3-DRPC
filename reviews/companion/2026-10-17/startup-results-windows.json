@@ -1,0 +1,30 @@
+[
+  {
+    "scenario": "Intact",
+    "processAlive": true,
+    "visibleWindow": false,
+    "trayCreated": true,
+    "trayFailureLogged": false
+  },
+  {
+    "scenario": "MissingIcon",
+    "processAlive": true,
+    "visibleWindow": true,
+    "trayCreated": false,
+    "trayFailureLogged": true
+  },
+  {
+    "scenario": "CorruptIcon",
+    "processAlive": true,
+    "visibleWindow": true,
+    "trayCreated": false,
+    "trayFailureLogged": true
+  },
+  {
+    "scenario": "LockedIcon",
+    "processAlive": true,
+    "visibleWindow": true,
+    "trayCreated": false,
+    "trayFailureLogged": true
+  }
+]

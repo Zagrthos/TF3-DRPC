@@ -1,0 +1,15 @@
+{
+  "name": "Discord Rich Presence",
+  "summary": "PC ONLY. NEEDS THE TF3-DRPC COMPANION APP. Shows your game in your Discord status.",
+  "description": "PC ONLY (Windows and macOS). NOT FOR PS5 OR XBOX.\nNEEDS THE TF3-DRPC COMPANION APP: github.com/Zagrthos/TF3-DRPC\n\nThis mod does nothing you can see on its own. It only writes your game's state to the game's log file. The TF3-DRPC companion app, a separate small program on your computer, reads it and shows it in your Discord status. Without the companion app and the Discord desktop app running, nothing changes, in the game or in Discord. That is expected and not a bug.\n\nWHAT DISCORD SHOWS\nYour company's rank, the in-game date, the game mode, whether the game is paused, and how long you've been playing.\n\nHOW TO USE IT\n1. Subscribe to this mod.\n2. Turn it on for each savegame: Load Game, the gear button next to the savegame, Mods tab, Activate. Then save once.\n3. Download the companion app from the Releases page at github.com/Zagrthos/TF3-DRPC, extract it and start it.\n4. Have the Discord desktop app running and logged in.\n\nWHY NOT ON CONSOLES\nPS5 and Xbox can't run the companion app, so the mod has no effect there.\n\nSAFE FOR YOUR SAVEGAME\nThe mod changes nothing in the simulation, keeps no data of its own in your savegame and can be removed at any time. Achievements stay available.\n\nPROBLEMS?\nThe troubleshooting table is at github.com/Zagrthos/TF3-DRPC. If that doesn't help, please open an issue there; it asks for the logs needed to find the cause.",
+  "authors": [
+    {
+      "name": "Zagrthos",
+      "role": "CREATOR"
+    }
+  ],
+  "tags": [
+    "Script Mod"
+  ],
+  "url": "https://github.com/Zagrthos/TF3-DRPC"
+}

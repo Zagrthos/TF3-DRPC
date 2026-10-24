@@ -1,0 +1,136 @@
+{
+  "sdk": "11.0.100-rc.2.26504.105",
+  "workload": "11.0.100-rc.2.26509.2",
+  "commands": [
+    {
+      "name": "sdk-version",
+      "arguments": [
+        "--version"
+      ],
+      "exitCode": 0,
+      "milliseconds": 1050.4821,
+      "log": "artifacts/sdk-version.log"
+    },
+    {
+      "name": "core-tests-final",
+      "arguments": [
+        "test",
+        "--project",
+        "Tf3Drpc.Core.Tests/Tf3Drpc.Core.Tests.csproj",
+        "-bl:<repo>\\reviews\\companion\\2026-10-17\\artifacts\\tests-{}.binlog"
+      ],
+      "exitCode": 0,
+      "milliseconds": 4056.4564,
+      "log": "artifacts/core-tests-final.log"
+    },
+    {
+      "name": "debug-unused-usings",
+      "arguments": [
+        "build",
+        "TF3-DRPC.slnx",
+        "-c",
+        "Debug",
+        "-bl:<repo>\\reviews\\companion\\2026-10-17\\artifacts\\debug-unused-{}.binlog"
+      ],
+      "exitCode": 0,
+      "milliseconds": 16165.820000000002,
+      "log": "artifacts/debug-unused-usings.log"
+    },
+    {
+      "name": "release-unused-usings",
+      "arguments": [
+        "build",
+        "TF3-DRPC.slnx",
+        "-c",
+        "Release",
+        "-bl:<repo>\\reviews\\companion\\2026-10-17\\artifacts\\release-unused-{}.binlog"
+      ],
+      "exitCode": 0,
+      "milliseconds": 8096.506200000001,
+      "log": "artifacts/release-unused-usings.log"
+    }
+  ],
+  "sourceFilesChecked": 170,
+  "changedCompanionFiles": [],
+  "temporaryAnalyzerConfigRemoved": true,
+  "existingTests": {
+    "passed": 538,
+    "failed": 0,
+    "skipped": 1,
+    "total": 539,
+    "skippedReason": "Live Discord requires explicit enablement"
+  },
+  "debug": {
+    "warnings": 0,
+    "errors": 0,
+    "unusedUsingSeverity": "warning"
+  },
+  "release": {
+    "warnings": 0,
+    "errors": 0,
+    "unusedUsingSeverity": "warning"
+  },
+  "publish": {
+    "exitCode": 0,
+    "command": "dotnet publish Tf3Drpc.App/Tf3Drpc.App.csproj -c Release -r win-x64 -bl:../reviews/companion/2026-10-17/artifacts/publish-{}.binlog",
+    "bytes": 86490866,
+    "exeBytes": 25717248,
+    "exeSha256": "c0297e297ec1dd5881dc5b8f0ec64ffc6932fbb836a5bfab6c2a752519de6df0",
+    "pdbFiles": [],
+    "germanStartingTextOccurrences": 1,
+    "knownUpstreamWarning": "IL2070 in Microsoft.Maui.Controls MauiItemsView.DragDrop.cs",
+    "informationalILCMessages": "Excluded unused WebView2 paths"
+  },
+  "testInventory": {
+    "methods": 319,
+    "fixtureFieldDeclarations": 56,
+    "methodsWithoutDirectAssertions": 0
+  },
+  "resourceMaps": {
+    "files": 13,
+    "keysPerFile": 44,
+    "parityProblems": 0
+  },
+  "findings": {
+    "total": 12,
+    "P0": 0,
+    "P1": 0,
+    "P2": 8,
+    "P3": 4
+  },
+  "limits": [
+    "No live game/Discord end-to-end run",
+    "No macOS or Windows 10 run",
+    "No Narrator speech capture",
+    "No full Process Monitor trace",
+    "No native-speaker translation review"
+  ],
+  "preservedUnrelatedWork": "reviews/mod/2026-10-17 was not modified by this review",
+  "harness": {
+    "command": "dotnet run --project ReviewHarness.csproj -bl:../artifacts/final-harness-{}.binlog",
+    "exitCode": 0,
+    "cases": 13,
+    "reproducedCases": 8,
+    "controls": 3,
+    "clearedProbes": 2,
+    "failed": 0,
+    "log": "artifacts/harness-final.log",
+    "compilerWarnings": 0
+  },
+  "nativeChecks": {
+    "R07": true,
+    "R08": true,
+    "R10": true,
+    "R12": true,
+    "tooltipsVerified": 6,
+    "iconStartupScenariosPassed": 4,
+    "secondInstanceExitCode": 0,
+    "nativeWindowExitCompleted": true
+  },
+  "reviewIntegrity": {
+    "allFindingsHaveExecutedReproductions": true,
+    "reportLocalLinksResolve": true,
+    "reportedSourceLineRangesExist": true,
+    "workingTreeCompanionChanges": []
+  }
+}

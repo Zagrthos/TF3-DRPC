@@ -1,0 +1,341 @@
+{
+  "scenario": "Tooltips",
+  "initialInputs": [
+    {
+      "rect": {
+        "y": 350,
+        "width": 585.3,
+        "offscreen": false,
+        "height": 40,
+        "x": 60.7
+      },
+      "name": "",
+      "type": "ControlType.ComboBox",
+      "labelledBy": null
+    },
+    {
+      "rect": {
+        "y": 432.7,
+        "width": 585.3,
+        "offscreen": false,
+        "height": 40,
+        "x": 60.7
+      },
+      "name": "",
+      "type": "ControlType.ComboBox",
+      "labelledBy": null
+    },
+    {
+      "rect": {
+        "y": 511.3,
+        "width": 577.3,
+        "offscreen": false,
+        "height": 32.7,
+        "x": 64.7
+      },
+      "name": "",
+      "type": "ControlType.Edit",
+      "labelledBy": null
+    },
+    {
+      "rect": {
+        "y": 578.7,
+        "width": 577.3,
+        "offscreen": false,
+        "height": 32.7,
+        "x": 64.7
+      },
+      "name": "",
+      "type": "ControlType.Edit",
+      "labelledBy": null
+    },
+    {
+      "rect": {
+        "y": 645.3,
+        "width": 577.3,
+        "offscreen": false,
+        "height": 32.7,
+        "x": 64.7
+      },
+      "name": "",
+      "type": "ControlType.Edit",
+      "labelledBy": null
+    },
+    {
+      "rect": {
+        "y": null,
+        "width": null,
+        "offscreen": true,
+        "height": null,
+        "x": null
+      },
+      "name": "",
+      "type": "ControlType.CheckBox",
+      "labelledBy": null
+    }
+  ],
+  "buttonNames": [
+    "Minimize",
+    "Maximize",
+    "Close",
+    ""
+  ],
+  "exitButtonName": "",
+  "storageWarningVisible": false,
+  "normal": {
+    "exit": {
+      "y": 882,
+      "width": 46.7,
+      "offscreen": false,
+      "height": 32,
+      "x": 595.3
+    },
+    "window": {
+      "y": 33.3,
+      "width": 640,
+      "offscreen": false,
+      "height": 900,
+      "x": 33.3
+    }
+  },
+  "tooltips": [
+    {
+      "tooltips": [
+        {
+          "text": [
+            "Mechanic\nSeptember 1905"
+          ],
+          "name": "Mechanic\nSeptember 1905"
+        }
+      ],
+      "hitName": "PopupHost",
+      "targetY": 266.7,
+      "rect": {
+        "y": 250,
+        "width": 564.7,
+        "offscreen": false,
+        "height": 32.7,
+        "x": 71.3
+      },
+      "cursorY": 266.7,
+      "cursorX": 353.3,
+      "helpText": "",
+      "item": "Career",
+      "targetX": 353.3
+    },
+    {
+      "tooltips": [
+        {
+          "text": [
+            "Lines 44 · Vehicles 118\nStations 74 · 1905"
+          ],
+          "name": "Lines 44 · Vehicles 118\nStations 74 · 1905"
+        }
+      ],
+      "hitName": "PopupHost",
+      "targetY": 303.3,
+      "rect": {
+        "y": 286.7,
+        "width": 564.7,
+        "offscreen": false,
+        "height": 33.3,
+        "x": 71.3
+      },
+      "cursorY": 303.3,
+      "cursorX": 353.3,
+      "helpText": "",
+      "item": "Network",
+      "targetX": 353.3
+    },
+    {
+      "tooltips": [
+        {
+          "text": [
+            "Year 1905 · Tropical\nMechanic"
+          ],
+          "name": "Year 1905 · Tropical\nMechanic"
+        }
+      ],
+      "hitName": "PopupHost",
+      "targetY": 340.7,
+      "rect": {
+        "y": 324,
+        "width": 564.7,
+        "offscreen": false,
+        "height": 33.3,
+        "x": 71.3
+      },
+      "cursorY": 340.7,
+      "cursorX": 353.3,
+      "helpText": "",
+      "item": "Era",
+      "targetX": 353.3
+    },
+    {
+      "tooltips": [
+        {
+          "text": [
+            "Mechanic\nSeptember 1905\n\nLines 44 · Vehicles 118\nStations 74 · 1905\n\nYear 1905 · Tropical\nMechanic"
+          ],
+          "name": "Mechanic\nSeptember 1905\n\nLines 44 · Vehicles 118\nStations 74 · 1905\n\nYear 1905 · Tropical\nMechanic"
+        }
+      ],
+      "hitName": "PopupHost",
+      "targetY": 378.7,
+      "rect": {
+        "y": 362,
+        "width": 564.7,
+        "offscreen": false,
+        "height": 33.3,
+        "x": 71.3
+      },
+      "cursorY": 378.7,
+      "cursorX": 353.3,
+      "helpText": "",
+      "item": "Alternating",
+      "targetX": 353.3
+    },
+    {
+      "tooltips": [
+        {
+          "text": [
+            "In game · 1905"
+          ],
+          "name": "In game · 1905"
+        }
+      ],
+      "hitName": "PopupHost",
+      "targetY": 416,
+      "rect": {
+        "y": 399.3,
+        "width": 564.7,
+        "offscreen": false,
+        "height": 33.3,
+        "x": 71.3
+      },
+      "cursorY": 416,
+      "cursorX": 353.3,
+      "helpText": "",
+      "item": "Minimal",
+      "targetX": 353.3
+    },
+    {
+      "tooltips": [
+        {
+          "text": [
+            "Mechanic\nSeptember 1905"
+          ],
+          "name": "Mechanic\nSeptember 1905"
+        }
+      ],
+      "hitName": "PopupHost",
+      "targetY": 453.3,
+      "rect": {
+        "y": 436.7,
+        "width": 564.7,
+        "offscreen": false,
+        "height": 33.3,
+        "x": 71.3
+      },
+      "cursorY": 453.3,
+      "cursorX": 353.3,
+      "helpText": "",
+      "item": "Custom",
+      "targetX": 353.3
+    }
+  ],
+  "presetAfterTooltipCheck": "custom",
+  "longTemplatesAtMinimum": {
+    "exit": {
+      "y": null,
+      "width": null,
+      "offscreen": true,
+      "height": null,
+      "x": null
+    },
+    "scrolls": [
+      {
+        "y": 33.3,
+        "width": 385.3,
+        "offscreen": false,
+        "height": 48,
+        "x": 40.7
+      },
+      {
+        "y": 33.3,
+        "width": 144,
+        "offscreen": false,
+        "height": 48,
+        "x": 282
+      },
+      {
+        "y": 33.3,
+        "width": 385.3,
+        "offscreen": false,
+        "height": 492.7,
+        "x": 40.7
+      },
+      {
+        "y": 33.3,
+        "width": 385.3,
+        "offscreen": false,
+        "height": 492.7,
+        "x": 40.7
+      },
+      {
+        "y": 414.7,
+        "width": 337.3,
+        "offscreen": false,
+        "height": 114,
+        "x": 64.7
+      }
+    ],
+    "window": {
+      "y": 33.3,
+      "width": 400,
+      "offscreen": false,
+      "height": 500,
+      "x": 33.3
+    }
+  },
+  "longTextBlocks": [
+    {
+      "rect": {
+        "y": 173.3,
+        "width": 337.3,
+        "offscreen": false,
+        "height": 112,
+        "x": 64.7
+      },
+      "nameLength": 128
+    },
+    {
+      "rect": {
+        "y": 289.3,
+        "width": 337.3,
+        "offscreen": false,
+        "height": 112,
+        "x": 64.7
+      },
+      "nameLength": 128
+    },
+    {
+      "rect": {
+        "y": 435.3,
+        "width": 337.3,
+        "offscreen": false,
+        "height": 90.7,
+        "x": 64.7
+      },
+      "nameLength": 128
+    }
+  ],
+  "windowExitCompleted": true,
+  "savedTemplateLength": 150,
+  "nativeExe": {
+    "bytes": 25717248,
+    "secondInstanceExitCode": 0
+  },
+  "R07": true,
+  "R08": true
+}

@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Project-Specific Build Properties -->
+  <PropertyGroup>
+    <IsAotCompatible>true</IsAotCompatible>
+    <TargetFramework>net11.0</TargetFramework>
+  </PropertyGroup>
+
+  <!-- Test access -->
+  <ItemGroup>
+    <InternalsVisibleTo Include="Tf3Drpc.Core.Tests" />
+  </ItemGroup>
+
+  <!-- Own texts, strongly typed at build time -->
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\Texts.resx">
+      <Generator>MSBuild:Compile</Generator>
+      <StronglyTypedClassName>Texts</StronglyTypedClassName>
+      <StronglyTypedFileName>$(IntermediateOutputPath)Texts.Designer.cs</StronglyTypedFileName>
+      <StronglyTypedLanguage>CSharp</StronglyTypedLanguage>
+      <StronglyTypedNamespace>Tf3Drpc.Core.Resources</StronglyTypedNamespace>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

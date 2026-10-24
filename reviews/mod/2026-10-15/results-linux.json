@@ -1,0 +1,62 @@
+[
+  {
+    "test": "baseline",
+    "result": "PASS",
+    "detail": "46 fields exactly match first real log sample"
+  },
+  {
+    "test": "scheduling",
+    "result": "PASS",
+    "detail": "10-second cadence; no duplicates; recovery after clock moves backwards"
+  },
+  {
+    "test": "strings",
+    "result": "PASS",
+    "detail": "ASCII including NUL/control bytes, Unicode and combining marks round-trip"
+  },
+  {
+    "test": "nonfinite",
+    "result": "PASS",
+    "detail": "NaN and both infinities omitted without losing rank/date"
+  },
+  {
+    "test": "modes_and_missing_values",
+    "result": "PASS",
+    "detail": "normal/sandbox/tycoon/editor flags; infinite money; missing account/progression"
+  },
+  {
+    "test": "API_exceptions_and_recovery",
+    "result": "PASS",
+    "detail": "14 API exceptions contained; warnings deduplicated; clock failure/recovery"
+  },
+  {
+    "test": "fractional_and_exponential_numbers",
+    "result": "PASS",
+    "detail": "sample fractional speed and 200 deterministic fractional/exponential money values"
+  },
+  {
+    "test": "metadata_and_hook",
+    "result": "PASS",
+    "detail": "metadata constraints, UTF-8/no BOM, lowercase filenames, valid hook reference"
+  },
+  {
+    "test": "F3_grouped_reads",
+    "result": "REPRODUCED",
+    "detail": "save-name getter fails -> loses isMapEditor; base config fails -> loses isTycoon; unused rank-name helper fails -> loses experience; unused rank-name module fails to load -> loses rank, experience; WORLD component absent -> loses climate, economy; calendar conversion fails -> loses timeOfDaySec; one native company field fails -> loses company_roadVehicles, company_numberOfLines, company_totalStations"
+  },
+  {
+    "test": "F1_windows_integer_overflow",
+    "result": "SKIP",
+    "detail": "not applicable on this Linux Lua build; run on Windows"
+  },
+  {
+    "test": "F2_numeric_locale",
+    "result": "SKIP",
+    "detail": "locale unavailable; run on Windows"
+  },
+  {
+    "test": "F4_ctype_locale",
+    "result": "SKIP",
+    "detail": "locale unavailable; run on Windows"
+  }
+]

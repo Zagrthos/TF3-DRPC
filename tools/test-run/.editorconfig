@@ -1,0 +1,5 @@
+# Adds to the shared .editorconfig at the repository root for this folder only.
+
+# swift-format misreads CRLF (it moves comments and blank lines); .gitattributes keeps Swift LF too.
+[*.swift]
+end_of_line = lf

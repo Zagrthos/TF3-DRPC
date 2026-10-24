@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="Tf3Drpc.App/Tf3Drpc.App.csproj" />
+  <Project Path="Tf3Drpc.Core/Tf3Drpc.Core.csproj" />
+  <Project Path="Tf3Drpc.Core.Tests/Tf3Drpc.Core.Tests.csproj" />
+</Solution>

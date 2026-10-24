@@ -1,0 +1,24 @@
+diff --git a/companion/Tf3Drpc.App/ViewModels/SettingsViewModel.cs b/companion/Tf3Drpc.App/ViewModels/SettingsViewModel.cs
+--- a/companion/Tf3Drpc.App/ViewModels/SettingsViewModel.cs
++++ b/companion/Tf3Drpc.App/ViewModels/SettingsViewModel.cs
+@@ -196,9 +196,18 @@ internal sealed partial class SettingsViewModel : ObservableObject, IRecipient<A
+     private Task ExitAsync()
+         => _lifecycle.ExitAsync();
+ 
+-    [RelayCommand]
++    [RelayCommand(AllowConcurrentExecutions = true)]
+     private static Task<bool> OpenUrlAsync(string url)
+-        => Launcher.Default.OpenAsync(new Uri(url));
++        => SlowLaunchAsync(url);
++
++    // Review variant: stands in for a Launcher call that takes 3 s, to make the command's running state visible.
++    private static async Task<bool> SlowLaunchAsync(string url)
++    {
++        _ = url;
++        await Task.Delay(TimeSpan.FromSeconds(3));
++
++        return true;
++    }
+ 
+     #endregion Commands
+ 

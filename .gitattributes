@@ -1,0 +1,9 @@
+# Normalise line endings in the repository; .editorconfig gives CRLF in the working tree.
+* text=auto
+
+# Copies of the game log, used as test input. Keep them byte for byte (CRLF, UTF-8).
+# This comes after the rule above because the last matching line wins.
+docs/log-samples/*.log -text
+
+# swift-format misreads CRLF (it moves comments and blank lines), so Swift sources stay LF.
+*.swift text eol=lf

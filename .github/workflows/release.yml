@@ -1,0 +1,145 @@
+# Publishes a GitHub release when a version tag (v0.1.0) is pushed: builds and tests on Windows
+# and macOS with tools/build-release.ps1, then creates the release with both zips, their SHA-256
+# sums and the version's section of CHANGELOG.md. The mod is uploaded from the game's Mod Hub;
+# only the game validates and prepares it for consoles.
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+jobs:
+  check:
+    name: Check version and changelog
+    runs-on: ubuntu-slim
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      # The whole history, so the check can see whether the tagged commit is on main.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      # Expressions reach the scripts only through env, so a tag name can't become code.
+      - name: Match the tag with the app version and the changelog
+        id: version
+        shell: pwsh
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          $props = [xml](Get-Content companion/Directory.Build.props -Raw)
+          $version = @($props.Project.PropertyGroup.VersionPrefix | Where-Object { $_ })[0]
+          if ($env:TAG -ne "v$version") { throw "Tag $env:TAG doesn't match VersionPrefix $version in companion/Directory.Build.props." }
+          git merge-base --is-ancestor $env:GITHUB_SHA origin/main
+          if ($LASTEXITCODE -ne 0) { throw "Tag $env:TAG is on a commit that isn't on main; merge first, then tag main." }
+          $lines = Get-Content CHANGELOG.md
+          $start = [Array]::FindIndex([string[]]$lines, [Predicate[string]] { param($l) $l -like "## $version *" })
+          if ($start -lt 0) { throw "CHANGELOG.md has no section '## $version ...'." }
+          if ($lines[$start] -notmatch '\d{4}-\d{2}-\d{2}\s*$') { throw "CHANGELOG.md's heading '$($lines[$start])' doesn't end with the release date (YYYY-MM-DD)." }
+          $end = [Array]::FindIndex([string[]]$lines, $start + 1, [Predicate[string]] { param($l) $l -like '## *' })
+          if ($end -lt 0) { $end = $lines.Count }
+          $section = @($lines | Select-Object -Skip ($start + 1) -First ($end - $start - 1))
+          if (-not ($section -match '\S')) { throw "CHANGELOG.md's section for $version is empty." }
+          # The release page and mod.io can't resolve a relative link.
+          $relative = @($section | Where-Object { $_ -match '\]\((?!https?://|#)' })
+          if ($relative.Count -gt 0) { throw "CHANGELOG.md's section for $version has a relative link; use an absolute URL: $($relative[0].Trim())" }
+          "version=$version" >> $env:GITHUB_OUTPUT
+
+  build:
+    name: ${{ matrix.name }}
+    needs: check
+    strategy:
+      matrix:
+        include:
+          - name: Windows
+            os: windows-2025
+            workload: maui-windows
+          # The RC2 Mac Catalyst SDK needs Xcode 27, which only the xcode-27 image has (a preview image).
+          - name: macOS
+            os: xcode-27
+            workload: maui-maccatalyst
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      # .editorconfig wants CRLF; without this, macOS checks out LF and the analysers warn on every line.
+      - name: Check out with CRLF line endings
+        run: git config --global core.autocrlf true
+
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Select Xcode 27.0
+        if: runner.os == 'macOS'
+        run: sudo xcode-select -s /Applications/Xcode_27.0.app
+
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: companion/global.json
+
+      - name: Install the MAUI workload
+        working-directory: companion
+        run: dotnet workload install ${{ matrix.workload }}
+
+      - name: Test, publish and zip
+        run: ./tools/build-release.ps1
+
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: TF3-DRPC-${{ matrix.name }}
+          path: artifacts/*.zip
+          if-no-files-found: error
+
+  release:
+    name: Publish the release
+    needs: [check, build]
+    runs-on: ubuntu-slim
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          pattern: TF3-DRPC-*
+          path: dist
+          merge-multiple: true
+
+      # The check job has made sure the section exists, is dated and not empty.
+      - name: Write the release notes
+        shell: pwsh
+        env:
+          VERSION: ${{ needs.check.outputs.version }}
+        run: |
+          $lines = Get-Content CHANGELOG.md
+          $start = [Array]::FindIndex([string[]]$lines, [Predicate[string]] { param($l) $l -like "## $env:VERSION *" })
+          $end = [Array]::FindIndex([string[]]$lines, $start + 1, [Predicate[string]] { param($l) $l -like '## *' })
+          if ($end -lt 0) { $end = $lines.Count }
+          $notes = @($lines | Select-Object -Skip ($start + 1) -First ($end - $start - 1))
+          $sums = Get-ChildItem dist/*.zip | Sort-Object Name | ForEach-Object { '{0}  {1}' -f (Get-FileHash $_ -Algorithm SHA256).Hash.ToLowerInvariant(), $_.Name }
+          $sums | Set-Content dist/SHA256SUMS.txt
+          ($notes + '' + '**SHA-256**' + '' + '```' + $sums + '```') | Set-Content release-notes.md
+
+      - name: Create the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+          VERSION: ${{ needs.check.outputs.version }}
+        run: >
+          gh release create "$TAG" dist/*.zip dist/SHA256SUMS.txt
+          --repo "$GITHUB_REPOSITORY"
+          --title "TF3-DRPC $VERSION"
+          --notes-file release-notes.md
+          --verify-tag

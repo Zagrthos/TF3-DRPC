@@ -1,0 +1,187 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Build stuff -->
+  <PropertyGroup>
+    <AssemblyName>TF3-DRPC</AssemblyName>
+    <OutputType>Exe</OutputType>
+    <PublishAot>true</PublishAot>
+    <RootNamespace>Tf3Drpc.App</RootNamespace>
+    <SelfContained>true</SelfContained>
+    <TargetFramework Condition="$([MSBuild]::IsOSPlatform('windows'))">net11.0-windows10.0.19041.0</TargetFramework>
+    <TargetFramework Condition="$([MSBuild]::IsOSPlatform('osx'))">net11.0-maccatalyst</TargetFramework>
+  </PropertyGroup>
+
+  <!-- MAUI -->
+  <PropertyGroup>
+    <ApplicationDisplayVersion>$(VersionPrefix)</ApplicationDisplayVersion>
+    <ApplicationId>com.zagrthos.tf3drpc</ApplicationId>
+    <ApplicationTitle>TF3-DRPC</ApplicationTitle>
+    <ApplicationVersion>1</ApplicationVersion>
+    <MauiEnableXamlCBindingWithSourceCompilation>true</MauiEnableXamlCBindingWithSourceCompilation> <!-- Compiled bindings in code too -->
+    <MauiXamlInflator>SourceGen</MauiXamlInflator>
+    <SingleProject>true</SingleProject>
+    <UseMaui>true</UseMaui>
+    <WarningsAsErrors>$(WarningsAsErrors);XC0022;XC0023;XC0024;XC0025</WarningsAsErrors> <!-- Every binding must be compiled -->
+  </PropertyGroup>
+
+  <!-- Windows Platform Needings -->
+  <PropertyGroup Condition="'$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == 'windows'">
+    <SupportedOSPlatformVersion>10.0.19041.0</SupportedOSPlatformVersion>
+    <TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
+    <!-- .NET 11 RC2: the optimised AOT publish skips reference resolution and the WinUI XAML compiler fails with WMC1007.
+         Windows only: on Mac Catalyst the full build first fills the .app with the CoreCLR runtime and a 70 MB R2R image. -->
+    <UseOptimizedPublish>false</UseOptimizedPublish>
+    <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
+    <WindowsPackageType>None</WindowsPackageType>
+  </PropertyGroup>
+
+  <!-- Mac Catalyst Platform Needings -->
+  <PropertyGroup Condition="'$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == 'maccatalyst'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks> <!-- [LibraryImport] for the Objective-C runtime -->
+    <RuntimeIdentifier>maccatalyst-arm64</RuntimeIdentifier>
+    <SupportedOSPlatformVersion>26.0</SupportedOSPlatformVersion>
+    <ValidateXcodeVersion>false</ValidateXcodeVersion> <!-- .NET 11 RC2: the Mac Catalyst SDK requires Xcode 27.0 and refuses 27.1, which builds and runs it; remove at GA -->
+  </PropertyGroup>
+
+  <!-- Security options of the Native AOT executable -->
+  <PropertyGroup Condition="'$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == 'windows'">
+    <CetCompat>true</CetCompat> <!-- https://learn.microsoft.com/dotnet/core/deploying/native-aot/security#control-flow-enforcement-technology-shadow-stack-net-9 -->
+    <ControlFlowGuard>Guard</ControlFlowGuard> <!-- https://learn.microsoft.com/dotnet/core/deploying/native-aot/security#control-flow-guard -->
+    <HighEntropyVA>true</HighEntropyVA> <!-- https://learn.microsoft.com/dotnet/csharp/language-reference/compiler-options/security#highentropyva -->
+  </PropertyGroup>
+
+  <!-- C#/WinRT size saving options -->
+  <PropertyGroup Condition="'$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == 'windows'">
+    <!-- https://github.com/microsoft/CsWinRT/blob/master/nuget/readme.md#advanced-size-saving-options -->
+    <CsWinRTEnableDynamicObjectsSupport>false</CsWinRTEnableDynamicObjectsSupport>
+    <CsWinRTLoadComponentsInDefaultALC>true</CsWinRTLoadComponentsInDefaultALC>
+    <CsWinRTUseExceptionResourceKeys>true</CsWinRTUseExceptionResourceKeys>
+  </PropertyGroup>
+
+  <!-- AOT Compilation w/ Trimming options -->
+  <PropertyGroup Condition="'$(Optimize)'=='true' AND '$(PublishAot)'=='true'">
+    <AutoreleasePoolSupport Condition="'$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == 'windows'">false</AutoreleasePoolSupport> <!-- Apple platforms need the pools on .NET threads; the Mac Catalyst SDK default is true -->
+    <EnableUnsafeBinaryFormatterSerialization>false</EnableUnsafeBinaryFormatterSerialization>
+    <EnableUnsafeUTF7Encoding>false</EnableUnsafeUTF7Encoding>
+    <EventSourceSupport>false</EventSourceSupport>
+    <HttpActivityPropagationSupport>false</HttpActivityPropagationSupport>
+    <InvariantGlobalization>false</InvariantGlobalization> <!-- The month and year of the presence need the culture data -->
+    <MetadataUpdaterSupport>false</MetadataUpdaterSupport>
+    <MetricsSupport>false</MetricsSupport>
+    <OptimizationPreference>Size</OptimizationPreference>
+    <StackTraceSupport>true</StackTraceSupport>
+    <TrimMode Condition="'$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == 'windows'">Full</TrimMode>
+    <UseSystemResourceKeys>false</UseSystemResourceKeys>
+  </PropertyGroup>
+
+  <!-- Content Files -->
+  <ItemGroup Condition="'$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == 'windows'">
+    <Content Include="Resources\Tray\tray.ico" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" Link="tray.ico" />
+  </ItemGroup>
+
+  <!-- Bundle Files and Info.plist Entries -->
+  <ItemGroup Condition="'$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == 'maccatalyst'">
+    <BundleResource Include="Resources\Tray\tray.png" LogicalName="tray.png" /> <!-- The menu bar icon: 36 pixels for 18 points -->
+    <AppManifestEntry Include="LSUIElement" Type="Boolean" Value="true" /> <!-- A menu bar app: no Dock icon and no app menu -->
+  </ItemGroup>
+
+  <!-- App Icon -->
+  <ItemGroup>
+    <MauiIcon Include="..\..\assets\discord\cover.png" Link="Resources\AppIcon\cover.png" />
+  </ItemGroup>
+
+  <!-- Shared Projects -->
+  <ItemGroup>
+    <ProjectReference Include="..\Tf3Drpc.Core\Tf3Drpc.Core.csproj" />
+  </ItemGroup>
+
+  <!-- NuGets -->
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Condition="'$(Configuration)'=='Debug'" />
+    <PackageReference Include="Microsoft.Maui.Controls" VersionOverride="$(MauiVersion)" />
+    <PackageReference Include="NReco.Logging.File" />
+  </ItemGroup>
+
+  <!-- Windows NuGets -->
+  <ItemGroup Condition="'$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == 'windows'">
+    <!-- Unused parts of MAUI and of the Windows App SDK meta package: web view, AI, machine learning and widgets add about 40 MB -->
+    <PackageReference Include="Microsoft.Web.WebView2">
+      <ExcludeAssets>all</ExcludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Windows.AI.MachineLearning">
+      <ExcludeAssets>all</ExcludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.WindowsAppSDK.AI">
+      <ExcludeAssets>all</ExcludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.WindowsAppSDK.ML">
+      <ExcludeAssets>all</ExcludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.WindowsAppSDK.Widgets">
+      <ExcludeAssets>all</ExcludeAssets>
+    </PackageReference>
+    <PackageReference Include="WinUIEx" />
+  </ItemGroup>
+
+  <!--
+    The Windows App SDK ships Microsoft.UI.Xaml.dll.mui for 119 cultures, which SatelliteResourceLanguages does not
+    filter. Only the files of our 13 languages are published.
+  -->
+  <Target Name="RemoveUnusedMuiFromPublish" Condition="'$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == 'windows'" BeforeTargets="ComputeFilesToPublish">
+    <PropertyGroup>
+      <_KeptMuiCultures>|de-de|en-us|es-es|fr-fr|it-it|ja-jp|ko-kr|nl-nl|pl-pl|pt-br|ru-ru|zh-cn|zh-tw|</_KeptMuiCultures>
+    </PropertyGroup>
+    <ItemGroup>
+      <_UnusedMui Include="@(ResolvedFileToPublish)" Condition="'%(Extension)' == '.mui' And !$(_KeptMuiCultures.Contains('|$([System.IO.Path]::GetFileName($([System.IO.Path]::GetDirectoryName('%(RelativePath)'))).ToLowerInvariant())|'))" />
+      <ResolvedFileToPublish Remove="@(_UnusedMui)" />
+    </ItemGroup>
+  </Target>
+
+  <!--
+    MAUI makes tile and logo images of the app icon for packaged apps. The unpackaged app takes its icon from the
+    generated .ico, so only the .ico stays in the output.
+  -->
+  <Target Name="RemoveWindowsTileImages" Condition="'$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == 'windows'" AfterTargets="_ResizetizeInjectPlatformItems">
+    <ItemGroup>
+      <_TileImage Include="@(_ResizetizerCollectedImages)" Condition="'%(Extension)' == '.png'" />
+      <ContentWithTargetPath Remove="@(_TileImage)" />
+    </ItemGroup>
+  </Target>
+
+  <!--
+    Native AOT can't load satellite assemblies at runtime; ILC compiles them in, but only takes those of
+    NuGet packages (AssetType "resources"). This adds the ones of our project references, such as the
+    translated texts of Tf3Drpc.Core.
+  -->
+  <Target Name="AddReferenceSatellitesToIlc" AfterTargets="_ComputeIlcCompileInputs" BeforeTargets="ComputeIlcCompileInputs">
+    <ItemGroup>
+      <IlcSatelliteAssembly Include="@(ReferenceSatellitePaths)" Exclude="@(IlcSatelliteAssembly)" />
+    </ItemGroup>
+  </Target>
+
+  <!--
+    The Windows App SDK adds UndockedRegFreeWinRT-AutoInitializer.cs from the NuGet cache to every self-contained
+    build. It is not our code, so its path is declared as generated code for the analysers. A global analyzer
+    config needs the absolute path, which differs per machine, so the file is written at build time.
+  -->
+  <Target Name="MarkWindowsAppSdkSourcesAsGenerated" Condition="'$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == 'windows'" AfterTargets="GenerateUndockedRegFreeWinRTCS" BeforeTargets="CoreCompile">
+    <ItemGroup>
+      <_WindowsAppSdkSource Include="@(Compile)" Condition="'%(Filename)%(Extension)' == 'UndockedRegFreeWinRT-AutoInitializer.cs'" />
+    </ItemGroup>
+    <PropertyGroup>
+      <_WindowsAppSdkSourcePath>@(_WindowsAppSdkSource->'%(FullPath)')</_WindowsAppSdkSourcePath>
+      <_WindowsAppSdkSourceIdentity>@(_WindowsAppSdkSource->'%(Identity)')</_WindowsAppSdkSourceIdentity>
+      <_WindowsAppSdkConfigPath>$(IntermediateOutputPath)WindowsAppSdk.globalconfig</_WindowsAppSdkConfigPath>
+    </PropertyGroup>
+    <WriteLinesToFile
+      Condition="'$(_WindowsAppSdkSourcePath)' != ''"
+      File="$(_WindowsAppSdkConfigPath)"
+      Lines="is_global = true;[$(_WindowsAppSdkSourceIdentity.Replace('%5C', '/'))];generated_code = true;dotnet_diagnostic.CA5392.severity = none;[$(_WindowsAppSdkSourcePath.Replace('%5C', '/'))];generated_code = true;dotnet_diagnostic.CA5392.severity = none"
+      Overwrite="true" />
+    <ItemGroup Condition="'$(_WindowsAppSdkSourcePath)' != ''">
+      <EditorConfigFiles Include="$(_WindowsAppSdkConfigPath)" />
+    </ItemGroup>
+  </Target>
+
+</Project>

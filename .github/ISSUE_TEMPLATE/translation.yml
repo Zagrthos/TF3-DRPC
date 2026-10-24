@@ -1,0 +1,37 @@
+name: Translation
+description: A wrong or awkward text in one of the app's languages.
+labels: [area-translations]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The app's own texts were machine-translated, so corrections from native speakers are very welcome. Texts that come from the game itself (ranks, months, labels like "Lines") can only be changed by the game's developers.
+  - type: dropdown
+    id: language
+    attributes:
+      label: Language
+      options:
+        - Deutsch
+        - Español
+        - Français
+        - Italiano
+        - 日本語
+        - 한국어
+        - Nederlands
+        - Polski
+        - Português (Brasil)
+        - Русский
+        - 简体中文
+        - 繁體中文
+        - English
+    validations:
+      required: true
+  - type: textarea
+    id: texts
+    attributes:
+      label: Texts to correct
+      description: For each text, where it appears, what it says now and what it should say.
+      placeholder: |
+        Settings window, theme picker: "..." → "..."
+    validations:
+      required: true
