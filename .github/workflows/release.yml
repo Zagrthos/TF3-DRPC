@@ -2,6 +2,12 @@
 # and macOS with tools/build-release.ps1, then creates the release with both zips, their SHA-256
 # sums and the version's section of CHANGELOG.md. The mod is uploaded from the game's Mod Hub;
 # only the game validates and prepares it for consoles.
+#
+# The repository has immutable releases on: once published, a release's tag and files can't be
+# changed or deleted, and its tag name can't be used again. So the release is built as a draft,
+# its files are compared with the built ones, and only then is it published; after that the
+# workflow checks GitHub's attestation of the release and of every file. A mistake found after
+# publishing needs a new version.
 name: Release
 
 on:
@@ -10,6 +16,11 @@ on:
 
 permissions:
   contents: read
+
+# Two runs for the same tag would race for the same draft.
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
 
 env:
   DOTNET_NOLOGO: true
@@ -52,6 +63,18 @@ jobs:
           $relative = @($section | Where-Object { $_ -match '\]\((?!https?://|#)' })
           if ($relative.Count -gt 0) { throw "CHANGELOG.md's section for $version has a relative link; use an absolute URL: $($relative[0].Trim())" }
           "version=$version" >> $env:GITHUB_OUTPUT
+
+      # A published release is immutable, so fail before the builds instead of after them. The
+      # tags endpoint doesn't return drafts; a draft left by a failed run is replaced later.
+      - name: Check that the version isn't released yet
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          if gh api "repos/$GITHUB_REPOSITORY/releases/tags/$TAG" --silent 2>/dev/null; then
+            echo "::error::$TAG is already released. A published release can't be changed and its tag can't be used again; raise VersionPrefix and tag the new version."
+            exit 1
+          fi
 
   build:
     name: ${{ matrix.name }}
@@ -106,6 +129,7 @@ jobs:
     runs-on: ubuntu-slim
     permissions:
       contents: write
+      attestations: read
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -132,14 +156,55 @@ jobs:
           $sums | Set-Content dist/SHA256SUMS.txt
           ($notes + '' + '**SHA-256**' + '' + '```' + $sums + '```') | Set-Content release-notes.md
 
-      - name: Create the release
+      # A draft is still mutable, so a draft left by a failed run is deleted (its tag stays) and
+      # built again; a published release stops the job.
+      - name: Create the release as a draft
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ github.ref_name }}
           VERSION: ${{ needs.check.outputs.version }}
-        run: >
-          gh release create "$TAG" dist/*.zip dist/SHA256SUMS.txt
-          --repo "$GITHUB_REPOSITORY"
-          --title "TF3-DRPC $VERSION"
-          --notes-file release-notes.md
-          --verify-tag
+        run: |
+          draft=$(gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json isDraft --jq .isDraft 2>/dev/null || true)
+          if [ "$draft" = "false" ]; then
+            echo "::error::$TAG is already released and can't be changed."
+            exit 1
+          fi
+          if [ "$draft" = "true" ]; then
+            gh release delete "$TAG" --repo "$GITHUB_REPOSITORY" --yes
+          fi
+          gh release create "$TAG" --repo "$GITHUB_REPOSITORY" --draft --verify-tag \
+            --title "TF3-DRPC $VERSION" --notes-file release-notes.md
+          gh release upload "$TAG" dist/*.zip dist/SHA256SUMS.txt --repo "$GITHUB_REPOSITORY"
+
+      # Publishing locks the files, so the draft must hold exactly the files built here.
+      - name: Compare the draft's files with the built ones
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          id=$(gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json databaseId --jq .databaseId)
+          gh api "repos/$GITHUB_REPOSITORY/releases/$id" --jq '.assets[] | "\(.digest) \(.name)"' | sort > uploaded.txt
+          (cd dist && sha256sum -- *.zip SHA256SUMS.txt) | awk '{ sub(/^\*/, "", $2); print "sha256:" $1 " " $2 }' | sort > expected.txt
+          diff expected.txt uploaded.txt
+
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: gh release edit "$TAG" --repo "$GITHUB_REPOSITORY" --draft=false
+
+      # GitHub signs an attestation of an immutable release (tag, commit and file digests); a
+      # release without one means release immutability is off in the repository's settings.
+      - name: Verify the release's attestation
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          if [ "$(gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json isImmutable --jq .isImmutable)" != "true" ]; then
+            echo "::error::$TAG was published but isn't immutable: turn on Settings → General → Releases → Enable release immutability, then release a new version."
+            exit 1
+          fi
+          gh release verify "$TAG" --repo "$GITHUB_REPOSITORY"
+          for file in dist/*.zip dist/SHA256SUMS.txt; do
+            gh release verify-asset "$TAG" "$file" --repo "$GITHUB_REPOSITORY"
+          done

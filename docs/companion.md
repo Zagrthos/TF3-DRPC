@@ -20,8 +20,9 @@ are in [README.md](README.md#decisions).
 No release has been published yet. `tools/build-release.ps1` builds the zip of the platform it
 runs on (`TF3-DRPC-<version>-windows-x64.zip`, `TF3-DRPC-<version>-macos-arm64.zip`) into
 `artifacts/`. CI runs the same script: a push to `main` keeps both zips as workflow
-artifacts, and a `v<VersionPrefix>` tag on `main` publishes them as a GitHub release
-(`.github/workflows/release.yml`).
+artifacts, and a `v<VersionPrefix>` tag on `main` publishes them as an immutable GitHub
+release (`.github/workflows/release.yml`); `gh release verify-asset <tag> <zip>` checks a
+download against GitHub's attestation of the release.
 Each zip holds `LICENSE.txt` (the MIT licence of this project) and `THIRD-PARTY-NOTICES.txt` next to
 the exe or the `.app`. `tools/new-third-party-notices.ps1` generates the notices at build time from the
 publish's restore output (`project.assets.json`): the licence texts of every package and runtime pack

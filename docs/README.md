@@ -92,7 +92,7 @@ Each decision has its reason, so it isn't undone by accident.
 | CommunityToolkit.Maui not used | No `net11.0` build yet, and the settings window needed nothing from it through step 3.2 |
 | File logs through NReco.Logging.File | |
 | Work in a `gh stack` of pull requests | See [AGENTS.md](../AGENTS.md#commit--pull-request-guidelines) |
-| CI on GitHub Actions: `ci.yml` builds and tests every pull request and every push to `main` that changes what the build reads (`companion/`, the log samples, the app icon, the release scripts, `LICENSE`) on Windows and macOS, `release.yml` publishes a release for a `v<VersionPrefix>` tag on `main` (no pre-release tags) | Both call the same `tools/build-release.ps1` a developer runs by hand. macOS runs on the `xcode-27` preview image, the only one with the Xcode 27 the RC2 Mac Catalyst SDK needs. Jobs that don't build use the `ubuntu-slim` runner (it has PowerShell and the GitHub CLI). Actions are pinned to commit hashes. A run takes about 6 minutes on Windows and 3 on macOS; a change to the docs, the mod or the test-run scripts doesn't start one (while the repository was private, each run cost about 42 Actions minutes), and `workflow_dispatch` runs it by hand. The mod stays a manual upload: only the game's Mod Hub validates it and prepares it for consoles |
+| CI on GitHub Actions: `ci.yml` builds and tests every pull request and every push to `main` that changes what the build reads (`companion/`, the log samples, the app icon, the release scripts, `LICENSE`) on Windows and macOS, `release.yml` publishes an immutable release for a `v<VersionPrefix>` tag on `main` (no pre-release tags) | Both call the same `tools/build-release.ps1` a developer runs by hand. macOS runs on the `xcode-27` preview image, the only one with the Xcode 27 the RC2 Mac Catalyst SDK needs. Jobs that don't build use the `ubuntu-slim` runner (it has PowerShell and the GitHub CLI). Actions are pinned to commit hashes. Releases are immutable: a published release's tag and files can't change and the tag name can't be reused, so the workflow builds a draft, compares its files, publishes it and verifies GitHub's attestation, all with the `gh` CLI (GitHub's own release actions are archived, and third-party ones would get write access to the releases). A run takes about 6 minutes on Windows and 3 on macOS; a change to the docs, the mod or the test-run scripts doesn't start one (while the repository was private, each run cost about 42 Actions minutes), and `workflow_dispatch` runs it by hand. The mod stays a manual upload: only the game's Mod Hub validates it and prepares it for consoles |
 | The first release is unsigned on Windows and macOS; the README walks players through the SmartScreen warning and Gatekeeper's "Open Anyway" | A code-signing certificate and the Apple Developer account cost money every year before anyone uses the app; signing follows later (see [To do later](#to-do-later)) |
 | The first release ships on .NET 11 RC2, before GA | RC2 has a go-live licence and every test and game run used it; the GA update follows as its own release |
 | The first release is app version `0.1.0` and mod `revision` 1 | Below 1.0 while it runs on a release candidate and the macOS app is experimental |
@@ -189,9 +189,10 @@ None blocks the release; all are accepted as they are:
         - [ ] Make the repository public.
         - [ ] Release the app: tag `v0.1.0` on `main` and push the tag. The Release workflow
           checks that the tag matches the app version and sits on `main`, and that the
-          changelog's section is dated, not empty and free of relative links; then it builds
-          and tests both zips, and publishes the release with the zips, their SHA-256 sums and
-          the changelog's section.
+          changelog's section is dated, not empty and free of relative links, and that the
+          version isn't released yet; then it builds and tests both zips, builds the release as
+          a draft with the zips, their SHA-256 sums and the changelog's section, compares the
+          draft's files with the built ones, publishes it and verifies its attestation.
         - [ ] Make the mod public on mod.io, and take it off PS5 and Xbox if the file's
           platform settings allow it (see [Decisions](#decisions)); note what mod.io offers.
         - [ ] A gallery shot of the savegame's Mods tab with the mod activated

@@ -33,7 +33,11 @@ framework or dependency changes, structure, workflows, recurring pitfalls.
   keeps both zips, and `release.yml` publishes the release when a `v<VersionPrefix>` tag is pushed, after
   checking that the tagged commit is on `main` and that CHANGELOG.md has a section for that
   version whose heading ends with the date (YYYY-MM-DD), which isn't empty and has no relative
-  links (the release page and mod.io can't resolve them)
+  links (the release page and mod.io can't resolve them). Releases are immutable (Settings →
+  General → Releases): the workflow builds the release as a draft, compares its files with the
+  built zips, publishes it and verifies GitHub's attestation (`gh release verify`). After that
+  its tag and files can't change and the tag name can't be used again, so a fix needs a new
+  version; a tag whose run failed before publishing can be moved or its run re-run
 - Live Discord test (sets a test presence for 5 s): set `TF3DRPC_DISCORD_LIVE=1`, then
   `dotnet test TF3-DRPC.slnx -- --filter-method '*LiveDiscord*'`
 - Manual test with the game and Discord: [docs/testing.md](docs/testing.md); scripts for a run
