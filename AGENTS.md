@@ -298,7 +298,8 @@ not verified (for example macOS). No AI attribution: no `Co-Authored-By` trailer
 - A pull request body follows [.github/PULL_REQUEST_TEMPLATE.md](.github/PULL_REQUEST_TEMPLATE.md)
   (What changes, Validation, Not verified, Checklist).
 - A change players notice gets a line in [CHANGELOG.md](CHANGELOG.md), in the section of the
-  next release. A section that isn't released yet says "not released yet" in place of the
+  next release. Each paragraph and list item of a section stays on one line, because the GitHub
+  release and the Mod Hub show every line break of the section. A section that isn't released yet says "not released yet" in place of the
   date; `release.yml` refuses a tag until the heading ends with the date.
 - Issues and pull requests get one kind label (`bug` or `enhancement`) and the `area-` labels of
   the parts they touch (`area-mod`, `area-app`, `area-windows`, `area-macos`, `area-discord`,

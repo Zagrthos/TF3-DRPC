@@ -4,10 +4,8 @@ Status: the mod, the companion app and the polish of step 3 are done on Windows 
 were reviewed three times (last on 2026-10-17) and tested end to end with the game and Discord:
 the whole [testing.md](testing.md) on macOS on 2026-10-20 and on Windows on 2026-10-21, and
 what was added since on both by 2026-10-24. Every item of [platform-parity.md](platform-parity.md)
-is done or checked. The first release, `0.1.0` (step 3.3), is built and checked: unsigned, on
-.NET 11 RC2. The mod is uploaded to mod.io and stays hidden until the app is released; the
-repository's history starts again with this state. Left: making the repository public, the
-app's release and making the mod public (see [Next steps](#next-steps)).
+is done or checked. The first release, `0.1.0` (step 3.3), is out: the app on GitHub,
+unsigned and on .NET 11 RC2, and the mod on mod.io, both public.
 Date: 2026-10-24
 
 ## How it works
@@ -65,7 +63,7 @@ Each decision has its reason, so it isn't undone by accident.
 | App name `TF3-DRPC`; Discord application ID `1559680023458484244` with the `cover` image | |
 | Every published image is our own: in-game shots of our savegame | No third-party artwork whose terms are unclear; the cover, the app and tray icons and the Mod Hub images come from the game's photo mode |
 | The Mod Hub cover shows the mod's name and a status card | The wiki's [guidelines](https://wiki.transportfever3.com/doku.php?id=modding:general:guidelines) ask for a cover without text, but a script mod has nothing to show in the game, and the name says what it is |
-| The mod is for PC only | The companion app runs only on Windows and macOS, so on PS5 and Xbox the mod does nothing. Neither the game nor the mod files can exclude consoles: an upload that passes the console checks is approved for PS5 and Xbox automatically. The description says "PC only", and mod.io's platform settings for the file are the place to take it off consoles. The game leaves consoles out only after a critical console error in its validation (`mod_manager_react_util.tl`), which would mean breaking a console rule on purpose |
+| The mod is for PC only | The companion app runs only on Windows and macOS, so on PS5 and Xbox the mod does nothing. Neither the game nor the mod files can exclude consoles: an upload that passes the console checks is approved for PS5 and Xbox automatically. mod.io offers no way to take it off consoles either, so the description says "PC only" and explains that the mod does nothing there. The game leaves consoles out only after a critical console error in its validation (`mod_manager_react_util.tl`), which would mean breaking a console rule on purpose |
 | Design A as default, the timer, 13 languages with a language choice | Design A needs no setup and uses no private placeholder; the other presets (step 3.1) and the custom templates are the player's choice |
 | Portable app writing only to `DATA/`; no installer, no start with the system | Players unzip it anywhere; nothing is left behind |
 | No full write trace (Process Monitor, `fs_usage`) | The bounded check is enough: it found nothing outside `DATA/` on Windows; on macOS the only files seen outside are the two the system writes (see [companion.md](companion.md#portable)) |
@@ -186,17 +184,18 @@ None blocks the release; all are accepted as they are:
         point to commits. The content was checked for personal and machine details first.
       - In this order, because the mod's description and the app's buttons link to this
         repository and its Releases page:
-        - [ ] Make the repository public.
-        - [ ] Release the app: tag `v0.1.0` on `main` and push the tag. The Release workflow
-          checks that the tag matches the app version and sits on `main`, and that the
-          changelog's section is dated, not empty and free of relative links, and that the
-          version isn't released yet; then it builds and tests both zips, builds the release as
-          a draft with the zips, their SHA-256 sums and the changelog's section, compares the
-          draft's files with the built ones, publishes it and verifies its attestation.
-        - [ ] Make the mod public on mod.io, and take it off PS5 and Xbox if the file's
-          platform settings allow it (see [Decisions](#decisions)); note what mod.io offers.
-        - [ ] A gallery shot of the savegame's Mods tab with the mod activated
-          (`_metadata/4.png`), added to the gallery on mod.io or with the next upload.
+        - [x] Make the repository public (2026-10-24).
+        - [x] Release the app (2026-10-24): `v0.1.0`, immutable, with both zips and
+          `SHA256SUMS.txt`. The Release workflow checks that the tag matches the app version
+          and sits on `main`, that the changelog's section is dated, not empty and free of
+          relative links, and that the version isn't released yet; then it builds and tests
+          both zips, builds the release as a draft, compares the draft's files with the built
+          ones, publishes it and verifies its attestation. Its run for `v0.1.0` published the
+          release but failed that last check, which ran one second after publishing, before
+          GitHub had made the attestation; minutes later `gh release verify` and
+          `verify-asset` passed for the release and all three files. The check now waits for it
+          up to 2 minutes.
+        - [x] Make the mod public on mod.io (2026-10-24).
 
 ## Repository layout
 
