@@ -194,7 +194,9 @@ jobs:
         run: gh release edit "$TAG" --repo "$GITHUB_REPOSITORY" --draft=false
 
       # GitHub signs an attestation of an immutable release (tag, commit and file digests); a
-      # release without one means release immutability is off in the repository's settings.
+      # release without one means release immutability is off in the repository's settings. The
+      # attestation appears a few seconds after publishing (v0.1.0: not yet after 1 s), so the
+      # check waits for it up to 2 minutes.
       - name: Verify the release's attestation
         env:
           GH_TOKEN: ${{ github.token }}
@@ -204,7 +206,14 @@ jobs:
             echo "::error::$TAG was published but isn't immutable: turn on Settings → General → Releases → Enable release immutability, then release a new version."
             exit 1
           fi
-          gh release verify "$TAG" --repo "$GITHUB_REPOSITORY"
+          for attempt in $(seq 1 12); do
+            if gh release verify "$TAG" --repo "$GITHUB_REPOSITORY"; then break; fi
+            if [ "$attempt" -eq 12 ]; then
+              echo "::error::No attestation for $TAG after 2 minutes."
+              exit 1
+            fi
+            sleep 10
+          done
           for file in dist/*.zip dist/SHA256SUMS.txt; do
             gh release verify-asset "$TAG" "$file" --repo "$GITHUB_REPOSITORY"
           done
