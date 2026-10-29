@@ -13,6 +13,12 @@ September 1905
 01:23:45 elapsed
 ```
 
+![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/zagrthos/tf3-drpc/total)
+![GitHub Release](https://img.shields.io/github/v/release/zagrthos/tf3-drpc)
+![GitHub Issues](https://img.shields.io/github/issues/zagrthos/tf3-drpc)
+![GitHub Pull Requests](https://img.shields.io/github/issues-pr/zagrthos/tf3-drpc)
+![GitHub License](https://img.shields.io/github/license/zagrthos/tf3-drpc)
+
 ## What Discord shows
 
 | When | Your status |
