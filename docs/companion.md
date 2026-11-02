@@ -6,7 +6,7 @@ are in [README.md](README.md#decisions).
 
 ## Platform
 
-.NET 11 with the MAUI workload: RC2 now (go-live licence), GA in November 2026.
+.NET 11 with the MAUI workload: RC3 now (go-live licence), GA in November 2026.
 
 | | Windows | macOS |
 |---|---|---|
@@ -248,9 +248,11 @@ TF3-DRPC/                    ← extracted zip, anywhere the user likes
 
 **Build setup** (the rules are in [AGENTS.md](../AGENTS.md)):
 
-- `global.json`: `sdk.version` `11.0.100-rc.2.26504.105` (`allowPrerelease: true`,
-  `rollForward: latestPatch`), `sdk.workloadVersion` `11.0.100-rc.2.26509.2` (both move to
-  GA in November), `test.runner` `Microsoft.Testing.Platform`.
+- `global.json`: `sdk.version` `11.0.100-rc.3.26522.148` (`allowPrerelease: true`,
+  `rollForward: latestPatch`), `sdk.workloadVersion` `11.0.100-rc.3.26524.4` (both move to
+  GA in November), `test.runner` `Microsoft.Testing.Platform`. RC3 is a security release of
+  the runtime: its workload set keeps MAUI `11.0.0-rc.2.26505.5` and the Mac Catalyst SDK
+  `27.0.12212-net11-rc.2`, so the notes on the RC2 MAUI and Mac Catalyst SDK still apply.
 - All in `companion/`, where the commands run:
   - `TF3-DRPC.slnx`.
   - `Directory.Build.props`: the build policy, Debug and Release settings, trim analysis, our
@@ -439,7 +441,7 @@ broken file means defaults; the app writes to a temporary file and renames it, s
 ## References
 
 - .NET 11 MAUI: [What's new](https://learn.microsoft.com/dotnet/maui/whats-new/dotnet-11),
-  [release notes Preview 1 – RC2](https://github.com/dotnet/core/tree/main/release-notes/11.0/preview)
+  [release notes Preview 1 – RC3](https://github.com/dotnet/core/tree/main/release-notes/11.0/preview)
 - .NET MAUI: [Native AOT on iOS and Mac Catalyst](https://learn.microsoft.com/dotnet/maui/deployment/nativeaot),
   [Publish an unpackaged Windows app](https://learn.microsoft.com/dotnet/maui/windows/deployment/publish-unpackaged-cli),
   [Windows App SDK 1.6 (PublishAot for WinUI 3)](https://learn.microsoft.com/windows/apps/windows-app-sdk/release-notes-archive/stable-channel-1.6)

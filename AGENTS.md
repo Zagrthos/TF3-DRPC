@@ -77,8 +77,8 @@ warning. A change must not add a warning.
 - Windows-only parts of `Tf3Drpc.App.csproj` carry the condition
   `'$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == 'windows'`. The platform service
   types are named once in `PlatformServices.cs` (global using aliases); shared code uses those names.
-- `ValidateXcodeVersion=false`: the RC2 Mac Catalyst SDK requires Xcode 27.0 and refuses 27.1, which
-  builds and runs it. Remove it at .NET 11 GA.
+- `ValidateXcodeVersion=false`: the RC2 Mac Catalyst SDK (also in the RC3 workload set) requires
+  Xcode 27.0 and refuses 27.1 and 27.2, which build and run it. Remove it at .NET 11 GA.
 - Line endings on a Mac: `.editorconfig` asks for CRLF, but git checks files out with LF there
   (macOS's `/etc/gitconfig` sets `core.autocrlf=input`), and every C# file then gets `RCS0044`. Set
   `git config core.autocrlf false` and `git config core.eol crlf` in the repository once, then write

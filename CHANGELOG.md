@@ -6,6 +6,10 @@ app's version is on GitHub, the mod's revision on mod.io.
 Each paragraph and list item of a version's section stays on one line: the section is the text
 of the GitHub release and the Mod Hub upload, and both show every line break.
 
+## 0.1.1 (app) — not released yet
+
+- The app runs on .NET 11 RC3, a release candidate with a go-live licence and the latest security fixes. An update to the final .NET 11 will follow.
+
 ## 0.1.0 (app) and revision 1 (mod) — 2026-10-24
 
 The first release.
