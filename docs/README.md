@@ -86,7 +86,7 @@ Each decision has its reason, so it isn't undone by accident.
 | Publish size measures (305 MB down to 83 MB) | See [companion.md](companion.md#projects); unused Windows App SDK parts and symbols are left out |
 | One code style and build file layout | Rules in [AGENTS.md](../AGENTS.md) |
 | One JSON source-generation context per project; no `Testing` configuration | Decided with the code style |
-| Packages stay on the versions MAUI RC2 resolves | Raising the excluded Windows App SDK parts alone would mix runtime versions; all move together at .NET 11 GA |
+| Packages stay on the versions MAUI RC3 resolves | Raising the excluded Windows App SDK parts alone would mix runtime versions; all move together at .NET 11 GA |
 | CommunityToolkit.Maui not used | No `net11.0` build yet, and the settings window needed nothing from it through step 3.2 |
 | File logs through NReco.Logging.File | |
 | Work in a `gh stack` of pull requests | See [AGENTS.md](../AGENTS.md#commit--pull-request-guidelines) |
