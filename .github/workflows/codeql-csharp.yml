@@ -1,6 +1,11 @@
 # CodeQL for the companion app. The app builds for Windows on Windows and for Mac Catalyst on
 # macOS, and each build compiles only its own Platforms/ folder, so both are analysed, each under
 # its own category. Setup follows ci.yml; the tests project is not built.
+#
+# Windows traces a real build. macOS cannot: the CodeQL tracer injects libtrace.dylib into every
+# process, it has no arm64e slice, and dyld kills Apple's arm64e tools (actool, xcode-select) on
+# start. So macOS uses buildless extraction, which reads every .cs file in the repository, and
+# keeps only the findings in Platforms/MacCatalyst/; the Windows build covers the shared code.
 name: CodeQL C#
 
 on:
@@ -38,10 +43,22 @@ jobs:
           - name: Windows
             os: windows-2025
             workload: maui-windows
+            build-mode: manual
+            # Drop findings in generated code (XAML, resources, source generators).
+            sarif-filter: |
+              -**/obj/**
+              -**/*.g.cs
+              -**/*.g.i.cs
+              -**/*.Designer.cs
           # The RC2 Mac Catalyst SDK needs Xcode 27, which only the xcode-27 image has (a preview image).
+          # The workload and the restore give buildless extraction the Mac Catalyst references.
           - name: macOS
             os: xcode-27
             workload: maui-maccatalyst
+            build-mode: none
+            sarif-filter: |
+              -**/*
+              +companion/Tf3Drpc.App/Platforms/MacCatalyst/**/*
     runs-on: ${{ matrix.os }}
     timeout-minutes: 120
     permissions:
@@ -81,16 +98,12 @@ jobs:
         with:
           config-file: ./.github/codeql/codeql-config.yml
           languages: csharp
-          build-mode: manual
+          build-mode: ${{ matrix.build-mode }}
           queries: security-and-quality
 
-      # Under the CodeQL tracer `xcode-select -p` fails, so the Mac Catalyst SDK reports "Could not
-      # find a valid Xcode developer path". For .NET 11 projects it ignores MD_APPLE_SDK_ROOT and the
-      # settings files; only the XcodeLocation property skips the xcode-select lookup.
       - name: Build
-        run: >-
-          dotnet build Tf3Drpc.App/Tf3Drpc.App.csproj -c Release --no-restore --no-incremental
-          ${{ runner.os == 'macOS' && '-p:XcodeLocation=/Applications/Xcode_27.0.app' || '' }}
+        if: matrix.build-mode == 'manual'
+        run: dotnet build Tf3Drpc.App/Tf3Drpc.App.csproj -c Release --no-restore --no-incremental
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@1fc58d04a4d4374f921bdac573c3811c240f9c26 # v4.39.2
@@ -99,15 +112,10 @@ jobs:
           output: sarif-results
           upload: failure-only
 
-      # Drop findings in generated code (XAML, resources, source generators).
       - name: Filter SARIF results
         uses: advanced-security/filter-sarif@2da736ff05ef065cb2894ac6892e47b5eac2c3c0 # v1.1
         with:
-          patterns: |
-            -**/obj/**
-            -**/*.g.cs
-            -**/*.g.i.cs
-            -**/*.Designer.cs
+          patterns: ${{ matrix.sarif-filter }}
           input: sarif-results/csharp.sarif
           output: sarif-results/csharp.sarif
 
