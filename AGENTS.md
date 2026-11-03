@@ -29,7 +29,10 @@ framework or dependency changes, structure, workflows, recurring pitfalls.
   `./tools/build-release.ps1` (`-SkipTests` after a full test run). CI runs it too: `ci.yml`
   builds and tests every pull request and push to `main` on Windows and macOS that changes what
   the build reads (`companion/`, the log samples, the app icon, the release scripts, `LICENSE`;
-  the full list is in `ci.yml`, and `workflow_dispatch` runs it by hand), a push to `main` also
+  the full list is in `ci.yml`, and `workflow_dispatch` runs it by hand). Pull requests always
+  start its jobs, because the `CI on main` ruleset requires the `Windows` and `macOS` checks; a
+  first step skips the rest when no listed path changed, and lists them a second time (keep it in
+  step with `push.paths`). A push to `main` also
   keeps both zips, and `release.yml` publishes the release when a `v<VersionPrefix>` tag is pushed, after
   checking that the tagged commit is on `main` and that CHANGELOG.md has a section for that
   version whose heading ends with the date (YYYY-MM-DD), which isn't empty and has no relative
