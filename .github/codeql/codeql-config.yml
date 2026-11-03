@@ -1,0 +1,13 @@
+# Shared by every codeql-*.yml workflow.
+name: "TF3-DRPC CodeQL config"
+
+# The GitHub Security Lab's extra C# queries and models, on top of the standard suite.
+packs:
+  csharp:
+    - githubsecuritylab/codeql-csharp-queries
+    - githubsecuritylab/codeql-csharp-extensions
+    - githubsecuritylab/codeql-csharp-library-sources
+
+# The companion's input is local: the game's log file, settings in DATA and the command line.
+# Treat those as untrusted too, not only network input.
+threat-models: [ local ]

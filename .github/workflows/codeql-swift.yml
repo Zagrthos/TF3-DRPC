@@ -1,0 +1,64 @@
+# CodeQL for the Swift helpers: tools/test-run/tf3mac.swift and the review tools under reviews/.
+# They are single-file scripts without a package or Xcode project, so each is compiled on its own,
+# the way tools/test-run/common.ps1 builds tf3mac.swift.
+name: CodeQL Swift
+
+on:
+  pull_request:
+    paths: &paths
+      - '**.swift'
+      - '.github/workflows/codeql-swift.yml'
+      - '.github/codeql/**'
+  push:
+    branches: [main]
+    paths: *paths
+  schedule:
+    # Daily at 05:30 UTC, so new queries also cover code that has not changed.
+    - cron: '30 5 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: codeql-swift-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  analyze:
+    name: Analyze (swift)
+    # A stable image: CodeQL's Swift extractor supports released Xcode versions, not previews.
+    runs-on: macos-15
+    timeout-minutes: 60
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@1fc58d04a4d4374f921bdac573c3811c240f9c26 # v4.39.2
+        with:
+          config-file: ./.github/codeql/codeql-config.yml
+          languages: swift
+          build-mode: manual
+          queries: security-and-quality
+
+      - name: Build
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/swift-build"
+          mkdir -p "$out"
+          git ls-files -z '*.swift' | while IFS= read -r -d '' file; do
+            echo "::group::$file"
+            swiftc -o "$out/$(echo "${file%.swift}" | tr '/' '_')" "$file"
+            echo "::endgroup::"
+          done
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@1fc58d04a4d4374f921bdac573c3811c240f9c26 # v4.39.2
+        with:
+          category: /language:swift

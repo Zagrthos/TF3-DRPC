@@ -1,0 +1,49 @@
+# CodeQL for the Python scripts (today only the reproduction scripts under reviews/).
+name: CodeQL Python
+
+on:
+  pull_request:
+    paths: &paths
+      - '**.py'
+      - '.github/workflows/codeql-python.yml'
+      - '.github/codeql/**'
+  push:
+    branches: [main]
+    paths: *paths
+  schedule:
+    # Daily at 04:30 UTC, so new queries also cover code that has not changed.
+    - cron: '30 4 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: codeql-python-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  analyze:
+    name: Analyze (python)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@1fc58d04a4d4374f921bdac573c3811c240f9c26 # v4.39.2
+        with:
+          config-file: ./.github/codeql/codeql-config.yml
+          languages: python
+          build-mode: none
+          queries: security-and-quality
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@1fc58d04a4d4374f921bdac573c3811c240f9c26 # v4.39.2
+        with:
+          category: /language:python
