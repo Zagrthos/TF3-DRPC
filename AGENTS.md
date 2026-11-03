@@ -29,7 +29,10 @@ framework or dependency changes, structure, workflows, recurring pitfalls.
   `./tools/build-release.ps1` (`-SkipTests` after a full test run). CI runs it too: `ci.yml`
   builds and tests every pull request and push to `main` on Windows and macOS that changes what
   the build reads (`companion/`, the log samples, the app icon, the release scripts, `LICENSE`;
-  the full list is in `ci.yml`, and `workflow_dispatch` runs it by hand), a push to `main` also
+  the full list is in `ci.yml`, and `workflow_dispatch` runs it by hand). Pull requests always
+  start its jobs, because the `CI on main` ruleset requires the `Windows` and `macOS` checks; a
+  first step skips the rest when no listed path changed, and lists them a second time (keep it in
+  step with `push.paths`). A push to `main` also
   keeps both zips, and `release.yml` publishes the release when a `v<VersionPrefix>` tag is pushed, after
   checking that the tagged commit is on `main` and that CHANGELOG.md has a section for that
   version whose heading ends with the date (YYYY-MM-DD), which isn't empty and has no relative
@@ -46,6 +49,11 @@ framework or dependency changes, structure, workflows, recurring pitfalls.
 Use the SDK and workload set pinned in `global.json`. Use `dotnet build` to validate and
 `dotnet publish` for shippable output; only `dotnet publish` shows every trim and AOT
 warning. A change must not add a warning.
+
+On Windows, install the pinned workload set once per machine and again after `global.json`
+moves it, or every project fails restore with "workload version … not found". Visual Studio
+keeps its own older manifests, so its updates do not fix this: run
+`dotnet workload update --version <workloadVersion from global.json>`.
 
 - `dotnet format` writes LF; convert touched files back to CRLF afterwards. So can `sed -i`
   in Git Bash.
@@ -118,7 +126,7 @@ warning. A change must not add a warning.
 | [.claude/skills/tf3-modding/](.claude/skills/tf3-modding/) | Offline TF3 modding reference for coding agents |
 | [README.md](README.md), [CONTRIBUTING.md](CONTRIBUTING.md) | The overview for players and the short guide for new contributors |
 | [CHANGELOG.md](CHANGELOG.md) | What each release brings; `release.yml` takes the GitHub release text from it, and the Mod Hub upload uses the same text |
-| [.github/](.github/) | Issue forms (bug report, feature request, translation), the issue chooser, the pull request template, and the workflows: `ci.yml` (build and test on Windows and macOS) and `release.yml` (release for a `v<VersionPrefix>` tag on `main`); actions are pinned to commit hashes |
+| [.github/](.github/) | Issue forms (bug report, feature request, translation), the issue chooser, the pull request template, and the workflows: `ci.yml` (build and test on Windows and macOS), `release.yml` (release for a `v<VersionPrefix>` tag on `main`) and one `codeql-<language>.yml` per CodeQL language (Actions, C# on Windows and macOS, Swift; Lua and PowerShell have no CodeQL support), configured by `codeql/codeql-config.yml`, which leaves out `reviews/`; actions are pinned to commit hashes |
 
 Key configuration: [.editorconfig](.editorconfig) (a shared file; don't edit it locally),
 [.gitattributes](.gitattributes), [.luarc.json](.luarc.json) (Lua language server).

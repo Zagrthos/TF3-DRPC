@@ -7,9 +7,15 @@ name: CI
 # Only the paths the build, the tests and the zips read: a change to the docs, the mod or the
 # test-run scripts needs no build, and a run takes a runner for about 6 minutes on Windows and 3
 # on macOS. Run it by hand with workflow_dispatch.
+#
+# The "CI on main" ruleset requires the Windows and macOS checks, and a workflow that a path filter
+# never starts leaves them pending forever. So every pull request starts the jobs, and the first
+# step skips the rest when the pull request changes none of these paths (keep both lists in sync).
 on:
   pull_request:
-    paths: &build-paths
+  push:
+    branches: [main]
+    paths:
       - 'companion/**'
       - 'docs/log-samples/**'
       - 'assets/discord/cover.png'
@@ -20,9 +26,6 @@ on:
       - '.editorconfig'
       - '.gitattributes'
       - '.github/workflows/ci.yml'
-  push:
-    branches: [main]
-    paths: *build-paths
   workflow_dispatch:
 
 permissions:
@@ -61,29 +64,57 @@ jobs:
         working-directory: .
         run: git config --global core.autocrlf true
 
+      # A pull request checks out its merge commit; two commits deep, HEAD^1 is the base branch.
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+          fetch-depth: ${{ github.event_name == 'pull_request' && 2 || 1 }}
+
+      # Same paths as push.paths above. --no-renames lists both names of a moved file.
+      - name: Check whether the build reads a changed file
+        id: changes
+        working-directory: .
+        shell: bash
+        run: |
+          build=true
+          if [ "$GITHUB_EVENT_NAME" = pull_request ]; then
+            build=false
+            while IFS= read -r file; do
+              case "$file" in
+                companion/*|docs/log-samples/*|assets/discord/cover.png|tools/build-release.ps1|\
+                tools/new-third-party-notices.ps1|tools/licences/*|LICENSE|.editorconfig|\
+                .gitattributes|.github/workflows/ci.yml)
+                  build=true ;;
+              esac
+            done < <(git diff --name-only --no-renames HEAD^1 HEAD)
+          fi
+          [ "$build" = true ] || echo "::notice::No file the build reads changed; skipping the build and tests."
+          echo "build=$build" >> "$GITHUB_OUTPUT"
 
       - name: Select Xcode 27.0
-        if: runner.os == 'macOS'
+        if: runner.os == 'macOS' && steps.changes.outputs.build == 'true'
         run: sudo xcode-select -s /Applications/Xcode_27.0.app
 
       - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        if: steps.changes.outputs.build == 'true'
         with:
           global-json-file: companion/global.json
 
       # Run in companion/, so the workload set pinned in global.json is the one installed.
       - name: Install the MAUI workload
+        if: steps.changes.outputs.build == 'true'
         run: dotnet workload install ${{ matrix.workload }}
 
       - name: Build Debug
+        if: steps.changes.outputs.build == 'true'
         run: dotnet build TF3-DRPC.slnx -c Debug
 
       - name: Build Release
+        if: steps.changes.outputs.build == 'true'
         run: dotnet build TF3-DRPC.slnx -c Release
 
       - name: Test
+        if: steps.changes.outputs.build == 'true'
         run: dotnet test TF3-DRPC.slnx
 
       - name: Build the release zip
