@@ -47,6 +47,11 @@ Use the SDK and workload set pinned in `global.json`. Use `dotnet build` to vali
 `dotnet publish` for shippable output; only `dotnet publish` shows every trim and AOT
 warning. A change must not add a warning.
 
+On Windows, install the pinned workload set once per machine and again after `global.json`
+moves it, or every project fails restore with "workload version … not found". Visual Studio
+keeps its own older manifests, so its updates do not fix this: run
+`dotnet workload update --version <workloadVersion from global.json>`.
+
 - `dotnet format` writes LF; convert touched files back to CRLF afterwards. So can `sed -i`
   in Git Bash.
 - Escapes written through a shell heredoc or some edit tools can turn into the real character:
