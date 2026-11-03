@@ -1,12 +1,14 @@
-# CodeQL for the Swift helpers: tools/test-run/tf3mac.swift and the review tools under reviews/.
-# They are single-file scripts without a package or Xcode project, so each is compiled on its own,
-# the way tools/test-run/common.ps1 builds tf3mac.swift.
+# CodeQL for the Swift helpers, today tools/test-run/tf3mac.swift. They are single-file scripts
+# without a package or Xcode project, so each is compiled on its own, the way
+# tools/test-run/common.ps1 builds tf3mac.swift. The review scripts under reviews/ are not
+# compiled, so CodeQL does not see them.
 name: CodeQL Swift
 
 on:
   pull_request:
     paths: &paths
       - '**.swift'
+      - '!reviews/**'
       - '.github/workflows/codeql-swift.yml'
       - '.github/codeql/**'
   push:
@@ -52,7 +54,7 @@ jobs:
           set -euo pipefail
           out="$RUNNER_TEMP/swift-build"
           mkdir -p "$out"
-          git ls-files -z '*.swift' | while IFS= read -r -d '' file; do
+          git ls-files -z -- '*.swift' ':!:reviews/**' | while IFS= read -r -d '' file; do
             echo "::group::$file"
             swiftc -o "$out/$(echo "${file%.swift}" | tr '/' '_')" "$file"
             echo "::endgroup::"

@@ -123,7 +123,7 @@ keeps its own older manifests, so its updates do not fix this: run
 | [.claude/skills/tf3-modding/](.claude/skills/tf3-modding/) | Offline TF3 modding reference for coding agents |
 | [README.md](README.md), [CONTRIBUTING.md](CONTRIBUTING.md) | The overview for players and the short guide for new contributors |
 | [CHANGELOG.md](CHANGELOG.md) | What each release brings; `release.yml` takes the GitHub release text from it, and the Mod Hub upload uses the same text |
-| [.github/](.github/) | Issue forms (bug report, feature request, translation), the issue chooser, the pull request template, and the workflows: `ci.yml` (build and test on Windows and macOS), `release.yml` (release for a `v<VersionPrefix>` tag on `main`) and one `codeql-<language>.yml` per CodeQL language (Actions, C# on Windows and macOS, Python, Swift; Lua and PowerShell have no CodeQL support), configured by `codeql/codeql-config.yml`; actions are pinned to commit hashes |
+| [.github/](.github/) | Issue forms (bug report, feature request, translation), the issue chooser, the pull request template, and the workflows: `ci.yml` (build and test on Windows and macOS), `release.yml` (release for a `v<VersionPrefix>` tag on `main`) and one `codeql-<language>.yml` per CodeQL language (Actions, C# on Windows and macOS, Swift; Lua and PowerShell have no CodeQL support), configured by `codeql/codeql-config.yml`, which leaves out `reviews/`; actions are pinned to commit hashes |
 
 Key configuration: [.editorconfig](.editorconfig) (a shared file; don't edit it locally),
 [.gitattributes](.gitattributes), [.luarc.json](.luarc.json) (Lua language server).
