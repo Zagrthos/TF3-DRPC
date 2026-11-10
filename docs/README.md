@@ -86,11 +86,11 @@ Each decision has its reason, so it isn't undone by accident.
 | Publish size measures (305 MB down to 83 MB) | See [companion.md](companion.md#projects); unused Windows App SDK parts and symbols are left out |
 | One code style and build file layout | Rules in [AGENTS.md](../AGENTS.md) |
 | One JSON source-generation context per project; no `Testing` configuration | Decided with the code style |
-| Packages stay on the versions MAUI RC3 resolves | Raising the excluded Windows App SDK parts alone would mix runtime versions; all move together at .NET 11 GA |
+| The excluded Windows App SDK parts stay on the versions MAUI resolves | Raising them alone would mix runtime versions; they move only together with MAUI |
 | CommunityToolkit.Maui not used | No `net11.0` build yet, and the settings window needed nothing from it through step 3.2 |
 | File logs through NReco.Logging.File | |
 | Work in a `gh stack` of pull requests | See [AGENTS.md](../AGENTS.md#commit--pull-request-guidelines) |
-| CI on GitHub Actions: `ci.yml` builds and tests every pull request and every push to `main` that changes what the build reads (`companion/`, the log samples, the app icon, the release scripts, `LICENSE`) on Windows and macOS, `release.yml` publishes an immutable release for a `v<VersionPrefix>` tag on `main` (no pre-release tags) | Both call the same `tools/build-release.ps1` a developer runs by hand. macOS runs on the `xcode-27` preview image, the only one with the Xcode 27 the RC2 Mac Catalyst SDK needs. Jobs that don't build use the `ubuntu-slim` runner (it has PowerShell and the GitHub CLI). Actions are pinned to commit hashes. Releases are immutable: a published release's tag and files can't change and the tag name can't be reused, so the workflow builds a draft, compares its files, publishes it and verifies GitHub's attestation, all with the `gh` CLI (GitHub's own release actions are archived, and third-party ones would get write access to the releases). A run takes about 6 minutes on Windows and 3 on macOS; a pull request that changes only the docs, the mod or the test-run scripts skips the build after the first step (the `CI on main` ruleset requires the `Windows` and `macOS` checks, so their jobs must report; while the repository was private, each full run cost about 42 Actions minutes), such a push to `main` doesn't start one, and `workflow_dispatch` runs it by hand. The mod stays a manual upload: only the game's Mod Hub validates it and prepares it for consoles |
+| CI on GitHub Actions: `ci.yml` builds and tests every pull request and every push to `main` that changes what the build reads (`companion/`, the log samples, the app icon, the release scripts, `LICENSE`) on Windows and macOS, `release.yml` publishes an immutable release for a `v<VersionPrefix>` tag on `main` (no pre-release tags) | Both call the same `tools/build-release.ps1` a developer runs by hand. macOS runs on the `xcode-27` preview image, the only one with the Xcode 27.2 the .NET 11 Mac Catalyst SDK needs. Jobs that don't build use the `ubuntu-slim` runner (it has PowerShell and the GitHub CLI). Actions are pinned to commit hashes. Releases are immutable: a published release's tag and files can't change and the tag name can't be reused, so the workflow builds a draft, compares its files, publishes it and verifies GitHub's attestation, all with the `gh` CLI (GitHub's own release actions are archived, and third-party ones would get write access to the releases). A run takes about 6 minutes on Windows and 3 on macOS; a pull request that changes only the docs, the mod or the test-run scripts skips the build after the first step (the `CI on main` ruleset requires the `Windows` and `macOS` checks, so their jobs must report; while the repository was private, each full run cost about 42 Actions minutes), such a push to `main` doesn't start one, and `workflow_dispatch` runs it by hand. The mod stays a manual upload: only the game's Mod Hub validates it and prepares it for consoles |
 | The first release is unsigned on Windows and macOS; the README walks players through the SmartScreen warning and Gatekeeper's "Open Anyway" | A code-signing certificate and the Apple Developer account cost money every year before anyone uses the app; signing follows later (see [To do later](#to-do-later)) |
 | The first release ships on .NET 11 RC2, before GA | RC2 has a go-live licence and every test and game run used it; the GA update follows as its own release |
 | The first release is app version `0.1.0` and mod `revision` 1 | Below 1.0 while it runs on a release candidate and the macOS app is experimental |
@@ -102,9 +102,6 @@ Each decision has its reason, so it isn't undone by accident.
 
 ## To do later
 
-- **.NET 11 GA (November 2026):**
-  - Update `global.json` (SDK and workload set), `Microsoft.Extensions.Logging.Debug`, MAUI and the five excluded packages in `Directory.Packages.props`, together.
-  - Then check the MAUI trim warning again, and the `UseOptimizedPublish=false` (Windows only) and `ValidateXcodeVersion=false` workarounds.
 - **macOS:**
   - A universal build (`maccatalyst-arm64;maccatalyst-x64`), since macOS 26 still runs on some Intel Macs; only `maccatalyst-arm64` is built now.
 - **Signing**, after the first release:
@@ -226,5 +223,5 @@ Only what the project needs goes into git. `.gitignore` is the Visual Studio tem
 The TF3 install (Steam on Windows, build 40420 from 2026-10-08, later 40423 and 40425) with its Teal definitions
 and base-game scripts, the TF3 modding reference (version `2026.10.23.2`, online at
 <https://tf3-docs.transportfever.net>), test runs in the game on Windows (2026-10-13 to 2026-10-24) and on macOS 27
-(2026-10-20 to 2026-10-24), the .NET MAUI documentation and the .NET 11 release notes up to RC2. Each document lists its own
+(2026-10-20 to 2026-10-24), the .NET MAUI documentation and the .NET 11 release notes up to GA. Each document lists its own
 references.

@@ -6,16 +6,16 @@ are in [README.md](README.md#decisions).
 
 ## Platform
 
-.NET 11 with the MAUI workload: RC3 now (go-live licence), GA in November 2026.
+.NET 11 GA with the MAUI workload (MAUI `11.0.0`).
 
 | | Windows | macOS |
 |---|---|---|
 | Target | WinUI 3, `net11.0-windows10.0.19041.0` | Mac Catalyst, `net11.0-maccatalyst` |
-| Native AOT | `PublishAot` with `UseOptimizedPublish=false` (RC2's optimised publish skips reference resolution and fails with `WMC1007`); works, one known MAUI trim warning and 20 informational ILC messages about the left-out WebView2 (see [AGENTS.md](../AGENTS.md#native-aot-rules)) | `PublishAot`, `RuntimeIdentifier` `maccatalyst-arm64`, the optimised publish (a full build first would leave the CoreCLR runtime and a 70 MB R2R image in the `.app`); works, one informational ILC message about `UIKit.NSLayoutAnchor`1` |
+| Native AOT | `PublishAot` with `UseOptimizedPublish=false` (the optimised publish skips `PrepareForRun`, where the Windows App SDK's MSIX tooling writes the `.pri` of an unpackaged app, and fails with `MSB3030`; generating the `.pri` explicitly fills `bin/` again, so it saves nothing); works, one known MAUI trim warning and 20 informational ILC messages about the left-out WebView2 (see [AGENTS.md](../AGENTS.md#native-aot-rules)) | `PublishAot`, `RuntimeIdentifier` `maccatalyst-arm64`, the optimised publish (a full build first would leave the CoreCLR runtime and a 70 MB R2R image in the `.app`); works, one informational ILC message about `UIKit.NSLayoutAnchor`1` |
 | Tray / menu bar | no MAUI API; WinUIEx's `TrayIcon` with a WinUI `MenuFlyout` (no AOT or trim warnings) | no MAUI or UIKit API; AppKit's `NSStatusItem` through the Objective-C runtime, as `Drastic.Tray` does |
 | Minimum OS | Windows 10 2004 (`SupportedOSPlatformVersion` 10.0.19041.0) | macOS 26 (`SupportedOSPlatformVersion` 26.0) |
 | Shipped as | portable zip: unpackaged, self-contained (`WindowsPackageType=None`, `WindowsAppSDKSelfContained=true`); not code-signed yet, so SmartScreen warns at the first start | portable zip with the `.app`, not signed or notarised yet, so Gatekeeper stops the first start; never through the Mac App Store |
-| Built on | Windows | a Mac with Xcode 27.0; Xcode 27.1 works with `ValidateXcodeVersion=false` until GA |
+| Built on | Windows | a Mac with Xcode 27.2, the version the .NET 11 Mac Catalyst SDK requires |
 
 No release has been published yet. `tools/build-release.ps1` builds the zip of the platform it
 runs on (`TF3-DRPC-<version>-windows-x64.zip`, `TF3-DRPC-<version>-macos-arm64.zip`) into
@@ -248,11 +248,9 @@ TF3-DRPC/                    ← extracted zip, anywhere the user likes
 
 **Build setup** (the rules are in [AGENTS.md](../AGENTS.md)):
 
-- `global.json`: `sdk.version` `11.0.100-rc.3.26522.148` (`allowPrerelease: true`,
-  `rollForward: latestPatch`), `sdk.workloadVersion` `11.0.100-rc.3.26524.4` (both move to
-  GA in November), `test.runner` `Microsoft.Testing.Platform`. RC3 is a security release of
-  the runtime: its workload set keeps MAUI `11.0.0-rc.2.26505.5` and the Mac Catalyst SDK
-  `27.0.12212-net11-rc.2`, so the notes on the RC2 MAUI and Mac Catalyst SDK still apply.
+- `global.json`: `sdk.version` `11.0.100` (`allowPrerelease: false`,
+  `rollForward: latestPatch`), `sdk.workloadVersion` `11.0.100.1` (MAUI `11.0.0`, Mac Catalyst
+  SDK `27.2.11039`), `test.runner` `Microsoft.Testing.Platform`.
 - All in `companion/`, where the commands run:
   - `TF3-DRPC.slnx`.
   - `Directory.Build.props`: the build policy, Debug and Release settings, trim analysis, our
@@ -280,14 +278,14 @@ TF3-DRPC/                    ← extracted zip, anywhere the user likes
 | Measure | Saving |
 |---|---|
 | No `.pdb` in Release | 158 MB |
-| `ExcludeAssets="all"` for parts of the Windows App SDK that MAUI pulls in but the app doesn't use: `Microsoft.WindowsAppSDK.AI`, `.ML`, `.Widgets`, `Microsoft.Windows.AI.MachineLearning` (`onnxruntime.dll`, `DirectML.dll`) and `Microsoft.Web.WebView2` | ~40 MB |
+| `ExcludeAssets="all"` for parts of the Windows App SDK that MAUI pulls in but the app doesn't use: `Microsoft.WindowsAppSDK.AI`, `.ML`, `.Search` (since MAUI 11.0.0, 3.5 MB), `.Widgets`, `Microsoft.Windows.AI.MachineLearning` (`onnxruntime.dll`, `DirectML.dll`) and `Microsoft.Web.WebView2` | ~43 MB |
 | Target `RemoveUnusedMuiFromPublish`: WinUI `.mui` resources only for our 13 languages, not 119 | ~3.5 MB |
 | Target `RemoveWindowsTileImages`: no MAUI tile and logo images; the unpackaged app uses the `.ico` | a few MB |
 | AOT switches in the app project: `OptimizationPreference Size`, `TrimMode Full`, unused runtime features off, C#/WinRT size options | ~7 MB of the exe |
 
 - The rest is mostly the self-contained Windows App SDK, which a portable app has to carry.
   Going much lower would mean pure WinUI 3 without MAUI.
-- The five excluded packages are pinned to the versions MAUI resolves. Raise them only
+- The six excluded packages are pinned to the versions MAUI resolves. Raise them only
   together with MAUI.
 - Leaving out `Microsoft.Web.WebView2` makes the publish print 20 ILC messages "will always
   throw because: Failed to load assembly 'Microsoft.Web.WebView2.Core.Projection'", for the
@@ -441,7 +439,7 @@ broken file means defaults; the app writes to a temporary file and renames it, s
 ## References
 
 - .NET 11 MAUI: [What's new](https://learn.microsoft.com/dotnet/maui/whats-new/dotnet-11),
-  [release notes Preview 1 – RC3](https://github.com/dotnet/core/tree/main/release-notes/11.0/preview)
+  [release notes](https://github.com/dotnet/core/tree/main/release-notes/11.0)
 - .NET MAUI: [Native AOT on iOS and Mac Catalyst](https://learn.microsoft.com/dotnet/maui/deployment/nativeaot),
   [Publish an unpackaged Windows app](https://learn.microsoft.com/dotnet/maui/windows/deployment/publish-unpackaged-cli),
   [Windows App SDK 1.6 (PublishAot for WinUI 3)](https://learn.microsoft.com/windows/apps/windows-app-sdk/release-notes-archive/stable-channel-1.6)

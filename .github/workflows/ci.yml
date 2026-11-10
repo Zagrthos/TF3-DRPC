@@ -49,7 +49,7 @@ jobs:
           - name: Windows
             os: windows-2025
             workload: maui-windows
-          # The RC2 Mac Catalyst SDK needs Xcode 27, which only the xcode-27 image has (a preview image).
+          # The .NET 11 Mac Catalyst SDK needs Xcode 27.2, which only the xcode-27 image has (a preview image).
           - name: macOS
             os: xcode-27
             workload: maui-maccatalyst
@@ -91,9 +91,9 @@ jobs:
           [ "$build" = true ] || echo "::notice::No file the build reads changed; skipping the build and tests."
           echo "build=$build" >> "$GITHUB_OUTPUT"
 
-      - name: Select Xcode 27.0
+      - name: Select Xcode 27.2
         if: runner.os == 'macOS' && steps.changes.outputs.build == 'true'
-        run: sudo xcode-select -s /Applications/Xcode_27.0.app
+        run: sudo xcode-select -s /Applications/Xcode_27.2.app
 
       - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
         if: steps.changes.outputs.build == 'true'
