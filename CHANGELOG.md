@@ -8,7 +8,7 @@ of the GitHub release and the Mod Hub upload, and both show every line break.
 
 ## 0.1.1 (app) — not released yet
 
-- The app runs on .NET 11 RC3, a release candidate with a go-live licence and the latest security fixes. An update to the final .NET 11 will follow.
+- The app runs on the final .NET 11 with the latest security fixes.
 
 ## 0.1.0 (app) and revision 1 (mod) — 2026-10-24
 

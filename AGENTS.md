@@ -85,8 +85,9 @@ keeps its own older manifests, so its updates do not fix this: run
 - Windows-only parts of `Tf3Drpc.App.csproj` carry the condition
   `'$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == 'windows'`. The platform service
   types are named once in `PlatformServices.cs` (global using aliases); shared code uses those names.
-- `ValidateXcodeVersion=false`: the RC2 Mac Catalyst SDK (also in the RC3 workload set) requires
-  Xcode 27.0 and refuses 27.1 and 27.2, which build and run it. Remove it at .NET 11 GA.
+- The Mac Catalyst SDK accepts only the Xcode major and minor version it was made for (error
+  `E0191`): Xcode 27.2 for the .NET 11 GA workload set. Select it with `xcode-select`; the
+  workflows do too. Check `RecommendedXcodeVersion` of the SDK when `global.json` moves.
 - Line endings on a Mac: `.editorconfig` asks for CRLF, but git checks files out with LF there
   (macOS's `/etc/gitconfig` sets `core.autocrlf=input`), and every C# file then gets `RCS0044`. Set
   `git config core.autocrlf false` and `git config core.eol crlf` in the repository once, then write
@@ -224,14 +225,14 @@ Non-negotiable in the companion app and `Tf3Drpc.Core` (the tests are exempt):
 - Detect the build with `#if DEBUG`, not runtime environment checks.
 - Every trim or AOT warning is fixed, never suppressed. Known exception, not ours and not
   suppressed: one `IL2070` in `Microsoft.Maui.Controls` (`MauiItemsView.DragDrop.cs`, the
-  Windows CollectionView drag and drop, which the app doesn't use) in .NET 11 RC2; check
-  again at GA.
+  Windows CollectionView drag and drop, which the app doesn't use), still in MAUI 11.0.0; check
+  again with each MAUI update.
 - The publish also prints ILC messages "Method '…' will always throw because: Failed to load
   …". They are not warnings and need no fix: ILC compiled code that can never run into a
   throw. On Windows there are 20, for the web view code of MAUI (`WebViewHandler`,
   `HybridWebViewHandler`, `MauiWebView`, `WebViewExtensions`) and WinUI (`WebView2`), because
   `Microsoft.Web.WebView2` is left out of the publish (with the other unused Windows App SDK
-  parts, about 40 MB; see [docs/companion.md](docs/companion.md#projects)); the app has no web view, and its links
+  parts, about 43 MB; see [docs/companion.md](docs/companion.md#projects)); the app has no web view, and its links
   open the system browser through `Launcher`. On macOS there is one, for
   `UIKit.NSLayoutAnchor`1` in the Mac Catalyst SDK's type map. Don't add the WebView2 package
   back to silence them.

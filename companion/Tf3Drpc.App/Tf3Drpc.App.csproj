@@ -28,7 +28,8 @@
   <PropertyGroup Condition="'$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == 'windows'">
     <SupportedOSPlatformVersion>10.0.19041.0</SupportedOSPlatformVersion>
     <TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
-    <!-- .NET 11 RC2: the optimised AOT publish skips reference resolution and the WinUI XAML compiler fails with WMC1007.
+    <!-- The optimised AOT publish skips PrepareForRun, where the MSIX tooling of the Windows App SDK writes the .pri of an
+         unpackaged app, so the publish fails with MSB3030 (Microsoft.Windows.SDK.BuildTools.MSIX 1.7.251221100 to 1.7.261102100).
          Windows only: on Mac Catalyst the full build first fills the .app with the CoreCLR runtime and a 70 MB R2R image. -->
     <UseOptimizedPublish>false</UseOptimizedPublish>
     <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
@@ -40,7 +41,6 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks> <!-- [LibraryImport] for the Objective-C runtime -->
     <RuntimeIdentifier>maccatalyst-arm64</RuntimeIdentifier>
     <SupportedOSPlatformVersion>26.0</SupportedOSPlatformVersion>
-    <ValidateXcodeVersion>false</ValidateXcodeVersion> <!-- .NET 11 RC2: the Mac Catalyst SDK requires Xcode 27.0 and refuses 27.1, which builds and runs it; remove at GA -->
   </PropertyGroup>
 
   <!-- Security options of the Native AOT executable -->
@@ -105,7 +105,7 @@
 
   <!-- Windows NuGets -->
   <ItemGroup Condition="'$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == 'windows'">
-    <!-- Unused parts of MAUI and of the Windows App SDK meta package: web view, AI, machine learning and widgets add about 40 MB -->
+    <!-- Unused parts of MAUI and of the Windows App SDK meta package: web view, AI, machine learning, search and widgets add about 43 MB -->
     <PackageReference Include="Microsoft.Web.WebView2">
       <ExcludeAssets>all</ExcludeAssets>
     </PackageReference>
@@ -116,6 +116,9 @@
       <ExcludeAssets>all</ExcludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.WindowsAppSDK.ML">
+      <ExcludeAssets>all</ExcludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.WindowsAppSDK.Search">
       <ExcludeAssets>all</ExcludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.WindowsAppSDK.Widgets">
