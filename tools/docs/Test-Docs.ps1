@@ -906,7 +906,8 @@ if ($Base) {
             $baseFm = Read-FrontMatter @(Get-BaseLines $rel)
             $previous = if ($baseFm.End -ge 0) { Get-FmScalar $baseFm 'last-reviewed' } else { $null }
         }
-        $bumped = $isNew -or $current -cne $previous
+        # A date that is already today counts as reviewed: a second change on the same day can't move it.
+        $bumped = $isNew -or $current -cne $previous -or $current -ceq $today.ToString('yyyy-MM-dd', [Globalization.CultureInfo]::InvariantCulture)
 
         $hits = [Collections.Generic.List[string]]::new()
         $regexes = @(foreach ($glob in (Get-FmList $model.Fm 'covers')) { ConvertTo-GlobRegex $glob })

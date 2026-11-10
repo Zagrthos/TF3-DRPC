@@ -36,6 +36,21 @@ API for native extensions.
 | [00-meta/documentation-guide.md](00-meta/documentation-guide.md) | how to document: types, places, front matter, writing rules, the docs gate |
 | [00-meta/glossary.md](00-meta/glossary.md) | the terms used across the documents |
 | [10-overview/status.md](10-overview/status.md) | the project's state, known limits and to-dos |
+| [10-overview/repository-layout.md](10-overview/repository-layout.md) | what each folder and file of the repository is for |
+| [20-development/setup.md](20-development/setup.md) | setting up a development machine |
+| [20-development/setup-macos.md](20-development/setup-macos.md) | the extra setup steps on a Mac |
+| [20-development/build-and-publish.md](20-development/build-and-publish.md) | building, testing and publishing the app, the release zip |
+| [20-development/build-pitfalls.md](20-development/build-pitfalls.md) | known build traps and their fixes |
+| [20-development/mod-development.md](20-development/mod-development.md) | running the mod from the checkout |
+| [20-development/git-workflow.md](20-development/git-workflow.md) | commits, pull requests, labels, stacked pull requests |
+| [30-conventions/csharp.md](30-conventions/csharp.md) | C# style |
+| [30-conventions/architecture-patterns.md](30-conventions/architecture-patterns.md) | the patterns of the companion app |
+| [30-conventions/native-aot.md](30-conventions/native-aot.md) | the Native AOT rules |
+| [30-conventions/portable-app.md](30-conventions/portable-app.md) | writing only into `DATA/` |
+| [30-conventions/lua.md](30-conventions/lua.md) | Lua style for the mod |
+| [30-conventions/writing.md](30-conventions/writing.md) | the language of documents, commits and the app's texts |
+| [40-reference/ci-and-release.md](40-reference/ci-and-release.md) | the workflows and the release |
+| [50-testing/strategy.md](50-testing/strategy.md) | what is tested how, and the validation per change |
 | [70-decisions/](70-decisions/README.md) | decision records, one file per decision |
 | [70-decisions/0001-documentation-system.md](70-decisions/0001-documentation-system.md) | 0001: one documentation system for people and agents |
 | [90-records/](90-records/README.md) | dated records: test runs, releases |
@@ -49,8 +64,7 @@ API for native extensions.
 | [log-samples/](log-samples/) | real game log lines for the parser tests |
 
 What the project does for players is in the [README](../README.md); how to contribute is in
-[CONTRIBUTING.md](../CONTRIBUTING.md). Coding conventions, commands and rules for contributors
-are in [AGENTS.md](../AGENTS.md).
+[CONTRIBUTING.md](../CONTRIBUTING.md). Coding agents start at [AGENTS.md](../AGENTS.md).
 
 ## Decisions
 
@@ -84,21 +98,21 @@ Each decision has its reason, so it isn't undone by accident.
 | Log lines from before the game process started are ignored | Until the game truncates its log, the file still holds the previous session |
 | Translations compiled into the exe by an extra build target | Native AOT can't load satellite assemblies, and ILC only takes those of NuGet packages |
 | Publish size measures (305 MB down to 83 MB) | See [companion.md](companion.md#projects); unused Windows App SDK parts and symbols are left out |
-| One code style and build file layout | Rules in [AGENTS.md](../AGENTS.md) |
+| One code style and build file layout | Rules in [30-conventions/](30-conventions/csharp.md) |
 | One JSON source-generation context per project; no `Testing` configuration | Decided with the code style |
 | The excluded Windows App SDK parts stay on the versions MAUI resolves | Raising them alone would mix runtime versions; they move only together with MAUI |
 | CommunityToolkit.Maui not used | No `net11.0` build yet, and the settings window needed nothing from it through step 3.2 |
 | File logs through NReco.Logging.File | |
-| Work in a `gh stack` of pull requests | See [AGENTS.md](../AGENTS.md#commit--pull-request-guidelines) |
+| Work in a `gh stack` of pull requests | See [commits, pull requests and labels](20-development/git-workflow.md#stacked-pull-requests) |
 | CI on GitHub Actions: `ci.yml` builds and tests every pull request and every push to `main` that changes what the build reads (`companion/`, the log samples, the app icon, the release scripts, `LICENSE`) on Windows and macOS, `release.yml` publishes an immutable release for a `v<VersionPrefix>` tag on `main` (no pre-release tags) | Both call the same `tools/build-release.ps1` a developer runs by hand. macOS runs on the `xcode-27` preview image, the only one with the Xcode 27.2 the .NET 11 Mac Catalyst SDK needs. Jobs that don't build use the `ubuntu-slim` runner (it has PowerShell and the GitHub CLI). Actions are pinned to commit hashes. Releases are immutable: a published release's tag and files can't change and the tag name can't be reused, so the workflow builds a draft, compares its files, publishes it and verifies GitHub's attestation, all with the `gh` CLI (GitHub's own release actions are archived, and third-party ones would get write access to the releases). A run takes about 6 minutes on Windows and 3 on macOS; a pull request that changes only the docs, the mod or the test-run scripts skips the build after the first step (the `CI on main` ruleset requires the `Windows` and `macOS` checks, so their jobs must report; while the repository was private, each full run cost about 42 Actions minutes), such a push to `main` doesn't start one, and `workflow_dispatch` runs it by hand. The mod stays a manual upload: only the game's Mod Hub validates it and prepares it for consoles |
 | The first release is unsigned on Windows and macOS; the README walks players through the SmartScreen warning and Gatekeeper's "Open Anyway" | A code-signing certificate and the Apple Developer account cost money every year before anyone uses the app; signing follows later (see [status.md](10-overview/status.md#to-do)) |
 | The first release ships on .NET 11 RC2, before GA | RC2 has a go-live licence and every test and game run used it; the GA update follows as its own release |
 | The first release is app version `0.1.0` and mod `revision` 1 | Below 1.0 while it runs on a release candidate and the macOS app is experimental |
 | The game build shows in the settings window only, untranslated, as "Transport Fever 3 · Build <number>" | It helps with bug reports and costs no new read: the app already follows the log, which names the build at every start. The game itself shows "Build <number>" untranslated in every language. Discord doesn't get it, because it means nothing to others |
-| A README for players, a short CONTRIBUTING.md, AGENTS.md stays the detailed guide | Players and contributors need different things; CONTRIBUTING links to AGENTS.md instead of copying its rules, so the two can't drift apart. `CONTRIBUTING.md` is the name GitHub links from issues and pull requests |
+| A README for players, a short CONTRIBUTING.md, AGENTS.md stays the detailed guide (superseded by [0001](70-decisions/0001-documentation-system.md): AGENTS.md and CONTRIBUTING.md are entry points, the details are in `docs/`) | Players and contributors need different things; CONTRIBUTING links to AGENTS.md instead of copying its rules, so the two can't drift apart. `CONTRIBUTING.md` is the name GitHub links from issues and pull requests |
 | Issue forms with required fields, no blank issues | A bug report needs the system, the app and game versions and the logs; the chooser sends questions to the README's installation and troubleshooting sections |
 | Labels: one kind (`bug`, `enhancement`) plus `area-` labels; no `duplicate`, `invalid`, `wontfix` or `question` | The areas match the project's parts; GitHub's close reasons ("duplicate", "not planned") replace the removed labels |
-| Nothing in the repository identifies a person or a machine | It is public: evidence, logs and screenshots use placeholders for paths and leave out account IDs, hardware, display details, time zones and image metadata (see [AGENTS.md](../AGENTS.md#security--configuration)) |
+| Nothing in the repository identifies a person or a machine | It is public: evidence, logs and screenshots use placeholders for paths and leave out account IDs, hardware, display details, time zones and image metadata (see [SECURITY.md](../SECURITY.md#keeping-personal-data-out)) |
 
 ## Next steps
 
@@ -176,28 +190,7 @@ Each decision has its reason, so it isn't undone by accident.
 
 ## Repository layout
 
-| Path | Content |
-|---|---|
-| `mod/zagrthos_drpc/` | the mod; its `_metadata/` also holds the Mod Hub's cover (`0.png`) and gallery images |
-| `tools/install-mod.ps1` | links the mod into the game's staging area (Windows and macOS) |
-| `tools/build-release.ps1` | tests, publishes and zips the companion app for the platform it runs on, into `artifacts/` |
-| `tools/new-third-party-notices.ps1`, `tools/licences/` | writes the zips' `THIRD-PARTY-NOTICES.txt` from the restore output; the SPDX texts and the licence texts of packages that only link to theirs |
-| `tools/docs/` | `Test-Docs.ps1`, the documentation validator, and its settings `docs-config.psd1` |
-| `tools/test-run/` | scripts that drive the game and the app in a test run (the game scripts also on macOS); see its README |
-| `docs/` | these documents and the log samples |
-| `.claude/skills/tf3-modding/` | an offline copy of the TF3 modding reference for coding agents |
-| `reviews/` | dated code reviews with their reproduction scripts and recorded evidence |
-| `assets/discord/` | images uploaded to the Discord application (`cover.png`), also the app icon's source |
-| `companion/` | the companion app: `Tf3Drpc.Core`, `Tf3Drpc.App`, `Tf3Drpc.Core.Tests` |
-| `README.md`, `CONTRIBUTING.md`, `LICENSE` | the overview for players, the guide for new contributors, the MIT licence |
-| `CHANGELOG.md` | what each release of the app and the mod brings; the text for the GitHub release and the Mod Hub upload |
-| `AGENTS.md` | conventions, commands and rules for contributors |
-| `.github/` | the issue forms, the issue chooser, the pull request template, and the workflows `ci.yml` (build and test), `release.yml` (release for a `v<VersionPrefix>` tag on `main`), `docs.yml` (the documentation checks) and one `codeql-<language>.yml` per CodeQL language (Actions, C#, Swift) with their shared `codeql/codeql-config.yml` |
-| `.editorconfig` | shared editor and analyser settings; don't edit locally |
-
-Only what the project needs goes into git. `.gitignore` is the Visual Studio template plus
-`DATA/`, `*.zip` and local editor and system files (`.vscode/`,
-`.DS_Store`); the log samples are excepted from its `*.log` rule.
+What each folder and file is for is in [10-overview/repository-layout.md](10-overview/repository-layout.md).
 
 ## Sources
 
