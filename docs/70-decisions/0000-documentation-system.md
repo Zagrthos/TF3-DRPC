@@ -1,5 +1,5 @@
 ---
-title: 0001 One documentation system for people and agents
+title: 0000 One documentation system for people and agents
 type: decision
 audience: [contributor, maintainer, agent]
 area: [docs]
@@ -8,7 +8,7 @@ decided: 2026-11-10
 last-reviewed: 2026-11-10
 ---
 
-# 0001 One documentation system for people and agents
+# 0000 One documentation system for people and agents
 
 ## Context
 

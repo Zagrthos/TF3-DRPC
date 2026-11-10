@@ -7,13 +7,13 @@ covers:
   - companion/Tf3Drpc.App/Tf3Drpc.App.csproj
   - companion/Tf3Drpc.Core/Tf3Drpc.Core.csproj
   - companion/Directory.Build.props
-last-reviewed: 2026-11-10
+last-reviewed: 2026-11-11
 ---
 
 # Native AOT
 
 The app and `Tf3Drpc.Core` are published with Native AOT, and these rules hold in both without exception; `Tf3Drpc.Core.Tests` is exempt.
-Why the app is AOT-compiled is in [docs/README.md](../README.md#decisions).
+Why the app is AOT-compiled is in [decision 0009](../70-decisions/0009-net-11-maui-with-native-aot.md).
 
 ## Code
 

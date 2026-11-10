@@ -53,4 +53,4 @@ Details and traps: [build and publish](docs/20-development/build-and-publish.md)
 - [docs/README.md](docs/README.md): every document.
 - [docs/10-overview/repository-layout.md](docs/10-overview/repository-layout.md): what each folder is for.
 - [docs/10-overview/status.md](docs/10-overview/status.md): the project's state, known limits and to-dos.
-- [docs/20-development/git-workflow.md](docs/20-development/git-workflow.md): commits, pull requests, labels and `gh stack`.
+- [docs/20-development/git-workflow.md](docs/20-development/git-workflow.md): commits, pull requests and `gh stack`.

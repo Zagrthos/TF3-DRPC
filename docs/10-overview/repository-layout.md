@@ -7,7 +7,7 @@ covers:
   - .gitignore
   - companion/*.slnx
   - tools/*.ps1
-last-reviewed: 2026-11-10
+last-reviewed: 2026-11-11
 ---
 
 # Repository layout

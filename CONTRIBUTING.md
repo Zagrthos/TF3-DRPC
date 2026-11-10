@@ -23,7 +23,7 @@ Issues use forms for bug reports, feature requests and translations; pull reques
 3. Follow the rules for the part you change: [C#](docs/30-conventions/csharp.md), [Native AOT](docs/30-conventions/native-aot.md), [architecture patterns](docs/30-conventions/architecture-patterns.md), [Lua](docs/30-conventions/lua.md), [written content](docs/30-conventions/writing.md).
 4. Test as the [testing strategy](docs/50-testing/strategy.md) says, and with the game and Discord as in [docs/testing.md](docs/testing.md).
 5. Update the documentation with the [docs gate](docs/00-meta/documentation-guide.md#docs-gate).
-6. Commit and open a pull request as in [commits, pull requests and labels](docs/20-development/git-workflow.md).
+6. Commit and open a pull request as in [commits and pull requests](docs/20-development/git-workflow.md).
 
 A change to the app builds in Debug and Release, passes the tests and the analysers, and publishes without a new warning.
 Say in your pull request what you tested with the game, and what you couldn't, for example the other platform.
