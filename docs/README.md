@@ -1,12 +1,6 @@
 # Discord Rich Presence for Transport Fever 3
 
-Status: the mod, the companion app and the polish of step 3 are done on Windows and macOS. Both
-were reviewed three times (last on 2026-10-17) and tested end to end with the game and Discord:
-the whole [testing.md](testing.md) on macOS on 2026-10-20 and on Windows on 2026-10-21, and
-what was added since on both by 2026-10-24. Every item of [platform-parity.md](platform-parity.md)
-is done or checked. The first release, `0.1.0` (step 3.3), is out: the app on GitHub,
-unsigned and on .NET 11 RC2, and the mod on mod.io, both public.
-Date: 2026-10-24
+Where the project stands, its known limits and its to-dos are in [status.md](10-overview/status.md).
 
 ## How it works
 
@@ -39,6 +33,12 @@ API for native extensions.
 
 | Document | Content |
 |---|---|
+| [00-meta/documentation-guide.md](00-meta/documentation-guide.md) | how to document: types, places, front matter, writing rules, the docs gate |
+| [00-meta/glossary.md](00-meta/glossary.md) | the terms used across the documents |
+| [10-overview/status.md](10-overview/status.md) | the project's state, known limits and to-dos |
+| [70-decisions/](70-decisions/README.md) | decision records, one file per decision |
+| [70-decisions/0001-documentation-system.md](70-decisions/0001-documentation-system.md) | 0001: one documentation system for people and agents |
+| [90-records/](90-records/README.md) | dated records: test runs, releases |
 | [mod.md](mod.md) | the mod |
 | [status-line.md](status-line.md) | the `[drpc-status]` line, the interface between mod and companion |
 | [game-log.md](game-log.md) | finding and reading the game log, the lines that matter, samples |
@@ -91,7 +91,7 @@ Each decision has its reason, so it isn't undone by accident.
 | File logs through NReco.Logging.File | |
 | Work in a `gh stack` of pull requests | See [AGENTS.md](../AGENTS.md#commit--pull-request-guidelines) |
 | CI on GitHub Actions: `ci.yml` builds and tests every pull request and every push to `main` that changes what the build reads (`companion/`, the log samples, the app icon, the release scripts, `LICENSE`) on Windows and macOS, `release.yml` publishes an immutable release for a `v<VersionPrefix>` tag on `main` (no pre-release tags) | Both call the same `tools/build-release.ps1` a developer runs by hand. macOS runs on the `xcode-27` preview image, the only one with the Xcode 27.2 the .NET 11 Mac Catalyst SDK needs. Jobs that don't build use the `ubuntu-slim` runner (it has PowerShell and the GitHub CLI). Actions are pinned to commit hashes. Releases are immutable: a published release's tag and files can't change and the tag name can't be reused, so the workflow builds a draft, compares its files, publishes it and verifies GitHub's attestation, all with the `gh` CLI (GitHub's own release actions are archived, and third-party ones would get write access to the releases). A run takes about 6 minutes on Windows and 3 on macOS; a pull request that changes only the docs, the mod or the test-run scripts skips the build after the first step (the `CI on main` ruleset requires the `Windows` and `macOS` checks, so their jobs must report; while the repository was private, each full run cost about 42 Actions minutes), such a push to `main` doesn't start one, and `workflow_dispatch` runs it by hand. The mod stays a manual upload: only the game's Mod Hub validates it and prepares it for consoles |
-| The first release is unsigned on Windows and macOS; the README walks players through the SmartScreen warning and Gatekeeper's "Open Anyway" | A code-signing certificate and the Apple Developer account cost money every year before anyone uses the app; signing follows later (see [To do later](#to-do-later)) |
+| The first release is unsigned on Windows and macOS; the README walks players through the SmartScreen warning and Gatekeeper's "Open Anyway" | A code-signing certificate and the Apple Developer account cost money every year before anyone uses the app; signing follows later (see [status.md](10-overview/status.md#to-do)) |
 | The first release ships on .NET 11 RC2, before GA | RC2 has a go-live licence and every test and game run used it; the GA update follows as its own release |
 | The first release is app version `0.1.0` and mod `revision` 1 | Below 1.0 while it runs on a release candidate and the macOS app is experimental |
 | The game build shows in the settings window only, untranslated, as "Transport Fever 3 · Build <number>" | It helps with bug reports and costs no new read: the app already follows the log, which names the build at every start. The game itself shows "Build <number>" untranslated in every language. Discord doesn't get it, because it means nothing to others |
@@ -99,26 +99,6 @@ Each decision has its reason, so it isn't undone by accident.
 | Issue forms with required fields, no blank issues | A bug report needs the system, the app and game versions and the logs; the chooser sends questions to the README's installation and troubleshooting sections |
 | Labels: one kind (`bug`, `enhancement`) plus `area-` labels; no `duplicate`, `invalid`, `wontfix` or `question` | The areas match the project's parts; GitHub's close reasons ("duplicate", "not planned") replace the removed labels |
 | Nothing in the repository identifies a person or a machine | It is public: evidence, logs and screenshots use placeholders for paths and leave out account IDs, hardware, display details, time zones and image metadata (see [AGENTS.md](../AGENTS.md#security--configuration)) |
-
-## To do later
-
-- **macOS:**
-  - A universal build (`maccatalyst-arm64;maccatalyst-x64`), since macOS 26 still runs on some Intel Macs; only `maccatalyst-arm64` is built now.
-- **Signing**, after the first release:
-  - A Windows code-signing certificate, so SmartScreen stops warning; then drop the README's SmartScreen section.
-  - An Apple Developer account (99 USD per year) to sign and notarise macOS releases; then drop the README's "Open Anyway" steps.
-- **Translations:** the app's own texts in 12 languages, also the translocation text (DeepL, 2026-10-20), checked by native speakers. Not tied to a release: each language ships once its check is done.
-- CI: move macOS from the `xcode-27` preview image to a regular image once one has Xcode 27, and raise the pinned actions now and then.
-
-## Open points
-
-None blocks the release; all are accepted as they are:
-
-- [x] The edge cases of the mod hardening (NaN or infinity, a clock set back, a balance above 2^31, a failing date field, values of an unexpected type, a malformed configuration pair) didn't occur in the game runs; they are covered only by the reviews' Lua harnesses ([reviews/mod/](../reviews/mod/)).
-- [x] Not checked by hand: a real second Steam account with a log dated in the future (unit tests only).
-- [x] While a new game's map is generated (up to a minute) the app still shows the main menu; the log has `Seed text:` there but no line the app uses for Loading ([game-log.md](game-log.md#lines-that-matter)).
-- [x] The game folder is only looked for in the default Steam library (no `libraryfolders.vdf`); it's found anyway through the running process.
-- [x] The test-run scripts' Windows set of `calibration.psd1`, measured on build 40423, checked on build 40425 on 2026-10-24: `start`, `load`, `classify` of the game menu and the Quit flyout, `photo` and `quit` worked with the points and boxes unchanged.
 
 ## Next steps
 
@@ -202,6 +182,7 @@ None blocks the release; all are accepted as they are:
 | `tools/install-mod.ps1` | links the mod into the game's staging area (Windows and macOS) |
 | `tools/build-release.ps1` | tests, publishes and zips the companion app for the platform it runs on, into `artifacts/` |
 | `tools/new-third-party-notices.ps1`, `tools/licences/` | writes the zips' `THIRD-PARTY-NOTICES.txt` from the restore output; the SPDX texts and the licence texts of packages that only link to theirs |
+| `tools/docs/` | `Test-Docs.ps1`, the documentation validator, and its settings `docs-config.psd1` |
 | `tools/test-run/` | scripts that drive the game and the app in a test run (the game scripts also on macOS); see its README |
 | `docs/` | these documents and the log samples |
 | `.claude/skills/tf3-modding/` | an offline copy of the TF3 modding reference for coding agents |
@@ -211,7 +192,7 @@ None blocks the release; all are accepted as they are:
 | `README.md`, `CONTRIBUTING.md`, `LICENSE` | the overview for players, the guide for new contributors, the MIT licence |
 | `CHANGELOG.md` | what each release of the app and the mod brings; the text for the GitHub release and the Mod Hub upload |
 | `AGENTS.md` | conventions, commands and rules for contributors |
-| `.github/` | the issue forms, the issue chooser, the pull request template, and the workflows `ci.yml` (build and test), `release.yml` (release for a `v<VersionPrefix>` tag on `main`) and one `codeql-<language>.yml` per CodeQL language (Actions, C#, Swift) with their shared `codeql/codeql-config.yml` |
+| `.github/` | the issue forms, the issue chooser, the pull request template, and the workflows `ci.yml` (build and test), `release.yml` (release for a `v<VersionPrefix>` tag on `main`), `docs.yml` (the documentation checks) and one `codeql-<language>.yml` per CodeQL language (Actions, C#, Swift) with their shared `codeql/codeql-config.yml` |
 | `.editorconfig` | shared editor and analyser settings; don't edit locally |
 
 Only what the project needs goes into git. `.gitignore` is the Visual Studio template plus

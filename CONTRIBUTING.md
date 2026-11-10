@@ -57,7 +57,7 @@ person.
 | [mod/zagrthos_drpc/](mod/zagrthos_drpc/) | the game mod (Lua) |
 | [companion/](companion/) | the companion app: `Tf3Drpc.Core` (logic, no UI), `Tf3Drpc.App` (the MAUI app) and `Tf3Drpc.Core.Tests` |
 | [docs/](docs/README.md) | design documents, decisions, status and real game log samples |
-| [tools/](tools/) | `install-mod.ps1`, `build-release.ps1` (the release zip) and the scripts for test runs in [tools/test-run/](tools/test-run/README.md) |
+| [tools/](tools/) | `install-mod.ps1`, `build-release.ps1` (the release zip), `tools/docs/Test-Docs.ps1` (checks the documentation) and the scripts for test runs in [tools/test-run/](tools/test-run/README.md) |
 | [reviews/](reviews/) | dated code reviews with their reproduction scripts and recorded evidence |
 | [assets/discord/](assets/discord/) | the images of the Discord application |
 | [CHANGELOG.md](CHANGELOG.md) | what each release brings; also the text of the GitHub release and the Mod Hub upload |

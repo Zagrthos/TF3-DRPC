@@ -24,7 +24,8 @@ Everything here is public: keep personal details out of descriptions, logs and s
 
 ## Checklist
 
-- [ ] The documentation in `docs/`, `README.md` and `AGENTS.md` is up to date with this change.
-- [ ] A change players notice has a line in `CHANGELOG.md`.
+- [ ] The [docs gate](https://github.com/Zagrthos/TF3-DRPC/blob/main/docs/00-meta/documentation-guide.md#docs-gate) is done: every document it lists is updated (added, changed or removed content) and has a new `last-reviewed` date, and `pwsh ./tools/docs/Test-Docs.ps1 -Base origin/main` reports no errors.
+- [ ] `docs/10-overview/status.md` is up to date, and a new or reversed decision has its record in `docs/70-decisions/`.
+- [ ] A change players notice has a line in `CHANGELOG.md`, and `README.md` follows what players see or do.
 - [ ] Logs, screenshots and evidence contain no personal or machine details.
 - [ ] Documentation and commit messages are in British English.
