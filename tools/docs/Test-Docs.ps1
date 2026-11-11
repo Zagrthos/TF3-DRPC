@@ -893,7 +893,7 @@ if ($Base) {
     # merge base. Merge commits don't count, because CI checks out a merge commit made at run time.
     $changeDate = $today.ToString('yyyy-MM-dd', [Globalization.CultureInfo]::InvariantCulture)
     if (@(Invoke-Git @('status', '--porcelain')).Count -eq 0) {
-        $newest = @(Invoke-Git @('log', '--no-merges', '-1', '--format=%cs', "$mergeBase..HEAD"))[0]
+        $newest = Invoke-Git @('log', '--no-merges', '-1', '--format=%cs', "$mergeBase..HEAD") | Select-Object -First 1
         if ($newest) { $changeDate = $newest }
     }
 
