@@ -23,6 +23,7 @@ Every action is pinned to a commit hash.
 | `ci.yml` (CI) | every pull request; a push to `main` that changes what the build reads; `workflow_dispatch` | builds Debug and Release and runs the tests on Windows and macOS; a push to `main` also keeps both release zips as workflow artifacts for 14 days |
 | `release.yml` (Release) | a pushed `v*` tag | checks the tag, builds and tests both zips, publishes an immutable GitHub release |
 | `docs.yml` (Docs) | every pull request and push to `main`; `workflow_dispatch` | runs `tools/docs/Test-Docs.ps1`, with the docs gate against the base branch on a pull request ([documentation guide](../00-meta/documentation-guide.md#the-validator)) |
+| `links.yml` (Links) | every Monday; `workflow_dispatch` | checks the external links of the Markdown files with lychee, leaving out the review records in `reviews/` |
 | `codeql-<language>.yml` | per language: Actions, C# (on Windows and macOS), Swift | CodeQL analysis, configured by `.github/codeql/codeql-config.yml`, which leaves out `reviews/`; Lua and PowerShell have no CodeQL support |
 
 ## CI

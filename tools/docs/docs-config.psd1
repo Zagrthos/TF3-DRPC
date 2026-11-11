@@ -21,9 +21,8 @@
     TypesRequiringCovers = @('reference', 'rules', 'guide', 'runbook')
     CoversOptional = @('docs/00-meta/**')
 
-    # The numbered folders under docs/, and folders that hold no documents to check (sample data).
+    # The numbered folders under docs/.
     Folders = @('00-meta', '10-overview', '20-development', '30-conventions', '40-reference', '50-testing', '60-runbooks', '70-decisions', '90-records')
-    LegacyFolders = @('log-samples')
 
     # The types each folder accepts. A README.md is an index in every folder.
     FolderTypes = @{
@@ -38,18 +37,11 @@
         '90-records'     = @('record')
     }
 
-    # Files not yet moved into the new layout: no front matter, naming, folder, heading or line-style
-    # checks; links and privacy are still checked. This list only shrinks.
-    Legacy = @(
-        'README.md'
-        '.github/PULL_REQUEST_TEMPLATE.md'
-    )
-
     # Files exempt from single checks. Records are never rewritten (reviews/<area>/<date>/ only;
     # reviews/README.md is checked). The changelog keeps one line per paragraph for the release text.
     LineStyleExempt = @('CHANGELOG.md', 'reviews/*/**')
     LinkCheckExempt = @('reviews/*/**')
-    HeadingCheckExempt = @('reviews/*/**')
+    HeadingCheckExempt = @('reviews/*/**', '.github/PULL_REQUEST_TEMPLATE.md')
 
     # Words that announce plans; they belong in docs/10-overview/status.md only.
     PlanMarkers = @('planned', 'not yet', 'TODO', 'will be', 'for now')

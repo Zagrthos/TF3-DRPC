@@ -365,7 +365,7 @@ FodyWeavers.xsd
 ############ Custom Files of TF3-DRPC ############
 
 # Real game log lines used as test input (*.log is ignored above)
-!docs/log-samples/*.log
+!docs/40-reference/log-samples/*.log
 
 # DATA folders that local runs of the companion app create
 DATA/

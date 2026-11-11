@@ -370,14 +370,11 @@ foreach ($file in $allFiles) {
     }
 }
 
-$legacySet = [Collections.Generic.HashSet[string]]::new([StringComparer]::Ordinal)
-foreach ($entry in $config.Legacy) { [void]$legacySet.Add($entry) }
 
-# template and legacy get fewer checks; frontmatter is every other file under docs/; other is the rest.
+# template gets fewer checks; frontmatter is every other file under docs/; other is the rest.
 function Get-Category {
     param([string]$Rel)
     if (Test-Glob $Rel $config.Templates) { return 'template' }
-    if ($legacySet.Contains($Rel)) { return 'legacy' }
     if ($Rel.StartsWith('docs/')) { return 'frontmatter' }
     'other'
 }
@@ -666,11 +663,11 @@ function Test-Naming {
     $parts = $rel.Split('/')
     $name = $parts[-1]
     if ($parts.Count -eq 2) {
-        if ($name -cne 'README.md') { Add-Error 'DOC004' $rel $null 'a Markdown file directly in docs/ must be README.md or listed as Legacy in the settings; move it into a numbered folder' }
+        if ($name -cne 'README.md') { Add-Error 'DOC004' $rel $null 'a Markdown file directly in docs/ must be README.md; move it into a numbered folder' }
         return
     }
     $folder = $parts[1]
-    if ($folder -cnotin $config.Folders -and $folder -cnotin $config.LegacyFolders) {
+    if ($folder -cnotin $config.Folders) {
         Add-Error 'DOC004' $rel $null "folder '$folder' is not one of the numbered folders: $($config.Folders -join ', ')"
     }
     if ($name -cne 'README.md' -and $name -cnotmatch "^$kebab\.md$") {
@@ -762,6 +759,10 @@ function Get-LineClass {
     if ($Line -match '^ {0,3}#{1,6}(\s|$)') { return 'heading' }
     if ($Line -match '^\s*\|') { return 'table' }
     if ($Line -match '^\s*<') { return 'html' }
+    # A GitHub alert marker such as "> [!NOTE]" opens a note box; it is no sentence.
+    if ($Line -match '^\s*>\s*\[![A-Za-z]+\]\s*$') { return 'alert' }
+    # An empty quote line separates two paragraphs of a quote.
+    if ($Line -match '^\s*>\s*$') { return 'blank' }
     if ($Line -match '^\s*([-*_])(\s*\1){2,}\s*$') { return 'rule' }
     if ($Line -match '^\s{0,3}\[(?!\^)[^\]]+\]:\s') { return 'refdef' }
     if ($Line -match '^\s*(?:[-*+]|\d+[.)])\s+') { return 'list' }

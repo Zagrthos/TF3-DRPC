@@ -16,7 +16,7 @@ namespace Tf3Drpc.Core.Presence;
 /// </remarks>
 public sealed class PresencePreview
 {
-    // The first status line of docs/log-samples/session.log.
+    // The first status line of docs/40-reference/log-samples/session.log.
     private static readonly ModStatus ExampleStatus = new()
     {
         Version = 1,

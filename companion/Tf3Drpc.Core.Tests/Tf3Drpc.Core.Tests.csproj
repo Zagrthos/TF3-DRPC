@@ -9,7 +9,7 @@
 
   <!-- Content Files -->
   <ItemGroup>
-    <None Include="..\..\docs\log-samples\*.log" CopyToOutputDirectory="PreserveNewest" LinkBase="log-samples" />
+    <None Include="..\..\docs\40-reference\log-samples\*.log" CopyToOutputDirectory="PreserveNewest" LinkBase="log-samples" />
   </ItemGroup>
 
   <!-- Shared Projects -->

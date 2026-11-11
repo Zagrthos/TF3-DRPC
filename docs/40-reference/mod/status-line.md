@@ -7,8 +7,6 @@ covers:
   - mod/zagrthos_drpc/content/drpc/drpc.script.lua
   - companion/Tf3Drpc.Core/Status/**
 last-reviewed: 2026-11-11
-verified:
-  - windows 2026-10-21
 ---
 
 # The status line
@@ -61,4 +59,4 @@ Example values in brackets:
 - **Strings** escape exactly what JSON requires (bytes 0–31, `"` and `\`); UTF-8 bytes stay as they are under every C locale.
 - The mod sends everything; the companion decides what Discord shows, so the mod has no parameters.
 - `rankName` and a "New Game" `saveName` are in the game's language; see [status values in the game's language](../presence/texts-and-languages.md#status-values-in-the-games-language).
-- Real lines: [log-samples/session.log](../../log-samples/session.log).
+- Real lines: [log-samples/session.log](../log-samples/session.log).

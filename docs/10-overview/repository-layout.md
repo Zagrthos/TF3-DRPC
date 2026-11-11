@@ -18,7 +18,7 @@ What each top-level folder and file is for.
 |---|---|
 | [companion/](../../companion/) | the companion app: `Tf3Drpc.Core` (logic, no UI), `Tf3Drpc.App` (the MAUI app), `Tf3Drpc.Core.Tests`; the solution `TF3-DRPC.slnx`, `global.json` and the shared build files |
 | [mod/zagrthos_drpc/](../../mod/zagrthos_drpc/) | the game mod (Lua); `_metadata/0.png` and the following images are its Mod Hub cover and gallery, 1920 × 1080 |
-| [docs/](../README.md) | the documentation, in numbered folders ([documentation guide](../00-meta/documentation-guide.md#files-and-folders)), and the game log samples in `docs/log-samples/` |
+| [docs/](../README.md) | the documentation, in numbered folders ([documentation guide](../00-meta/documentation-guide.md#files-and-folders)), and the game log samples in `docs/40-reference/log-samples/` |
 | [tools/](../../tools/) | `install-mod.ps1` (links the mod into the game), `build-release.ps1` (the release zip), `new-third-party-notices.ps1` with `licences/` (the zips' notices), `docs/` (the documentation validator) and `test-run/` (scripts that drive the game and the app in a test run) |
 | [reviews/](../../reviews/README.md) | dated code reviews with their reproduction scripts and recorded evidence |
 | [assets/discord/](../../assets/discord/) | the images of the Discord application; `cover.png` is also the source of the app icon |

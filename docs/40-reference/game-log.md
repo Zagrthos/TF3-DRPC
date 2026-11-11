@@ -5,7 +5,7 @@ audience: [contributor, agent]
 area: [app, windows, macos]
 covers:
   - companion/Tf3Drpc.Core/GameLog/**
-  - docs/log-samples/**
+  - docs/40-reference/log-samples/**
 last-reviewed: 2026-11-11
 verified:
   - windows 2026-10-21
@@ -100,7 +100,7 @@ Real lines from the Windows test runs for the parser tests, kept byte for byte (
 
 | File | Content |
 |---|---|
-| [log-samples/session.log](../log-samples/session.log) | start, main menu, loading a save with the mod, three status lines, a multi-line entry, a non-ASCII line, leaving the game, shutdown |
-| [log-samples/startup.log](../log-samples/startup.log) | the first, sixth and seventh line of a real start: `Application startup. Hello!` and the two build lines. The other start lines hold a session ID, hardware details and the user data path, so they are left out |
-| [log-samples/mission.log](../log-samples/mission.log) | starting campaign mission 1 |
-| [log-samples/crash.log](../log-samples/crash.log) | a crash ending in `Ungraceful exit` |
+| [log-samples/session.log](log-samples/session.log) | start, main menu, loading a save with the mod, three status lines, a multi-line entry, a non-ASCII line, leaving the game, shutdown |
+| [log-samples/startup.log](log-samples/startup.log) | the first, sixth and seventh line of a real start: `Application startup. Hello!` and the two build lines. The other start lines hold a session ID, hardware details and the user data path, so they are left out |
+| [log-samples/mission.log](log-samples/mission.log) | starting campaign mission 1 |
+| [log-samples/crash.log](log-samples/crash.log) | a crash ending in `Ungraceful exit` |

@@ -1,7 +1,7 @@
 <!--
-Thanks for contributing. Please read CONTRIBUTING.md first.
-Everything here is public: keep personal details out of descriptions, logs and screenshots.
--->
+Thanks for contributing.
+Please read CONTRIBUTING.md first.
+Everything here is public: keep personal details out of descriptions, logs and screenshots. -->
 
 ## What changes
 
