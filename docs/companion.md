@@ -11,7 +11,7 @@ are in [README.md](README.md#decisions), open work in [status.md](10-overview/st
 | | Windows | macOS |
 |---|---|---|
 | Target | WinUI 3, `net11.0-windows10.0.19041.0` | Mac Catalyst, `net11.0-maccatalyst` |
-| Native AOT | `PublishAot` with `UseOptimizedPublish=false` (the optimised publish skips `PrepareForRun`, where the Windows App SDK's MSIX tooling writes the `.pri` of an unpackaged app, and fails with `MSB3030`; generating the `.pri` explicitly fills `bin/` again, so it saves nothing); works, one known MAUI trim warning and 20 informational ILC messages about the left-out WebView2 (see [AGENTS.md](../AGENTS.md#native-aot-rules)) | `PublishAot`, `RuntimeIdentifier` `maccatalyst-arm64`, the optimised publish (a full build first would leave the CoreCLR runtime and a 70 MB R2R image in the `.app`); works, one informational ILC message about `UIKit.NSLayoutAnchor`1` |
+| Native AOT | `PublishAot` with `UseOptimizedPublish=false` (the optimised publish skips `PrepareForRun`, where the Windows App SDK's MSIX tooling writes the `.pri` of an unpackaged app, and fails with `MSB3030`; generating the `.pri` explicitly fills `bin/` again, so it saves nothing); works, one known MAUI trim warning and 20 informational ILC messages about the left-out WebView2 (see [Native AOT](30-conventions/native-aot.md)) | `PublishAot`, `RuntimeIdentifier` `maccatalyst-arm64`, the optimised publish (a full build first would leave the CoreCLR runtime and a 70 MB R2R image in the `.app`); works, one informational ILC message about `UIKit.NSLayoutAnchor`1` |
 | Tray / menu bar | no MAUI API; WinUIEx's `TrayIcon` with a WinUI `MenuFlyout` (no AOT or trim warnings) | no MAUI or UIKit API; AppKit's `NSStatusItem` through the Objective-C runtime, as `Drastic.Tray` does |
 | Minimum OS | Windows 10 2004 (`SupportedOSPlatformVersion` 10.0.19041.0) | macOS 26 (`SupportedOSPlatformVersion` 26.0) |
 | Shipped as | portable zip: unpackaged, self-contained (`WindowsPackageType=None`, `WindowsAppSDKSelfContained=true`); not code-signed yet, so SmartScreen warns at the first start | portable zip with the `.app`, not signed or notarised yet, so Gatekeeper stops the first start; never through the Mac App Store |
@@ -30,7 +30,7 @@ of the target, so they follow the package versions.
 The first release (step 3.3, see [README.md](README.md#next-steps)) is unsigned on both
 platforms, and signing comes later.
 
-- **Native AOT rules:** see [AGENTS.md](../AGENTS.md#native-aot-rules).
+- **Native AOT rules:** see [Native AOT](30-conventions/native-aot.md).
 - **Window:** only for the settings. The tray / menu bar icon has "Language",
   "Settings…" and "Exit"; closing the window keeps the app running. On macOS the app menu's
   "Quit TF3-DRPC" (Cmd+Q), which Mac Catalyst shows while the window is focused, is replaced
@@ -246,7 +246,7 @@ TF3-DRPC/                    ← extracted zip, anywhere the user likes
 
 `Tf3Drpc.Core` needs no UI, so it builds and tests anywhere without the MAUI workload.
 
-**Build setup** (the rules are in [AGENTS.md](../AGENTS.md)):
+**Build setup** (the rules are in [C# style](30-conventions/csharp.md) and [Native AOT](30-conventions/native-aot.md)):
 
 - `global.json`: `sdk.version` `11.0.100` (`allowPrerelease: false`,
   `rollForward: latestPatch`), `sdk.workloadVersion` `11.0.100.1` (MAUI `11.0.0`, Mac Catalyst
@@ -290,7 +290,7 @@ TF3-DRPC/                    ← extracted zip, anywhere the user likes
 - Leaving out `Microsoft.Web.WebView2` makes the publish print 20 ILC messages "will always
   throw because: Failed to load assembly 'Microsoft.Web.WebView2.Core.Projection'", for the
   web view code in MAUI and WinUI. The app has no web view, so that code never runs; the
-  messages are expected (see [AGENTS.md](../AGENTS.md#native-aot-rules)).
+  messages are expected (see [Native AOT](30-conventions/native-aot.md)).
 - The macOS `.app` is about 21 MB (10 MB zipped), nearly all of it the Native AOT executable:
   macOS brings AppKit and UIKit, so nothing like the Windows App SDK has to ship. It needs
   the optimised publish; with `UseOptimizedPublish=false` the full build first leaves the

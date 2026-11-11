@@ -889,6 +889,14 @@ if ($Base) {
         @(Invoke-Git @('show', "${mergeBase}:$Rel")) | ForEach-Object { $_ -replace '\r$', '' }
     }
 
+    # The date of the change: today while the working tree has edits, otherwise the newest commit since the
+    # merge base. Merge commits don't count, because CI checks out a merge commit made at run time.
+    $changeDate = $today.ToString('yyyy-MM-dd', [Globalization.CultureInfo]::InvariantCulture)
+    if (@(Invoke-Git @('status', '--porcelain')).Count -eq 0) {
+        $newest = Invoke-Git @('log', '--no-merges', '-1', '--format=%cs', "$mergeBase..HEAD") | Select-Object -First 1
+        if ($newest) { $changeDate = $newest }
+    }
+
     $triggers = [Collections.Generic.List[string]]::new()
     foreach ($file in ($changed | Sort-Object { $_ })) {
         if ((Get-Category $file) -eq 'frontmatter' -and $file.EndsWith('.md')) { continue }
@@ -906,7 +914,8 @@ if ($Base) {
             $baseFm = Read-FrontMatter @(Get-BaseLines $rel)
             $previous = if ($baseFm.End -ge 0) { Get-FmScalar $baseFm 'last-reviewed' } else { $null }
         }
-        $bumped = $isNew -or $current -cne $previous
+        # A date that is not older than the change counts as reviewed: a second change on the same day can't move it.
+        $bumped = $isNew -or $current -cne $previous -or [string]::CompareOrdinal($current, $changeDate) -ge 0
 
         $hits = [Collections.Generic.List[string]]::new()
         $regexes = @(foreach ($glob in (Get-FmList $model.Fm 'covers')) { ConvertTo-GlobRegex $glob })

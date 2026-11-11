@@ -8,7 +8,7 @@ covers:
   - docs/00-meta/templates/**
   - .github/workflows/docs.yml
   - .github/PULL_REQUEST_TEMPLATE.md
-last-reviewed: 2026-11-10
+last-reviewed: 2026-11-11
 ---
 
 # Documentation guide
@@ -32,7 +32,7 @@ The gate is done when the last step reports no errors.
 4. Update [status.md](../10-overview/status.md): delete finished items, add new limits and to-dos.
    A new decision gets a new [decision record](#decisions); a reversed one gets a new record that supersedes the old one.
 5. A change players notice gets a line in [CHANGELOG.md](../../CHANGELOG.md), and [README.md](../../README.md) follows when what players see or do changes.
-6. Set `last-reviewed` to today in every document you checked, also in those that needed no change: the date is the record that it was checked against this change _(checked)_.
+6. Set `last-reviewed` to today in every document you checked, also in those that needed no change: the date is the record that it was checked against this change _(checked; a date not older than the change counts: today while there are uncommitted edits, otherwise the date of its newest commit)_.
 7. Run the script from step 1 again.
    The gate is done when it reports no errors.
 
@@ -109,7 +109,7 @@ verified:
 | `type` | yes | `guide`, `rules`, `reference`, `explanation`, `decision`, `runbook`, `record` or `index` |
 | `audience` | yes | one or more of `player`, `contributor`, `maintainer`, `agent` |
 | `area` | yes | one or more of `mod`, `app`, `windows`, `macos`, `discord`, `translations`, `accessibility`, `docs`, `tools` (the `area-` labels) |
-| `covers` | for `reference`, `rules`, `guide`, `runbook` outside `docs/00-meta/` | globs (`*`, `**`, `?`) of the files the document describes, relative to the repository root; each one matches at least one file _(checked)_, and the docs gate lists the document when a matching file changes |
+| `covers` | for `reference`, `rules`, `guide`, `runbook` outside `docs/00-meta/` | globs (`*`, `**`, `?`) of the files the document describes, relative to the repository root; each one matches at least one file _(checked)_, and the docs gate lists the document when a matching file changes ([choosing covers](#choosing-covers)) |
 | `last-reviewed` | yes | `YYYY-MM-DD`, not in the future; changes in every commit that changes the file |
 | `verified` | no | one item per platform: `<windows or macos> <YYYY-MM-DD>`, optionally ` build <game build>` |
 | `status` | for `decision` | `proposed`, `accepted` or `superseded`; other types may say `deprecated` |
@@ -119,6 +119,15 @@ verified:
 The front matter uses a small part of YAML only: `key: value`, flow lists `[a, b]` and block lists of plain strings.
 Values are plain text without quotes, and without `: ` or ` #` inside them, so a title uses a dash or a comma where a colon would go.
 Unknown keys are errors _(checked)_.
+
+### Choosing covers
+
+`covers` names the files whose change can make the document wrong, and no more, so the docs gate lists a document only when it really needs a look.
+
+- A `reference` document covers the code it describes: the folder of that part, or its main files.
+- A `rules` document covers the files that set the rules up (`.editorconfig`, the build props, the registration file), not every file the rules apply to; a rule changes when its setup changes, not when one more file follows it.
+- A `guide` or `runbook` covers the scripts, project files and workflows its steps use.
+- A pattern like `companion/**/*.cs` lists the document on nearly every change, which turns the gate into busywork; name the files instead.
 
 ## Writing
 

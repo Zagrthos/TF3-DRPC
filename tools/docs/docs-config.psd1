@@ -50,9 +50,6 @@
         'docs/status-line.md'
         'docs/testing.md'
         'README.md'
-        'CONTRIBUTING.md'
-        'AGENTS.md'
-        'CLAUDE.md'
         '.github/PULL_REQUEST_TEMPLATE.md'
         'tools/test-run/README.md'
     )
