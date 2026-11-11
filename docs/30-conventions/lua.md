@@ -5,13 +5,13 @@ audience: [contributor, agent]
 area: [mod]
 covers:
   - .luarc.json
-last-reviewed: 2026-11-10
+last-reviewed: 2026-11-11
 ---
 
 # Lua style
 
 How the mod in `mod/zagrthos_drpc/` is written.
-How it works is in [docs/mod.md](../mod.md), its output format in [docs/status-line.md](../status-line.md).
+How it works is in [the mod](../40-reference/mod/mod.md), its output format in [the status line](../40-reference/mod/status-line.md).
 
 ## Code
 
@@ -31,4 +31,4 @@ How it works is in [docs/mod.md](../mod.md), its output format in [docs/status-l
 - Numbers use `%.0f` and `%.6g` in place of `%d`, because the game's Windows Lua takes only 32-bit values for `%d`.
 - Patterns use explicit byte ranges in place of `%c`, which is locale-dependent and can match UTF-8 bytes; the encoder's output never depends on the C locale.
 - Log with `log.message` / `log.warning`, prefixed `[drpc]`.
-- The status line uses `[drpc-status]`, and its format is fixed in [docs/status-line.md](../status-line.md); raise `v` when a key changes meaning.
+- The status line uses `[drpc-status]`, and its format is fixed in [the status line](../40-reference/mod/status-line.md); raise `v` when a key changes meaning.

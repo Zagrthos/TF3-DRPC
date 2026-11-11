@@ -41,16 +41,8 @@
     # Files not yet moved into the new layout: no front matter, naming, folder, heading or line-style
     # checks; links and privacy are still checked. This list only shrinks.
     Legacy = @(
-        'docs/companion.md'
-        'docs/game-log.md'
-        'docs/mod.md'
-        'docs/platform-parity.md'
-        'docs/presence.md'
-        'docs/status-line.md'
-        'docs/testing.md'
         'README.md'
         '.github/PULL_REQUEST_TEMPLATE.md'
-        'tools/test-run/README.md'
     )
 
     # Files exempt from single checks. Records are never rewritten (reviews/<area>/<date>/ only;

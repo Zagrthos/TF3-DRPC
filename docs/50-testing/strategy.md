@@ -6,7 +6,7 @@ area: [app, mod]
 covers:
   - companion/Tf3Drpc.Core.Tests/Tf3Drpc.Core.Tests.csproj
   - docs/log-samples/**
-last-reviewed: 2026-11-10
+last-reviewed: 2026-11-11
 ---
 
 # Testing strategy
@@ -31,7 +31,7 @@ What is tested automatically, what needs a person, and what each kind of change 
 ## What needs a person
 
 - The mod has no automated tests: it is tested in the game.
-- The game, Discord and the MAUI app's timer loop and UI need a run with the game and the Discord desktop app: [docs/testing.md](../testing.md), or driven by script with [tools/test-run/](../../tools/test-run/README.md).
+- The game, Discord and the MAUI app's timer loop and UI need a run with the game and the Discord desktop app: [test by hand on Windows](manual-test.md) and [on macOS](manual-test-macos.md), or driven by script ([scripted test runs](scripted-runs.md)).
 
 ## Validation per change
 

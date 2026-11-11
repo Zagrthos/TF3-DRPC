@@ -5,7 +5,7 @@ audience: [contributor, maintainer, agent]
 area: [app, discord]
 status: accepted
 decided: 2026-10-24
-last-reviewed: 2026-11-10
+last-reviewed: 2026-11-11
 ---
 
 # 0010 Our own source-generated Discord IPC client
@@ -20,7 +20,7 @@ The app has its own source-generated Discord IPC client.
 
 ## Consequences
 
-- The client and the protocol are described in [companion.md](../companion.md#discord-connection).
+- The client and the protocol are described in [companion.md](../40-reference/companion/discord-connection.md).
 
 ## Alternatives considered
 

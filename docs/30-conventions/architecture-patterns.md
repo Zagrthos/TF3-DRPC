@@ -7,13 +7,13 @@ covers:
   - companion/Tf3Drpc.App/Extensions/ServiceCollectionExtensions.cs
   - companion/Tf3Drpc.App/PlatformServices.cs
   - companion/Tf3Drpc.App/App.xaml
-last-reviewed: 2026-11-10
+last-reviewed: 2026-11-11
 ---
 
 # Architecture patterns
 
 The patterns every part of the companion app follows.
-How the app is built from them is in [docs/companion.md](../companion.md#architecture).
+How the app is built from them is in [companion architecture](../40-reference/companion/architecture.md).
 
 ## Services and dependency injection
 

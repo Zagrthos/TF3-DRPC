@@ -378,7 +378,7 @@ function Get-Calibration {
         if ($gap -lt $bestGap) { $best = $key; $bestGap = $gap }
     }
     if (-not $best) {
-        throw "No calibration for $platform at a screenshot height of $Height px (1280x$Height). calibration.psd1 has: $(($table.Keys | Sort-Object) -join ', '). Another aspect ratio or UI scale needs a set of its own; see 'Calibrating' in tools/test-run/README.md."
+        throw "No calibration for $platform at a screenshot height of $Height px (1280x$Height). calibration.psd1 has: $(($table.Keys | Sort-Object) -join ', '). Another aspect ratio or UI scale needs a set of its own; see docs/50-testing/calibration.md."
     }
     $set = $table[$best]
     $set.Key = $best
@@ -395,7 +395,7 @@ function Get-CalibrationValue {
         if ($null -eq $value) { break }
     }
     if (($null -eq $value) -and -not $Optional) {
-        throw "'$Name' is not calibrated for the set '$($Set.Key)' (tools/test-run/calibration.psd1). Measure it on a screenshot and enter it there: see 'Calibrating' in tools/test-run/README.md."
+        throw "'$Name' is not calibrated for the set '$($Set.Key)' (tools/test-run/calibration.psd1). Measure it on a screenshot and enter it there: see docs/50-testing/calibration.md."
     }
     , $value
 }

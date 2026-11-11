@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 namespace Tf3Drpc.Core.Status;
 
 /// <summary>
-/// The mod's status line (docs/status-line.md); every key is optional.
+/// The mod's status line (docs/40-reference/mod/status-line.md); every key is optional.
 /// </summary>
 internal sealed record ModStatus
 {

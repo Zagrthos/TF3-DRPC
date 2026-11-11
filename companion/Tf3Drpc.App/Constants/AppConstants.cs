@@ -33,7 +33,7 @@ internal static class AppConstants
     public const string RepositoryUrl = "https://github.com/Zagrthos/TF3-DRPC";
 
     /// <summary>
-    /// The mod's page on mod.io; the last part is set at the first upload, so check it then.
+    /// The mod's page on mod.io.
     /// </summary>
     public const string ModIoUrl = "https://mod.io/g/transportfever3/m/discord-rich-presence";
 #pragma warning restore S1075

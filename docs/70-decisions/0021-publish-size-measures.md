@@ -5,7 +5,7 @@ audience: [contributor, maintainer, agent]
 area: [app, windows]
 status: accepted
 decided: 2026-10-24
-last-reviewed: 2026-11-10
+last-reviewed: 2026-11-11
 ---
 
 # 0021 Publish size measures cut the Windows publish from 305 MB to 83 MB
@@ -20,4 +20,4 @@ Unused Windows App SDK parts and symbols are left out of the publish, which brou
 
 ## Consequences
 
-- The measures and what each one saves are listed under Publish size in [companion.md](../companion.md#projects).
+- The measures and what each one saves are listed under Publish size in [companion.md](../40-reference/companion/projects-and-build.md#publish-size).

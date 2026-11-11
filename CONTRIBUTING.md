@@ -6,7 +6,7 @@ What the project does for players is in the [README](README.md); everything abou
 ## Ways to help
 
 - **Report a bug:** open an issue with your operating system, what you did, what you expected and what happened.
-  Attach the app's log from `DATA/logs/` next to the app, and the lines from the game log that matter ([where the game log is](docs/game-log.md)).
+  Attach the app's log from `DATA/logs/` next to the app, and the lines from the game log that matter ([where the game log is](docs/40-reference/game-log.md)).
   Remove anything personal from them first.
 - **Check a translation:** the app's own texts in the 12 languages other than English were machine-translated and need a check by native speakers.
   They are in `companion/Tf3Drpc.Core/Resources/Texts.<language>.resx`, and the translation issue form says what to send.
@@ -21,7 +21,7 @@ Issues use forms for bug reports, feature requests and translations; pull reques
 1. [Set up your machine](docs/20-development/setup.md), and on a Mac also [the Mac steps](docs/20-development/setup-macos.md).
 2. [Build and publish](docs/20-development/build-and-publish.md) the companion app, or [work on the mod](docs/20-development/mod-development.md).
 3. Follow the rules for the part you change: [C#](docs/30-conventions/csharp.md), [Native AOT](docs/30-conventions/native-aot.md), [architecture patterns](docs/30-conventions/architecture-patterns.md), [Lua](docs/30-conventions/lua.md), [written content](docs/30-conventions/writing.md).
-4. Test as the [testing strategy](docs/50-testing/strategy.md) says, and with the game and Discord as in [docs/testing.md](docs/testing.md).
+4. Test as the [testing strategy](docs/50-testing/strategy.md) says, and with the game and Discord as in [test by hand](docs/50-testing/manual-test.md).
 5. Update the documentation with the [docs gate](docs/00-meta/documentation-guide.md#docs-gate).
 6. Commit and open a pull request as in [commits and pull requests](docs/20-development/git-workflow.md).
 

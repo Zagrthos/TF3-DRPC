@@ -5,7 +5,7 @@ audience: [player, contributor, maintainer, agent]
 area: [app, discord]
 status: accepted
 decided: 2026-10-24
-last-reviewed: 2026-11-10
+last-reviewed: 2026-11-11
 ---
 
 # 0013 The store button is off by default
@@ -21,4 +21,4 @@ The store button is off by default.
 
 ## Consequences
 
-- The button is described in [presence.md](../presence.md#store-button).
+- The button is described in [presence.md](../40-reference/presence/presets-and-templates.md#store-button).

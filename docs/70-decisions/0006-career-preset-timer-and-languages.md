@@ -5,7 +5,7 @@ audience: [player, contributor, maintainer, agent]
 area: [app, translations]
 status: accepted
 decided: 2026-10-24
-last-reviewed: 2026-11-10
+last-reviewed: 2026-11-11
 ---
 
 # 0006 Design A as default, the timer, 13 languages with a language choice
@@ -22,4 +22,4 @@ The app offers 13 languages, with a language choice.
 
 ## Consequences
 
-- The presets and templates are in [presence.md](../presence.md#design-a-career-default).
+- The presets and templates are in [presence.md](../40-reference/presence/presets-and-templates.md#design-a-career-default).

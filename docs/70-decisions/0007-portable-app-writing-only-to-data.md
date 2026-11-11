@@ -5,7 +5,7 @@ audience: [player, contributor, maintainer, agent]
 area: [app, windows, macos]
 status: accepted
 decided: 2026-10-24
-last-reviewed: 2026-11-10
+last-reviewed: 2026-11-11
 ---
 
 # 0007 Portable app writing only to DATA, checked with a bounded check
@@ -23,7 +23,7 @@ There is no installer and no start with the system.
 
 - The rules for the app's files are in [portable-app.md](../30-conventions/portable-app.md).
 - The bounded check is enough: it found nothing outside `DATA/` on Windows.
-- On macOS the only files seen outside `DATA/` are the two the system writes (see [companion.md](../companion.md#portable)).
+- On macOS the only files seen outside `DATA/` are the two the system writes (see [companion.md](../40-reference/companion/portable.md)).
 
 ## Alternatives considered
 

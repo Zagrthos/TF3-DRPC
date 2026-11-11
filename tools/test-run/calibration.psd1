@@ -6,7 +6,7 @@
     # macOS game window below the menu bar).
     # The height is picked from the screenshot or the window, so another aspect ratio needs its own set.
     # $null means "not calibrated": a script that needs the value stops with a message naming it, and never
-    # clicks a guess. To fill in a set, follow "Calibrating" in tools/test-run/README.md. Explicit parameters
+    # clicks a guess. To fill in a set, follow docs/50-testing/calibration.md. Explicit parameters
     # (-QuitPoint, -EyePoint, ...) always win over the table.
     #
     # Points (x, y):  LoadGameTile  the main menu tile "Load Game"
