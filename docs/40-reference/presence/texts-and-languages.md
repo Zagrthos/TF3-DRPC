@@ -9,8 +9,6 @@ covers:
   - companion/Tf3Drpc.Core/Translation/**
   - companion/Tf3Drpc.Core/Enums/OwnText.cs
 last-reviewed: 2026-11-11
-verified:
-  - windows 2026-10-21
 ---
 
 # Texts and languages

@@ -5,7 +5,7 @@ audience: [contributor, agent]
 area: [app, mod]
 covers:
   - companion/Tf3Drpc.Core.Tests/Tf3Drpc.Core.Tests.csproj
-  - docs/log-samples/**
+  - docs/40-reference/log-samples/**
 last-reviewed: 2026-11-11
 ---
 
@@ -18,7 +18,7 @@ What is tested automatically, what needs a person, and what each kind of change 
 - `Tf3Drpc.Core.Tests` uses xunit v3 on Microsoft.Testing.Platform and covers `Tf3Drpc.Core`, including the monitor's tick (`GameMonitor`).
 - It sees the internal types of `Tf3Drpc.Core` through `InternalsVisibleTo`; the test classes stay public, as xunit needs.
 - The tests can't reference the MAUI app, so logic that can be tested lives in `Tf3Drpc.Core`; only the timer loop and the messenger stay in the app.
-- Parser tests read the real log lines in [docs/log-samples/](../log-samples/); `.gitattributes` keeps those files byte for byte, and they change only by copying real log output.
+- Parser tests read the real log lines in [docs/40-reference/log-samples/](../40-reference/log-samples/); `.gitattributes` keeps those files byte for byte, and they change only by copying real log output.
 - A test that relies on Windows behaviour (`FileShare` locks, named pipes) starts with `Assert.SkipUnless(OperatingSystem.IsWindows(), "…")`.
 - The live Discord test sets a test presence for 5 seconds; it runs only on request, from `companion/`:
 

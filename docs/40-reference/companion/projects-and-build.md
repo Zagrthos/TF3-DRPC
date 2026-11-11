@@ -27,7 +27,7 @@ The commands are in [build and publish](../../20-development/build-and-publish.m
 |---|---|
 | `Tf3Drpc.Core` (`net11.0`, `IsAotCompatible`) | log reader and parser, states, the monitor tick (`GameMonitor`), presence texts, `.mo` reader, settings file, Discord IPC client |
 | `Tf3Drpc.App` (MAUI; Windows and Mac Catalyst) | settings window, tray / menu bar icon, platform code (paths, `DATA` location, single instance) |
-| `Tf3Drpc.Core.Tests` (`net11.0`) | every Core part: parser and follower on `docs/log-samples/`, state machine, the monitor tick (`GameMonitor`, with fakes for its services), presence texts, `.mo` reader, languages, settings, Discord frames and client (with an in-memory fake Discord) |
+| `Tf3Drpc.Core.Tests` (`net11.0`) | every Core part: parser and follower on `docs/40-reference/log-samples/`, state machine, the monitor tick (`GameMonitor`, with fakes for its services), presence texts, `.mo` reader, languages, settings, Discord frames and client (with an in-memory fake Discord) |
 
 `Tf3Drpc.Core` needs no UI, so it builds and tests anywhere without the MAUI workload.
 

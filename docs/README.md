@@ -66,7 +66,7 @@ Coding agents start at [AGENTS.md](../AGENTS.md).
 | [40-reference/presence/presets-and-templates.md](40-reference/presence/presets-and-templates.md) | what Discord shows: the presets, the templates, the store button |
 | [40-reference/presence/texts-and-languages.md](40-reference/presence/texts-and-languages.md) | the game's and the app's own texts, the 13 languages |
 | [40-reference/platform-parity.md](40-reference/platform-parity.md) | what differs between Windows and macOS, and what is decided for each difference |
-| [log-samples/](log-samples/) | real game log lines for the parser tests |
+| [40-reference/log-samples/](40-reference/log-samples/) | real game log lines for the parser tests |
 
 ### 50-testing
 

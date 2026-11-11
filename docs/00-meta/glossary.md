@@ -3,7 +3,7 @@ title: Glossary
 type: reference
 audience: [contributor, maintainer, agent]
 area: [docs]
-last-reviewed: 2026-11-10
+last-reviewed: 2026-11-11
 ---
 
 # Glossary
@@ -23,7 +23,6 @@ A document uses the term as it is written here.
 | docs gate | the steps of the [documentation guide](documentation-guide.md#docs-gate) that every change passes before it is committed |
 | game log | the game's `stdout.txt` in the user data, which the mod writes to and the app follows |
 | game script | the mod's Lua code that the game runs; its `guiUpdate` function writes the status line |
-| legacy document | a document that still waits for its move into the documentation layout, listed under `Legacy` in `tools/docs/docs-config.psd1` |
 | menu bar icon | the macOS counterpart of the tray icon |
 | mod | the game mod in `mod/zagrthos_drpc/` (mod id `zagrthos_drpc`) |
 | Mod Hub | the game's own mod browser; it uploads the mod to mod.io |

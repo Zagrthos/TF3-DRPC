@@ -39,4 +39,3 @@ When an issue is opened, its item here is replaced by a link to it.
 - **Translation checks** (`area-translations`): the app's own texts in 12 languages, the translocation text included (DeepL, 2026-10-20), checked by native speakers; each language ships once its check is done, independent of a release.
 - **CI image** (`area-tools`): move macOS from the `xcode-27` preview image to a regular image once one has Xcode 27.2.
 - **Pinned actions** (`area-tools`): raise the commit-pinned actions from time to time.
-- **Documentation restructure** (`area-docs`): move every document into the layout of the [documentation guide](../00-meta/documentation-guide.md); the files not yet moved are the `Legacy` list in `tools/docs/docs-config.psd1`.

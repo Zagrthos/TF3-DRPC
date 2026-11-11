@@ -105,7 +105,7 @@ The preset "Custom" uses three templates the player writes in the settings windo
 - The window lists the placeholders, each with a short explanation in the chosen language (as in the [table](#templates)), and marks the private ones with 🔒, with the note that they are shown to everyone who sees the Discord status.
 - A template is saved one second after the last change, and at most 512 characters long.
 - The preview shows what Discord would show for the chosen preset and templates, from the last status the mod sent, also after leaving the game.
-  Before any status arrived it uses example values from [log-samples/session.log](../../log-samples/session.log) and says so.
+  Before any status arrived it uses example values from [log-samples/session.log](../log-samples/session.log) and says so.
 
 ## Store button
 

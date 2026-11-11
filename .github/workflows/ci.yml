@@ -17,7 +17,7 @@ on:
     branches: [main]
     paths:
       - 'companion/**'
-      - 'docs/log-samples/**'
+      - 'docs/40-reference/log-samples/**'
       - 'assets/discord/cover.png'
       - 'tools/build-release.ps1'
       - 'tools/new-third-party-notices.ps1'
@@ -81,7 +81,7 @@ jobs:
             build=false
             while IFS= read -r file; do
               case "$file" in
-                companion/*|docs/log-samples/*|assets/discord/cover.png|tools/build-release.ps1|\
+                companion/*|docs/40-reference/log-samples/*|assets/discord/cover.png|tools/build-release.ps1|\
                 tools/new-third-party-notices.ps1|tools/licences/*|LICENSE|.editorconfig|\
                 .gitattributes|.github/workflows/ci.yml)
                   build=true ;;
