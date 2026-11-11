@@ -30,7 +30,8 @@ Every action is pinned to a commit hash.
 
 - The paths the build reads are listed in `ci.yml` twice: under `push.paths`, and in its first step, which skips the rest of a pull request's job when none of them changed.
   The two lists stay in step.
-- Pull requests always start the jobs, because the `CI on main` ruleset requires the `Windows` and `macOS` checks, and a workflow that a path filter never starts leaves them pending.
+- The `CI on main` ruleset requires the `Windows`, `macOS` and `Docs` checks before a pull request merges into `main`.
+- Pull requests always start the CI jobs, because a workflow that a path filter never starts leaves its required checks pending.
 - Both jobs call `tools/build-release.ps1`, the same script a developer runs by hand ([build and publish](../20-development/build-and-publish.md)).
 - macOS runs on the `xcode-27` preview image, the only one with Xcode 27.2, which the .NET 11 Mac Catalyst SDK requires; a step selects it with `xcode-select`.
 - Jobs that build nothing use the `ubuntu-slim` runner, which has PowerShell and the GitHub CLI.

@@ -178,5 +178,5 @@ Records are history: test runs, releases and reviews.
 
 `pwsh ./tools/docs/Test-Docs.ps1` checks the rules marked _(checked)_ for the whole repository; `-Base <ref>` adds the [docs gate](#docs-gate) checks against that commit; `-Json` prints the findings as JSON for tools and agents.
 Its settings (the allowed values, the folder rules, the exemptions) are in `tools/docs/docs-config.psd1`.
-The `Docs` workflow runs it on every pull request and push to `main`.
+The `Docs` workflow runs it on every pull request and push to `main`, and the `CI on main` ruleset requires it to pass.
 External links are checked once a week by the `Links` workflow, because a site that is down for a while must not fail a pull request.
