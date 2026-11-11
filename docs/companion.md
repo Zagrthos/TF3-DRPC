@@ -2,7 +2,7 @@
 
 A portable .NET MAUI app for Windows and macOS that follows the [game log](game-log.md)
 and shows the [presence](presence.md) in Discord. Name: `TF3-DRPC`. Decisions
-are in [README.md](README.md#decisions), open work in [status.md](10-overview/status.md).
+are in [70-decisions/](70-decisions/README.md), open work in [status.md](10-overview/status.md).
 
 ## Platform
 
@@ -27,7 +27,7 @@ Each zip holds `LICENSE.txt` (the MIT licence of this project) and `THIRD-PARTY-
 the exe or the `.app`. `tools/new-third-party-notices.ps1` generates the notices at build time from the
 publish's restore output (`project.assets.json`): the licence texts of every package and runtime pack
 of the target, so they follow the package versions.
-The first release (step 3.3, see [README.md](README.md#next-steps)) is unsigned on both
+The first release (see [decision 0024](70-decisions/0024-first-release-unsigned.md)) is unsigned on both
 platforms, and signing comes later.
 
 - **Native AOT rules:** see [Native AOT](30-conventions/native-aot.md).
@@ -205,7 +205,7 @@ TF3-DRPC/                    ← extracted zip, anywhere the user likes
   [testing.md](testing.md#other-checks)); on macOS the only files seen outside `DATA/` are the
   two above, and the bounded check over a 45-minute game run on 2026-10-20 found nothing
   written outside `DATA/` (both files were older than its marker). A full trace
-  with Process Monitor or `fs_usage` isn't planned (see [README.md](README.md#decisions)).
+  with Process Monitor or `fs_usage` isn't planned (see [decision 0007](70-decisions/0007-portable-app-writing-only-to-data.md)).
 - **Logs:** NReco.Logging.File, one file per day,
   `DATA/logs/TF3-DRPC_<yyyy-MM-dd>.log`, files older than 7 days deleted at start (a locked
   file is skipped). The log folder is probed on its own: if it can't be written, or the file logger

@@ -16,7 +16,7 @@ or the .app.
 
 The platform's bin, obj and publish folders are deleted first, so no file from an earlier build ships.
 Each platform builds only its own zip, so a release needs one run on Windows and one on a Mac.
-The zips are unsigned (see docs/README.md, decisions). The script prints each zip's size and SHA-256
+The zips are unsigned (see docs/70-decisions/0024-first-release-unsigned.md). The script prints each zip's size and SHA-256
 for the release notes.
 
 .PARAMETER SkipTests

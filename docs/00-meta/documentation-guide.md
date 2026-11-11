@@ -79,7 +79,7 @@ The date a behaviour was last confirmed in the game goes into the `verified` fie
 - File names are lower-case kebab case with `.md` _(checked)_.
   Decisions are `NNNN-<slug>.md` with a unique four-digit number _(checked)_; records are `YYYY-MM-DD-<slug>.md` _(checked)_.
 - `README.md` in a folder is that folder's index _(checked: it links every document in the folder)_.
-- [docs/README.md](../README.md) links every document under `docs/` _(checked)_.
+- [docs/README.md](../README.md) links every document under `docs/`, directly or through the README of its folder _(checked)_.
 - A file of more than about 300 lines, or one that covers two topics, is split.
 - A moved or renamed file has every link to it fixed in the same change _(checked)_.
 

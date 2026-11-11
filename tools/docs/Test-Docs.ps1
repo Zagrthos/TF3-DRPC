@@ -830,11 +830,20 @@ function Test-IndexLinks {
         }
     }
 
+    # A document counts as linked when docs/README.md links it, or links a folder README.md under docs/ that links it.
     $docsIndex = 'docs/README.md'
     if ($models.Contains($docsIndex)) {
+        $reachable = [Collections.Generic.HashSet[string]]::new([StringComparer]::Ordinal)
+        $queue = [Collections.Generic.Queue[string]]::new()
+        $queue.Enqueue($docsIndex)
+        while ($queue.Count -gt 0) {
+            foreach ($target in $links[$queue.Dequeue()]) {
+                if ($reachable.Add($target) -and $target -cmatch '^docs/.+/README\.md$' -and $links.ContainsKey($target)) { $queue.Enqueue($target) }
+            }
+        }
         foreach ($rel in $models.Keys) {
             if (-not $rel.StartsWith('docs/') -or $rel -ceq $docsIndex -or $models[$rel].Category -eq 'template') { continue }
-            if (-not $links[$docsIndex].Contains($rel)) { Add-Error 'DOC006' $docsIndex $null "docs/README.md does not link $rel" }
+            if (-not $reachable.Contains($rel)) { Add-Error 'DOC006' $docsIndex $null "docs/README.md does not link $rel, directly or through the README.md of its folder" }
         }
     }
 

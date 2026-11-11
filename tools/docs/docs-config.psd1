@@ -41,7 +41,6 @@
     # Files not yet moved into the new layout: no front matter, naming, folder, heading or line-style
     # checks; links and privacy are still checked. This list only shrinks.
     Legacy = @(
-        'docs/README.md'
         'docs/companion.md'
         'docs/game-log.md'
         'docs/mod.md'

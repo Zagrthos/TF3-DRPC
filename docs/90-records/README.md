@@ -3,7 +3,7 @@ title: Records
 type: index
 audience: [contributor, maintainer, agent]
 area: [docs]
-last-reviewed: 2026-11-10
+last-reviewed: 2026-11-11
 ---
 
 # Records
@@ -13,3 +13,4 @@ A record stays as it was written; the rules are in the [documentation guide](../
 
 | Date | Record |
 |---|---|
+| [2026-10-24](2026-10-24-first-release.md) | The first release: the steps and checks, from the mod to the public release |

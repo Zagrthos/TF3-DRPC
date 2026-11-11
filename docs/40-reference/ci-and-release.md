@@ -8,7 +8,7 @@ covers:
   - .github/codeql/**
   - tools/build-release.ps1
   - tools/new-third-party-notices.ps1
-last-reviewed: 2026-11-10
+last-reviewed: 2026-11-11
 ---
 
 # CI and releases

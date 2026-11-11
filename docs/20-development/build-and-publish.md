@@ -8,7 +8,7 @@ covers:
   - companion/Directory.Build.props
   - companion/Tf3Drpc.App/Tf3Drpc.App.csproj
   - tools/build-release.ps1
-last-reviewed: 2026-11-10
+last-reviewed: 2026-11-11
 ---
 
 # Build and publish
