@@ -40,7 +40,7 @@ local function warnOnce(name, message)
     end
 end
 
--- The type of each status value as docs/status-line.md defines it; every other key is a number.
+-- The type of each status value as docs/40-reference/mod/status-line.md defines it; every other key is a number.
 local STRING_KEYS = { "saveName", "rankName", "climate", "economy" }
 local BOOLEAN_KEYS = { "isMapEditor", "isSandbox", "isTycoon", "infiniteMoney" }
 local EXPECTED_TYPES = {}

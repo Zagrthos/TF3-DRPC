@@ -80,7 +80,7 @@ body:
     id: game-log
     attributes:
       label: Game log
-      description: Optional. Lines from the game's `stdout.txt` that start with `[drpc` or mention the problem. Where to find it is described in [docs/game-log.md](https://github.com/Zagrthos/TF3-DRPC/blob/main/docs/game-log.md).
+      description: Optional. Lines from the game's `stdout.txt` that start with `[drpc` or mention the problem. Where to find it is described in [docs/40-reference/game-log.md](https://github.com/Zagrthos/TF3-DRPC/blob/main/docs/40-reference/game-log.md).
       render: text
   - type: checkboxes
     id: privacy

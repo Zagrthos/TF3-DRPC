@@ -80,7 +80,7 @@ Commands:
 Options: -OutFolder, -UserDataFolder, -Language, -SaveName, -StartTimeoutSeconds, -LoadTimeoutSeconds,
          -DownloadTimeoutSeconds, -NoMenuCheck, -Editor, -LoadGameTilePoint, -FilterPoint, -SaveCardPoint, -StartGamePoint,
          -MenuButtonPoint, -QuitPoint, -ToDesktopPoint, -ExitPoint
-See the header of this script and tools/test-run/README.md.
+See the header of this script and docs/50-testing/scripted-runs.md.
 "@
 
 if (-not $Command) { $usage; return }

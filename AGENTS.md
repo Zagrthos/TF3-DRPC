@@ -24,15 +24,19 @@ When the code and a document disagree, inspect the code and correct the document
 
 | Files | Read first |
 |---|---|
-| `companion/**/*.cs` | [C# style](docs/30-conventions/csharp.md), [Native AOT](docs/30-conventions/native-aot.md), [architecture patterns](docs/30-conventions/architecture-patterns.md), [docs/companion.md](docs/companion.md) |
-| `companion/**/*.xaml` | [architecture patterns](docs/30-conventions/architecture-patterns.md#xaml-first), [docs/companion.md](docs/companion.md#platform) |
-| `companion/**/*.resx` | [written content](docs/30-conventions/writing.md), [docs/presence.md](docs/presence.md#texts-and-languages) |
-| project and build files in `companion/` | [build and publish](docs/20-development/build-and-publish.md), [build pitfalls](docs/20-development/build-pitfalls.md), [docs/companion.md](docs/companion.md#projects) |
+| `companion/**/*.cs` | [C# style](docs/30-conventions/csharp.md), [Native AOT](docs/30-conventions/native-aot.md), [architecture patterns](docs/30-conventions/architecture-patterns.md), [companion architecture](docs/40-reference/companion/architecture.md) |
+| `companion/**/*.xaml` | [architecture patterns](docs/30-conventions/architecture-patterns.md#xaml-first), [settings window](docs/40-reference/companion/settings-window.md) |
+| `companion/**/*.resx` | [written content](docs/30-conventions/writing.md), [texts and languages](docs/40-reference/presence/texts-and-languages.md) |
+| `companion/Tf3Drpc.Core/Presence/**`, `companion/Tf3Drpc.Core/Settings/**` | [presets and templates](docs/40-reference/presence/presets-and-templates.md), [settings file](docs/40-reference/companion/settings-file.md) |
+| `companion/Tf3Drpc.Core/GameLog/**`, `companion/Tf3Drpc.Core/State/**` | [the game log](docs/40-reference/game-log.md), [game states](docs/40-reference/companion/states.md) |
+| `companion/Tf3Drpc.Core/Discord/**` | [Discord connection](docs/40-reference/companion/discord-connection.md) |
+| `companion/Tf3Drpc.App/Platforms/**` | [companion app platform](docs/40-reference/companion/platform.md), [Windows and macOS parity](docs/40-reference/platform-parity.md), [single instance](docs/40-reference/companion/single-instance.md) |
+| project and build files in `companion/` | [build and publish](docs/20-development/build-and-publish.md), [build pitfalls](docs/20-development/build-pitfalls.md), [projects and build setup](docs/40-reference/companion/projects-and-build.md) |
 | `companion/Tf3Drpc.Core.Tests/**` | [testing strategy](docs/50-testing/strategy.md) |
-| `mod/**` | [Lua style](docs/30-conventions/lua.md), [docs/mod.md](docs/mod.md), the `tf3-modding` skill |
-| the status line, on either side | [docs/status-line.md](docs/status-line.md) (raise `v` when a key changes meaning) |
+| `mod/**` | [Lua style](docs/30-conventions/lua.md), [the mod](docs/40-reference/mod/mod.md), the `tf3-modding` skill |
+| the status line, on either side | [the status line](docs/40-reference/mod/status-line.md) (raise `v` when a key changes meaning) |
 | `.github/workflows/**`, `tools/build-release.ps1` | [CI and releases](docs/40-reference/ci-and-release.md) |
-| `tools/test-run/**` | [tools/test-run/README.md](tools/test-run/README.md), [docs/testing.md](docs/testing.md#runs-driven-by-script) |
+| `tools/test-run/**` | [scripted test runs](docs/50-testing/scripted-runs.md), [calibrate the test-run scripts](docs/50-testing/calibration.md) |
 | any Markdown file | [documentation guide](docs/00-meta/documentation-guide.md) |
 
 ## Commands

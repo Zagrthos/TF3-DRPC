@@ -162,7 +162,7 @@ Everything in the repository is public.
 A decision record is one file per decision in `docs/70-decisions/`, from the [template](templates/decision.md), listed in [its index](../70-decisions/README.md) _(checked)_.
 
 - Number it with the next free number.
-- After it is merged, only `status` and `superseded-by` change.
+- After it is merged, only `status`, `superseded-by` and link targets change.
 - A reversed decision keeps its file: it gets `status: superseded` and `superseded-by`, and the new record says what it replaces.
 
 ## Records
@@ -170,8 +170,8 @@ A decision record is one file per decision in `docs/70-decisions/`, from the [te
 Records are history: test runs, releases and reviews.
 
 - New records go into `docs/90-records/` from the [template](templates/record.md); reviews go into `reviews/<area>/<YYYY-MM-DD>/` from the [review template](templates/review/README.md).
-- Once merged, a record's body stays as it was _(checked)_.
-  The one correction allowed is removing personal data, with `-AllowRecordEdit` and a note in the pull request.
+- Once merged, a record's text stays as it was; only its link targets follow moved files _(checked)_.
+  The one other correction allowed is removing personal data, with `-AllowRecordEdit` and a note in the pull request.
 - A record is listed in its index: [docs/90-records/README.md](../90-records/README.md), or [reviews/README.md](../../reviews/README.md) for reviews _(checked)_.
 
 ## The validator

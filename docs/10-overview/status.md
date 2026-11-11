@@ -3,7 +3,7 @@ title: Project status
 type: explanation
 audience: [player, contributor, maintainer, agent]
 area: [mod, app, docs]
-last-reviewed: 2026-11-10
+last-reviewed: 2026-11-11
 ---
 
 # Project status
@@ -25,7 +25,7 @@ These are accepted as they are.
 
 - The edge cases of the mod's hardening (NaN or infinity, a clock set back, a balance above 2^31, a failing date field, values of an unexpected type, a malformed configuration pair) are covered only by the reviews' Lua harnesses in [reviews/mod/](../../reviews/mod/); none occurred in the game runs.
 - A real second Steam account with a log dated in the future is covered by unit tests only.
-- While a new game's map is generated (up to a minute) the app shows the main menu: the log has `Seed text:` there, but no line the app uses for Loading ([game-log.md](../game-log.md#lines-that-matter)).
+- While a new game's map is generated (up to a minute) the app shows the main menu: the log has `Seed text:` there, but no line the app uses for Loading ([the game log](../40-reference/game-log.md#lines-that-matter)).
 - The game folder is looked for in the default Steam library only (no `libraryfolders.vdf`); a game in another library is found through its running process.
 
 ## To do

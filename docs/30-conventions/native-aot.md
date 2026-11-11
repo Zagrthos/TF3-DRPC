@@ -35,7 +35,7 @@ Why the app is AOT-compiled is in [decision 0009](../70-decisions/0009-net-11-ma
   Check it again with each MAUI update.
 - The publish also prints ILC messages "Method '…' will always throw because: Failed to load …".
   They are information, not warnings, and need no fix: ILC compiled code that can never run into a throw.
-  - On Windows there are 20, for the web view code of MAUI (`WebViewHandler`, `HybridWebViewHandler`, `MauiWebView`, `WebViewExtensions`) and WinUI (`WebView2`), because `Microsoft.Web.WebView2` is left out of the publish with the other unused Windows App SDK parts ([docs/companion.md](../companion.md#projects)).
+  - On Windows there are 20, for the web view code of MAUI (`WebViewHandler`, `HybridWebViewHandler`, `MauiWebView`, `WebViewExtensions`) and WinUI (`WebView2`), because `Microsoft.Web.WebView2` is left out of the publish with the other unused Windows App SDK parts ([publish size](../40-reference/companion/projects-and-build.md#publish-size)).
     The app has no web view, and its links open the system browser through `Launcher`, so the WebView2 package stays out.
   - On macOS there is one, for ``UIKit.NSLayoutAnchor`1`` in the Mac Catalyst SDK's type map.
 

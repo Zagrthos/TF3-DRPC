@@ -3,7 +3,7 @@ title: 2026-10-24 The first release
 type: record
 audience: [contributor, maintainer, agent]
 area: [mod, app, tools, docs]
-last-reviewed: 2026-11-10
+last-reviewed: 2026-11-11
 ---
 
 # 2026-10-24 The first release
@@ -14,8 +14,8 @@ last-reviewed: 2026-11-10
    Players activate it per savegame and save once; `autoActivate` doesn't help.
 2. **Companion MVP:** done on Windows and macOS, both tested end to end with the game and Discord.
 3. **Polish**, in this order:
-   1. Presets B–E, custom templates for both lines and the hover text, and the live preview: done ([presence.md](../presence.md#presets), [custom templates](../presence.md#custom-templates-and-preview)) and tested with the game and Discord on 2026-10-17.
-   2. The optional store button, and the "New Game" save name in the chosen language: done ([store button](../presence.md#store-button), [texts](../presence.md#texts-and-languages)) and tested with the game and Discord on 2026-10-17; the button was also checked from a second Discord account.
+   1. Presets B–E, custom templates for both lines and the hover text, and the live preview: done ([presence.md](../40-reference/presence/presets-and-templates.md#presets), [custom templates](../40-reference/presence/presets-and-templates.md#custom-templates-and-preview)) and tested with the game and Discord on 2026-10-17.
+   2. The optional store button, and the "New Game" save name in the chosen language: done ([store button](../40-reference/presence/presets-and-templates.md#store-button), [texts](../40-reference/presence/texts-and-languages.md)) and tested with the game and Discord on 2026-10-17; the button was also checked from a second Discord account.
    3. **The first release, `0.1.0`:** unsigned, on .NET 11 RC2 (see [Decisions](../70-decisions/README.md)).
       - [x] The release script `tools/build-release.ps1`, the README's SmartScreen section, the mod's `url` in `modinfo.json` and [CHANGELOG.md](../../CHANGELOG.md).
       - [x] The Windows zip built and checked: 94 files in a `TF3-DRPC` folder, with `LICENSE.txt` and `THIRD-PARTY-NOTICES.txt`, no `DATA` folder, 33 MB zipped, and the exe's copyright "© 2026 Zagrthos.
@@ -36,7 +36,7 @@ last-reviewed: 2026-11-10
         - `LICENSE.txt` and `THIRD-PARTY-NOTICES.txt` are next to `TF3-DRPC.app` in the zip.
           A quarantined copy is stopped by Gatekeeper with "Done" and "Move to Trash", as the README says; "Open Anyway" was last checked on 2026-10-23.
         - The settings window shows "Transport Fever 3 · Build 40425" while the game runs.
-        - The test-run scripts: `tf3mac` compiles, its `pixels` command read the Windows reference pictures correctly, and the macOS set (`macos-804`, the screenshot height here) is measured, all but the download bar; `start`, `load`, `quit`, `state` and `photo` ran on the live game ([testing.md](../testing.md#on-macos)).
+        - The test-run scripts: `tf3mac` compiles, its `pixels` command read the Windows reference pictures correctly, and the macOS set (`macos-804`, the screenshot height here) is measured, all but the download bar; `start`, `load`, `quit`, `state` and `photo` ran on the live game ([testing.md](../50-testing/manual-test-macos.md)).
           The reference pictures and their step are deleted.
       - [x] The mod uploaded from the Mod Hub (2026-10-24), not public yet: mod.io id `6477175` in `_metadata/mod.io_fileid.txt`, page <https://mod.io/g/transportfever3/m/discord-rich-presence>, the same as `AppConstants.ModIoUrl` (the app's "mod.io" button).
         The upload made `1.png` a copy of the cover and moved the settings window to `2.png` and `3.png`, as the gallery on mod.io has them.

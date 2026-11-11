@@ -24,6 +24,7 @@ Writes the findings as one JSON array to the output and nothing else: code, seve
 
 .PARAMETER AllowRecordEdit
 Skips the records check (DOC012), for the one allowed correction: removing personal data from a record.
+Link targets in a record may change without it, because they follow moved files.
 #>
 param(
     [string]$Base,
@@ -967,11 +968,15 @@ if ($Base) {
                 Add-Error 'DOC012' $rel $null 'record was deleted; records stay as written (-AllowRecordEdit for removing personal data only)'
                 continue
             }
+            # Link targets are not part of the text: a record's links follow moved files, so every target
+            # (inline or reference definition) is blanked in both versions before they are compared.
             $getBody = {
                 param([string[]]$Lines)
                 $fm = Read-FrontMatter $Lines
                 $start = if ($fm.End -ge 0) { $fm.End + 1 } else { 0 }
-                ($Lines[$start..($Lines.Count - 1)] -join "`n").TrimEnd()
+                $body = ($Lines[$start..($Lines.Count - 1)] -join "`n").TrimEnd()
+                $body = $inlineLinkRegex.Replace($body, ']()')
+                [regex]::Replace($body, '(?m)^(\s{0,3}\[(?!\^)[^\]]+\]:)[ \t]*(?:<[^>]*>|\S+)', '$1')
             }
             $before = & $getBody @(Get-BaseLines $rel)
             $after = & $getBody $models[$rel].Lines

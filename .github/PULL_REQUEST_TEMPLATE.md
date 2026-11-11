@@ -14,7 +14,7 @@ Everything here is public: keep personal details out of descriptions, logs and s
 - [ ] `dotnet build` in Debug and Release without new warnings
 - [ ] `dotnet test`
 - [ ] `dotnet publish` (Native AOT) without new warnings
-- [ ] Tested with the game and Discord ([docs/testing.md](https://github.com/Zagrthos/TF3-DRPC/blob/main/docs/testing.md)): which steps
+- [ ] Tested with the game and Discord ([docs/50-testing/manual-test.md](https://github.com/Zagrthos/TF3-DRPC/blob/main/docs/50-testing/manual-test.md)): which steps
 - [ ] Windows
 - [ ] macOS
 
