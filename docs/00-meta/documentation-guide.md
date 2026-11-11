@@ -8,7 +8,7 @@ covers:
   - docs/00-meta/templates/**
   - .github/workflows/docs.yml
   - .github/PULL_REQUEST_TEMPLATE.md
-last-reviewed: 2026-11-10
+last-reviewed: 2026-11-11
 ---
 
 # Documentation guide
@@ -32,7 +32,7 @@ The gate is done when the last step reports no errors.
 4. Update [status.md](../10-overview/status.md): delete finished items, add new limits and to-dos.
    A new decision gets a new [decision record](#decisions); a reversed one gets a new record that supersedes the old one.
 5. A change players notice gets a line in [CHANGELOG.md](../../CHANGELOG.md), and [README.md](../../README.md) follows when what players see or do changes.
-6. Set `last-reviewed` to today in every document you checked, also in those that needed no change: the date is the record that it was checked against this change _(checked; a date that is already today counts)_.
+6. Set `last-reviewed` to today in every document you checked, also in those that needed no change: the date is the record that it was checked against this change _(checked; a date not older than the change counts: today while there are uncommitted edits, otherwise the date of its newest commit)_.
 7. Run the script from step 1 again.
    The gate is done when it reports no errors.
 
