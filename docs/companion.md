@@ -1,8 +1,8 @@
 # The companion app
 
 A portable .NET MAUI app for Windows and macOS that follows the [game log](game-log.md)
-and shows the [presence](presence.md) in Discord. Name: `TF3-DRPC`. Decisions and open work
-are in [README.md](README.md#decisions).
+and shows the [presence](presence.md) in Discord. Name: `TF3-DRPC`. Decisions
+are in [README.md](README.md#decisions), open work in [status.md](10-overview/status.md).
 
 ## Platform
 

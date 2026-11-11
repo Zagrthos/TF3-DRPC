@@ -1,0 +1,43 @@
+# Checks the Markdown documentation with tools/docs/Test-Docs.ps1 on every pull request and every push
+# to main: front matter, names, links and anchors, index files, privacy and the one-sentence-per-line
+# style. A pull request also runs the docs gate checks against its base branch, so a change to a file
+# that a document covers fails until that document's last-reviewed date is new. It reads text files
+# only and runs in a few seconds on the cheap ubuntu-slim runner.
+name: Docs
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: docs-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  docs:
+    name: Docs
+    runs-on: ubuntu-slim
+    steps:
+      # The docs gate compares with the merge base of the base branch, so it needs the whole history.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      # The base branch name comes in through the environment, never inside the script text.
+      - name: Check the documentation
+        shell: pwsh
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          if ($env:EVENT_NAME -eq 'pull_request') {
+            ./tools/docs/Test-Docs.ps1 -Base "origin/$env:BASE_REF"
+          } else {
+            ./tools/docs/Test-Docs.ps1
+          }

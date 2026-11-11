@@ -14,6 +14,13 @@ introduction for new contributors; both link here for the details instead of rep
 When the code and this file disagree, inspect the code and correct this file. Update it whenever a change makes it stale: new commands,
 framework or dependency changes, structure, workflows, recurring pitfalls.
 
+**Documentation:** before you write or move a document, and before every commit, follow
+[docs/00-meta/documentation-guide.md](docs/00-meta/documentation-guide.md): where each kind of
+text goes, the front matter, the writing rules, and the
+[docs gate](docs/00-meta/documentation-guide.md#docs-gate), which ends when
+`pwsh ./tools/docs/Test-Docs.ps1 -Base origin/main` reports no errors. The project's state and
+to-dos are in [docs/10-overview/status.md](docs/10-overview/status.md).
+
 ## Quick Reference
 
 - Link the mod into the game's staging area (Windows and macOS): `./tools/install-mod.ps1` (`-Remove`
@@ -119,7 +126,7 @@ keeps its own older manifests, so its updates do not fix this: run
 | Path | Purpose |
 |---|---|
 | [mod/zagrthos_drpc/](mod/zagrthos_drpc/) | The game mod (Lua); `_metadata/0.png` … are its Mod Hub cover and gallery images, 1920 × 1080. Design: [docs/mod.md](docs/mod.md) |
-| [tools/](tools/) | Development scripts; [tools/test-run/](tools/test-run/) drives the game and the app in a test run |
+| [tools/](tools/) | Development scripts; [tools/test-run/](tools/test-run/) drives the game and the app in a test run; [tools/docs/](tools/docs/) holds `Test-Docs.ps1`, the documentation validator |
 | [docs/](docs/) | Design documents and real game log samples |
 | [reviews/](reviews/) | Dated code reviews, reproduction scripts and recorded evidence |
 | [assets/discord/](assets/discord/) | Images uploaded to the Discord application; `cover.png` is also the source of the app icon |
@@ -127,7 +134,7 @@ keeps its own older manifests, so its updates do not fix this: run
 | [.claude/skills/tf3-modding/](.claude/skills/tf3-modding/) | Offline TF3 modding reference for coding agents |
 | [README.md](README.md), [CONTRIBUTING.md](CONTRIBUTING.md) | The overview for players and the short guide for new contributors |
 | [CHANGELOG.md](CHANGELOG.md) | What each release brings; `release.yml` takes the GitHub release text from it, and the Mod Hub upload uses the same text |
-| [.github/](.github/) | Issue forms (bug report, feature request, translation), the issue chooser, the pull request template, and the workflows: `ci.yml` (build and test on Windows and macOS), `release.yml` (release for a `v<VersionPrefix>` tag on `main`) and one `codeql-<language>.yml` per CodeQL language (Actions, C# on Windows and macOS, Swift; Lua and PowerShell have no CodeQL support), configured by `codeql/codeql-config.yml`, which leaves out `reviews/`; actions are pinned to commit hashes |
+| [.github/](.github/) | Issue forms (bug report, feature request, translation), the issue chooser, the pull request template, and the workflows: `ci.yml` (build and test on Windows and macOS), `release.yml` (release for a `v<VersionPrefix>` tag on `main`), `docs.yml` (the documentation checks on every pull request and push to `main`) and one `codeql-<language>.yml` per CodeQL language (Actions, C# on Windows and macOS, Swift; Lua and PowerShell have no CodeQL support), configured by `codeql/codeql-config.yml`, which leaves out `reviews/`; actions are pinned to commit hashes |
 
 Key configuration: [.editorconfig](.editorconfig) (a shared file; don't edit it locally),
 [.gitattributes](.gitattributes), [.luarc.json](.luarc.json) (Lua language server).
