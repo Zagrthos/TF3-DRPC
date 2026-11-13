@@ -9,7 +9,7 @@ covers:
   - .gitattributes
   - tools/test-run/.swift-format
   - tools/test-run/tf3mac.swift
-last-reviewed: 2026-11-11
+last-reviewed: 2026-11-13
 ---
 
 # Set up a Mac
@@ -18,14 +18,25 @@ The steps a Mac needs on top of [setting up a development machine](setup.md).
 
 ## Steps
 
-1. Install the pinned workload set with `sudo`, because the SDK in `/usr/local/share/dotnet` belongs to root, from `companion/`:
+1. Install the .NET SDK with the Homebrew formula, not the `dotnet-sdk` cask:
 
    ```sh
-   sudo dotnet workload update --version <workloadVersion from global.json>
-   sudo dotnet workload install maui-maccatalyst
+   brew install dotnet
    ```
 
-2. Install the Xcode version the Mac Catalyst SDK was made for (Xcode 27.2 for the .NET 11 GA workload set) and select it:
+   The formula's SDK lives in `/opt/homebrew` and keeps its workloads in `~/.dotnet`, so no command needs `sudo`.
+   Switching from the cask leaves the new SDK without any workloads, and every restore fails until step 2 has run.
+   A `brew upgrade` that brings a new SDK feature band needs step 2 again.
+2. Install the pinned workload set and the Mac Catalyst workload from a folder outside the repository, because `dotnet workload` refuses `--version` inside a folder whose `global.json` already pins one:
+
+   ```sh
+   cd ~
+   dotnet workload update --version <workloadVersion from global.json>
+   dotnet workload install maui-maccatalyst --version <workloadVersion from global.json>
+   ```
+
+   `dotnet workload list` then shows that workload version and `maui-maccatalyst`.
+3. Install the Xcode version the Mac Catalyst SDK was made for (Xcode 27.2 for the .NET 11 GA workload set) and select it:
 
    ```sh
    sudo xcode-select -s /Applications/Xcode_27.2.app
@@ -33,7 +44,7 @@ The steps a Mac needs on top of [setting up a development machine](setup.md).
 
    The SDK refuses any other major or minor version with error `E0191`.
    When `global.json` moves, check `RecommendedXcodeVersion` of the new SDK.
-3. Make git write CRLF, once per clone, with a clean working tree:
+4. Make git write CRLF, once per clone, with a clean working tree:
 
    ```sh
    git config core.autocrlf false
@@ -43,7 +54,7 @@ The steps a Mac needs on top of [setting up a development machine](setup.md).
 
    macOS's `/etc/gitconfig` sets `core.autocrlf=input`, which checks files out with LF, and every C# file then gets `RCS0044`.
    Swift sources stay LF (`.gitattributes`, `tools/test-run/.editorconfig`), because `swift-format` misreads CRLF.
-4. For the test-run scripts in [tools/test-run/](../../tools/test-run/README.md): install `pwsh` and the Xcode command line tools, and give the app that runs them (Terminal, VS Code) Accessibility and Screen Recording in System Settings → Privacy & Security.
+5. For the test-run scripts in [tools/test-run/](../../tools/test-run/README.md): install `pwsh` and the Xcode command line tools, and give the app that runs them (Terminal, VS Code) Accessibility and Screen Recording in System Settings → Privacy & Security.
 
 ## Check
 
