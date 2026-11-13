@@ -3,7 +3,7 @@
     x:Class="Tf3Drpc.App.Views.SettingsWindow"
     x:ClassModifier="Internal"
     xmlns:constants="clr-namespace:Tf3Drpc.App.Constants"
-    xmlns:asm="clr-namespace:"
+    xmlns:asm="clr-namespace:Tf3Drpc.App"
     Title="{x:Static constants:AppConstants.ApplicationName}"
     Width="{x:Static constants:AppConstants.SettingsWindowWidth}"
     Height="{x:Static constants:AppConstants.SettingsWindowHeight}"
@@ -17,7 +17,7 @@
                     Title="{x:Static constants:AppConstants.ApplicationName}"
                     HeightRequest="48"
                     Icon="tray.ico"
-                    Subtitle="{x:Static asm:ThisAssembly+Info.InformationalVersion}" />
+                    Subtitle="{x:Static asm:ThisAssembly.Info.InformationalVersion}" />
             </On>
         </OnPlatform>
     </Window.TitleBar>

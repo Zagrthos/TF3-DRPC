@@ -1,0 +1,25 @@
+# Local settings on top of the shared .editorconfig at the repository root, which changes only upstream.
+# No "root = true": everything else comes from the shared file. An entry here wins over the shared one for the files below companion/,
+# and over Analyzers.globalconfig, because .editorconfig entries take precedence over a global analyser configuration.
+# The .NET analysers are the baseline: a .NET rule the shared file turns off is turned on again here.
+
+[*.cs]
+
+## CA1515: Consider making public types internal
+dotnet_diagnostic.CA1515.severity = warning
+# By default CA1515 checks executables only; Tf3Drpc.Core is a library that only the app and the tests use.
+dotnet_code_quality.CA1515.output_kind = ConsoleApplication, WindowsApplication, DynamicallyLinkedLibrary
+
+## CA1707: Identifiers should not contain underscores
+dotnet_diagnostic.CA1707.severity = warning
+
+## CA2025: Do not pass IDisposable instances into unawaited tasks (the shared file waited for .NET 11)
+dotnet_diagnostic.CA2025.severity = warning
+
+## CS1591: Missing XML comment for publicly visible type or member
+dotnet_diagnostic.CS1591.severity = warning
+
+# Extension rules that collide with a .NET rule, which wins.
+
+## MA0182: Unused internal type. With CA1515 every Core type is internal, and MA0182 sees only one assembly, not the app and tests that use them through InternalsVisibleTo.
+dotnet_diagnostic.MA0182.severity = none

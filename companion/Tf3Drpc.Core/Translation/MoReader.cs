@@ -13,7 +13,7 @@ namespace Tf3Drpc.Core.Translation;
 /// <summary>
 /// Reads the msgid to msgstr pairs of a GNU gettext .mo file.
 /// </summary>
-public static class MoReader
+internal static class MoReader
 {
     /// <summary>
     /// Parses .mo data; corrupt or oversized data, or more decoded text than the file holds, gives <see langword="false"/>.
@@ -37,14 +37,14 @@ public static class MoReader
         uint translationTable = ReadUInt32(data, 16, littleEndian);
         long tableBytes = (long)count * TranslationConstants.MoTableEntryBytes;
 
-        bool tablesFit = ((long)originalTable + tableBytes <= data.Length) &&
-            ((long)translationTable + tableBytes <= data.Length);
+        bool tablesFit = (originalTable + tableBytes <= data.Length) &&
+            (translationTable + tableBytes <= data.Length);
 
         if (((revision >> 16) is not 0) || !tablesFit)
             return false;
 
         long decodedBytes = 0;
-        Dictionary<string, string> result = new((int)Math.Min(count, TranslationConstants.MaxInitialEntryCapacity), StringComparer.Ordinal);
+        Dictionary<string, string> result = [with((int)Math.Min(count, TranslationConstants.MaxInitialEntryCapacity), StringComparer.Ordinal)];
 
         for (uint i = 0; i < count; i++)
         {

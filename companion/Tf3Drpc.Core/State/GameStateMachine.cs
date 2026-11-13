@@ -1,7 +1,9 @@
 using System;
+using System.Diagnostics;
 
 using Tf3Drpc.Core.Constants;
 using Tf3Drpc.Core.Enums;
+using Tf3Drpc.Core.GameLog;
 using Tf3Drpc.Core.Status;
 using Tf3Drpc.Core.Structs;
 
@@ -71,8 +73,11 @@ internal sealed class GameStateMachine(TimeProvider timeProvider)
     /// <summary>
     /// Applies an event of the log; <paramref name="entryTimestamp"/> is the log time of its line.
     /// </summary>
-    public void Apply(in GameLogEventStruct gameEvent, in DateTimeOffset entryTimestamp)
+    /// <exception cref="UnreachableException"><paramref name="gameEvent"/> is of a type this method doesn't know.</exception>
+    public void Apply(GameLogEvent gameEvent, in DateTimeOffset entryTimestamp)
     {
+        ArgumentNullException.ThrowIfNull(gameEvent);
+
         if (_process.StartedAt is DateTimeOffset started && !_sessionConfirmed)
         {
             if (entryTimestamp < (started - GameStateConstants.ProcessStartTolerance))
@@ -83,38 +88,37 @@ internal sealed class GameStateMachine(TimeProvider timeProvider)
 
         _eventSeen = true;
 
-        switch (gameEvent.Kind)
+        switch (gameEvent)
         {
-            case GameLogEventKind.Startup:
+            case StartupEvent:
                 _state = GameState.Starting;
                 _gameStart = entryTimestamp;
                 _timerStart = entryTimestamp;
                 ClearGame();
                 break;
 
-            case GameLogEventKind.MainMenu:
-            case GameLogEventKind.GameStopped:
+            case MainMenuEvent or GameStoppedEvent:
                 _gameStart ??= entryTimestamp;
                 _state = GameState.MainMenu;
                 _timerStart = _gameStart;
                 ClearGame();
                 break;
 
-            case GameLogEventKind.LoadingGame:
+            case LoadingGameEvent:
                 _state = GameState.Loading;
                 _missionNumber = null;
                 _status = null;
                 break;
 
-            case GameLogEventKind.MissionLoading:
+            case MissionLoadingEvent mission:
                 _state = GameState.Loading;
                 _missionNumber = null;
                 _status = null;
                 _missionPending = true;
-                _pendingMissionNumber = gameEvent.MissionNumber;
+                _pendingMissionNumber = mission.MissionNumber;
                 break;
 
-            case GameLogEventKind.GameReady:
+            case GameReadyEvent:
                 _state = (_missionPending) ? GameState.Mission : GameState.Playing;
                 _missionNumber = _pendingMissionNumber;
                 _missionPending = false;
@@ -123,19 +127,22 @@ internal sealed class GameStateMachine(TimeProvider timeProvider)
                 _status = null;
                 break;
 
-            case GameLogEventKind.Status:
-                _status = gameEvent.Status;
+            case StatusEvent status:
+                _status = status.Status;
                 _statusInitialAge = Max(_timeProvider.GetUtcNow() - entryTimestamp, TimeSpan.Zero);
                 _statusAppliedAt = _timeProvider.GetTimestamp();
                 break;
 
-            case GameLogEventKind.Closing:
+            case ClosingEvent:
                 _state = GameState.Closing;
                 break;
 
-            case GameLogEventKind.GameBuild:
-                _gameBuild = gameEvent.GameBuild;
+            case GameBuildEvent build:
+                _gameBuild = build.GameBuild;
                 break;
+
+            default:
+                throw new UnreachableException($"Unexpected game log event {gameEvent.GetType().Name}.");
         }
     }
 

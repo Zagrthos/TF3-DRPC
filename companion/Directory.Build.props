@@ -50,4 +50,9 @@
     <VersionPrefix>0.1.0</VersionPrefix>
   </PropertyGroup>
 
+  <!-- Every analyser rule that is on by default reports at least a warning -->
+  <ItemGroup>
+    <GlobalAnalyzerConfigFiles Include="$(MSBuildThisFileDirectory)Analyzers.globalconfig" />
+  </ItemGroup>
+
 </Project>

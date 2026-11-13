@@ -8,7 +8,7 @@ covers:
   - companion/Tf3Drpc.Core/Languages/**
   - companion/Tf3Drpc.Core/Translation/**
   - companion/Tf3Drpc.Core/Enums/OwnText.cs
-last-reviewed: 2026-11-11
+last-reviewed: 2026-11-13
 ---
 
 # Texts and languages

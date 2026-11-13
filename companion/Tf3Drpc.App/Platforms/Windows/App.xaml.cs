@@ -10,9 +10,13 @@ namespace Tf3Drpc.App.Platforms.Windows;
 public sealed partial class WinUIApplication : MauiWinUIApplication
 #pragma warning restore CA1812
 {
+    /// <summary>
+    /// Creates the application and loads its XAML.
+    /// </summary>
     public WinUIApplication()
         => InitializeComponent();
 
+    /// <inheritdoc/>
     protected override MauiApp CreateMauiApp()
         => MauiProgram.CreateMauiApp();
 }

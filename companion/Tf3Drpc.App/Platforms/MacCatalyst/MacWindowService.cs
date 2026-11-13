@@ -37,7 +37,7 @@ internal sealed class MacWindowService : IWindowService
         => Send(GetClass("NSApplication"), "sharedApplication");
 
     /// <summary>
-    /// The handler for MAUI's <c>SceneOnActivated</c> lifecycle hook; takes over the window as soon as AppKit has created it.
+    /// The handler for MAUI's <c language="csharp">SceneOnActivated</c> lifecycle hook; takes over the window as soon as AppKit has created it.
     /// </summary>
     public void Attach()
     {
@@ -97,7 +97,7 @@ internal sealed class MacWindowService : IWindowService
 
         // No window state to restore, and no more frame saves: UIKit writes the first frame to the app's preferences
         // before the app gets the window, but moving and resizing no longer update it.
-        SendBoolean(_window, "setRestorable:", false);
+        SendBoolean(_window, "setRestorable:", argument: false);
         using NSString noAutosave = new(string.Empty);
         Send(_window, "setFrameAutosaveName:", noAutosave.Handle);
         nint closeButton = Send(_window, "standardWindowButton:", CloseButton);
@@ -156,6 +156,7 @@ internal sealed class MacWindowService : IWindowService
         {
             AppTheme.Light => LightAppearance,
             AppTheme.Dark => DarkAppearance,
+            AppTheme.Unspecified => null,
             _ => null
         };
 

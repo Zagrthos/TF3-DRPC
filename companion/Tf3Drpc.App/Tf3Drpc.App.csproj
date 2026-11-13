@@ -7,6 +7,7 @@
     <PublishAot>true</PublishAot>
     <RootNamespace>Tf3Drpc.App</RootNamespace>
     <SelfContained>true</SelfContained>
+    <ThisAssemblyNamespace>Tf3Drpc.App</ThisAssemblyNamespace>
     <TargetFramework Condition="$([MSBuild]::IsOSPlatform('windows'))">net11.0-windows10.0.19041.0</TargetFramework>
     <TargetFramework Condition="$([MSBuild]::IsOSPlatform('osx'))">net11.0-maccatalyst</TargetFramework>
   </PropertyGroup>
@@ -39,8 +40,8 @@
   <!-- Mac Catalyst Platform Needings -->
   <PropertyGroup Condition="'$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == 'maccatalyst'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks> <!-- [LibraryImport] for the Objective-C runtime -->
-    <RuntimeIdentifier>maccatalyst-arm64</RuntimeIdentifier>
     <NoDSymUtil>true</NoDSymUtil> <!-- Since .NET 11 a Native AOT build writes a 44 MB .dSYM next to the .app; Release has no symbols -->
+    <RuntimeIdentifier>maccatalyst-arm64</RuntimeIdentifier>
     <SupportedOSPlatformVersion>26.0</SupportedOSPlatformVersion>
   </PropertyGroup>
 

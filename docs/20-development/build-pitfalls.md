@@ -28,16 +28,3 @@ Setup problems are in [set up a development machine](setup.md#if-it-fails).
 | Touched files have LF line endings | `dotnet format` and `sed -i` in Git Bash write LF | Convert the touched files back to CRLF. |
 | An invisible byte order mark in C# source, or a real line break where `\n` was meant | escapes written through a shell heredoc or some edit tools turn into the real character | After such edits, check the touched files for control characters, U+FEFF after the first byte and zero-width characters; PowerShell single-quoted strings keep escapes literal. |
 
-## Check for unused usings
-
-Unused usings (IDE0005) don't fail the build, and `dotnet format --verify-no-changes` misses them.
-
-1. Add a temporary `companion/.globalconfig`:
-
-   ```ini
-   is_global = true
-   dotnet_diagnostic.IDE0005.severity = warning
-   ```
-
-2. Build Debug and Release; each IDE0005 warning is an unused using.
-3. Delete `companion/.globalconfig` again.

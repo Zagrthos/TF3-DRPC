@@ -9,7 +9,7 @@ covers:
   - companion/Tf3Drpc.App/Services/**
   - companion/Tf3Drpc.App/Messages/**
   - companion/Tf3Drpc.Core/Monitor/**
-last-reviewed: 2026-11-11
+last-reviewed: 2026-11-13
 ---
 
 # Companion app architecture

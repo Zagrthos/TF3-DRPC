@@ -8,7 +8,7 @@ namespace Tf3Drpc.Core.Monitor;
 /// <summary>
 /// Takes the desired presence and tells whether Discord is connected.
 /// </summary>
-public interface IPresenceSink
+internal interface IPresenceSink
 {
     /// <summary>
     /// Tells whether Discord is connected.

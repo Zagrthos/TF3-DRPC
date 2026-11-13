@@ -6,6 +6,8 @@ area: [app, tools]
 covers:
   - companion/TF3-DRPC.slnx
   - companion/global.json
+  - companion/.editorconfig
+  - companion/Analyzers.globalconfig
   - companion/Directory.Build.props
   - companion/Directory.Build.targets
   - companion/Directory.Packages.props
@@ -60,6 +62,9 @@ The rules are in [C# style](../../30-conventions/csharp.md) and [Native AOT](../
 - All in `companion/`, where the commands run:
   - `TF3-DRPC.slnx`.
   - `Directory.Build.props`: the build policy, Debug and Release settings, trim analysis, our 13 satellite languages, file properties, and `EnableWindowsTargeting` so the Windows projects restore on macOS.
+  - `.editorconfig`: the local analyser entries on top of the shared one at the repository root; they turn on again the .NET rules the shared file turns off ([decision 0028](../../70-decisions/0028-dotnet-analysers-are-the-baseline.md)).
+  - `Analyzers.globalconfig`: raises every analyser rule that is on by default and reports below a warning to a warning ([decision 0027](../../70-decisions/0027-every-analyser-rule-at-least-a-warning.md)).
+    It lists each rule by ID, because `AnalysisLevel` `latest-all` ignores bulk entries; after an analyser update, add the new rules that are on and report below a warning, except those the shared `.editorconfig` configures.
   - `Directory.Build.targets`: keeps the `.xml` doc files out of the output.
   - `Directory.Packages.props`: central package versions.
     The analysers Meziantou, Roslynator and Sonar and `ThisAssembly.AssemblyInfo` are `GlobalPackageReference`s.
@@ -72,6 +77,8 @@ The rules are in [C# style](../../30-conventions/csharp.md) and [Native AOT](../
   Release has no symbols (`DebugType none`); Debug embeds them.
   `UseArtifactsOutput` puts all output in `artifacts/`.
 - Tests: xunit v3 on Microsoft.Testing.Platform.
+- `Tf3Drpc.Core` and the app set `ThisAssemblyNamespace`: `InternalsVisibleTo` makes the generated `ThisAssembly` class of Core visible to the app and the tests, and without a namespace the two global classes collide (CS0436).
+  XAML refers to it as `{x:Static asm:ThisAssembly.Info.InformationalVersion}` with `xmlns:asm="clr-namespace:Tf3Drpc.App"`.
 
 ## Publish size
 

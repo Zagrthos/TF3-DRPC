@@ -92,7 +92,7 @@ internal static class LuaUtils
     }
 
     /// <summary>
-    /// Returns the number of equals signs of a long bracket opening at <paramref name="start"/> (<c>[[</c> is 0), or -1.
+    /// Returns the number of equals signs of a long bracket opening at <paramref name="start"/> (<c language="lua">[[</c> is 0), or -1.
     /// </summary>
     private static int GetLongBracketLevel(string source, int start)
     {

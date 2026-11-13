@@ -14,14 +14,23 @@ using Xunit;
 
 namespace Tf3Drpc.Core.Tests.GameLog;
 
+/// <summary>
+/// Tests of <see cref="Tf3Drpc.Core.GameLog.GameLogFollower"/>, which returns the lines appended to a growing log file, using temporary files.
+/// </summary>
 public sealed class GameLogFollowerTests : IDisposable
 {
     private readonly string _directory = Path.Combine(Path.GetTempPath(), "tf3drpc-tests-" + Guid.NewGuid().ToString("N"));
     private readonly GameLogFollower _follower = new();
 
+    /// <summary>
+    /// Creates a temporary directory for the log files of the test.
+    /// </summary>
     public GameLogFollowerTests()
         => Directory.CreateDirectory(_directory);
 
+    /// <summary>
+    /// Deletes the temporary directory and the log files in it.
+    /// </summary>
     public void Dispose()
         => Directory.Delete(_directory, recursive: true);
 
@@ -40,8 +49,11 @@ public sealed class GameLogFollowerTests : IDisposable
     private Task<GameLogReadResultStruct> PollAsync(string path)
         => _follower.PollAsync(path, TestContext.Current.CancellationToken);
 
+    /// <summary>
+    /// A copy of the session sample log is read in one poll as its 23 lines, identical to the file lines and without a restart.
+    /// </summary>
     [Fact]
-    public async Task SessionLogCopy_YieldsAllLinesUnchangedAsync()
+    public async Task SessionLogCopyYieldsAllLinesUnchangedAsync()
     {
         string path = PathOf("stdout.txt");
         File.Copy(SampleFiles.GetPath("session.log"), path);
@@ -53,8 +65,11 @@ public sealed class GameLogFollowerTests : IDisposable
         Assert.False(result.Restarted);
     }
 
+    /// <summary>
+    /// Each poll returns only the lines appended since the previous poll, and a poll without new data returns none.
+    /// </summary>
     [Fact]
-    public async Task IncrementalAppends_YieldOnlyNewLinesAsync()
+    public async Task IncrementalAppendsYieldOnlyNewLinesAsync()
     {
         string path = PathOf("log.txt");
         Append(path, "one\r\ntwo\r\n");
@@ -69,8 +84,11 @@ public sealed class GameLogFollowerTests : IDisposable
         Assert.Equal(["three"], second.Lines);
     }
 
+    /// <summary>
+    /// A line without a line break waits for the next poll and is returned complete once its line break has arrived.
+    /// </summary>
     [Fact]
-    public async Task PartialLine_IsKeptUntilItsLineBreakArrivesAsync()
+    public async Task PartialLineIsKeptUntilItsLineBreakArrivesAsync()
     {
         string path = PathOf("log.txt");
         Append(path, "complete\nunfin");
@@ -86,8 +104,11 @@ public sealed class GameLogFollowerTests : IDisposable
         Assert.Equal(["unfinished"], third.Lines);
     }
 
+    /// <summary>
+    /// A multi-byte UTF-8 character that is split between two polls is decoded correctly once its remaining bytes arrive.
+    /// </summary>
     [Fact]
-    public async Task Utf8SequenceSplitAcrossReads_IsDecodedCorrectlyAsync()
+    public async Task Utf8SequenceSplitAcrossReadsIsDecodedCorrectlyAsync()
     {
         string path = PathOf("log.txt");
         byte[] bytes = Encoding.UTF8.GetBytes("Holzfällerlager\r\n");
@@ -102,8 +123,11 @@ public sealed class GameLogFollowerTests : IDisposable
         Assert.Equal(["Holzfällerlager"], second.Lines);
     }
 
+    /// <summary>
+    /// Lines ending in CRLF and in LF are both split correctly, and an empty line is returned as an empty string.
+    /// </summary>
     [Fact]
-    public async Task CrlfAndLf_AreBothAcceptedAsync()
+    public async Task CrlfAndLfAreBothAcceptedAsync()
     {
         string path = PathOf("log.txt");
         Append(path, "a\r\nb\nc\r\n\nd\n");
@@ -113,8 +137,11 @@ public sealed class GameLogFollowerTests : IDisposable
         Assert.Equal(["a", "b", "c", string.Empty, "d"], result.Lines);
     }
 
+    /// <summary>
+    /// A UTF-8 byte order mark at the start of the file is not part of the first line.
+    /// </summary>
     [Fact]
-    public async Task Utf8Bom_IsIgnoredAsync()
+    public async Task Utf8BomIsIgnoredAsync()
     {
         string path = PathOf("log.txt");
         Append(path, [0xEF, 0xBB, 0xBF]);
@@ -125,8 +152,11 @@ public sealed class GameLogFollowerTests : IDisposable
         Assert.Equal(["first", "second"], result.Lines);
     }
 
+    /// <summary>
+    /// A file that is overwritten with shorter content is reported as restarted, is read from its beginning, and the old partial line is discarded.
+    /// </summary>
     [Fact]
-    public async Task Truncation_RestartsAndReadsFromTheBeginningAsync()
+    public async Task TruncationRestartsAndReadsFromTheBeginningAsync()
     {
         string path = PathOf("log.txt");
         Append(path, "old one\nold two\npartial");
@@ -143,8 +173,11 @@ public sealed class GameLogFollowerTests : IDisposable
         Assert.Equal(["more"], next.Lines);
     }
 
+    /// <summary>
+    /// A file that is overwritten with content longer than the previous read offset is detected as rewritten, reported as restarted, and read from its beginning without the old partial line.
+    /// </summary>
     [Fact]
-    public async Task RewrittenLogLongerThanTheOldOffset_RestartsAndDropsThePartialLineAsync()
+    public async Task RewrittenLogLongerThanTheOldOffsetRestartsAndDropsThePartialLineAsync()
     {
         string path = PathOf("log.txt");
         Append(path, "old\npartial");
@@ -157,8 +190,11 @@ public sealed class GameLogFollowerTests : IDisposable
         Assert.Equal(["new complete line"], result.Lines);
     }
 
+    /// <summary>
+    /// A file that is overwritten with content of exactly the same length is detected as rewritten and reported as restarted.
+    /// </summary>
     [Fact]
-    public async Task RewrittenLogOfEqualLength_RestartsAsync()
+    public async Task RewrittenLogOfEqualLengthRestartsAsync()
     {
         string path = PathOf("log.txt");
         Append(path, "old\n");
@@ -171,8 +207,11 @@ public sealed class GameLogFollowerTests : IDisposable
         Assert.Equal(["new"], result.Lines);
     }
 
+    /// <summary>
+    /// Appending lines to a file whose size is past the head fingerprint is never mistaken for a rewrite and yields exactly the new line each time.
+    /// </summary>
     [Fact]
-    public async Task OrdinaryAppendsBeyondTheFingerprint_ReportNoRestartAsync()
+    public async Task OrdinaryAppendsBeyondTheFingerprintReportNoRestartAsync()
     {
         string path = PathOf("log.txt");
         string line = new string('x', 100) + "\n";
@@ -189,8 +228,11 @@ public sealed class GameLogFollowerTests : IDisposable
         }
     }
 
+    /// <summary>
+    /// A line that grows beyond the maximum line length without a line break is dropped, the pending bytes stay within that limit, and reading resumes with the line that follows.
+    /// </summary>
     [Fact]
-    public async Task UnterminatedLine_IsDroppedOnceTooLongAndTheNextLineIsReadAsync()
+    public async Task UnterminatedLineIsDroppedOnceTooLongAndTheNextLineIsReadAsync()
     {
         string path = PathOf("log.txt");
         byte[] chunk = new byte[4 * 1024 * 1024];
@@ -215,8 +257,11 @@ public sealed class GameLogFollowerTests : IDisposable
         Assert.Equal(0, _follower.PendingBytes);
     }
 
+    /// <summary>
+    /// A file of many two-byte lines is returned in several polls, each of at most the per-poll read limit, which together yield every line.
+    /// </summary>
     [Fact]
-    public async Task ManyShortLines_AreReadInBatchesOfAtMostTheCapAsync()
+    public async Task ManyShortLinesAreReadInBatchesOfAtMostTheCapAsync()
     {
         string path = PathOf("log.txt");
         const int lineCount = ((2 * GameLogConstants.MaxReadBytesPerPoll) + 1000) / 2;
@@ -236,8 +281,11 @@ public sealed class GameLogFollowerTests : IDisposable
         Assert.Empty((await PollAsync(path)).Lines);
     }
 
+    /// <summary>
+    /// A line just under the maximum length that is split across two polls is delivered whole, together with the line after it.
+    /// </summary>
     [Fact]
-    public async Task LineJustBelowTheLimit_SpanningTwoPolls_IsDeliveredAsync()
+    public async Task LineJustBelowTheLimitSpanningTwoPollsIsDeliveredAsync()
     {
         string path = PathOf("log.txt");
         string text = new('z', GameLogConstants.MaxLineBytes - 10);
@@ -253,8 +301,11 @@ public sealed class GameLogFollowerTests : IDisposable
         Assert.Equal([text, "after"], second.Lines);
     }
 
+    /// <summary>
+    /// A line over the maximum length that is split across two polls is skipped, and the line after it is delivered with no bytes left pending.
+    /// </summary>
     [Fact]
-    public async Task OversizedLine_SpanningTwoPolls_IsStillSkippedAsync()
+    public async Task OversizedLineSpanningTwoPollsIsStillSkippedAsync()
     {
         string path = PathOf("log.txt");
         AppendFillerUpToTheCapMinus(path, 64);
@@ -267,8 +318,11 @@ public sealed class GameLogFollowerTests : IDisposable
         Assert.Equal(0, _follower.PendingBytes);
     }
 
+    /// <summary>
+    /// An over-long line that begins just before the per-poll read limit and ends several polls later is skipped, so that only the preceding filler lines and the final line are returned.
+    /// </summary>
     [Fact]
-    public async Task OversizedLine_StartingNearTheCapAndEndingLater_IsSkippedAcrossSeveralPollsAsync()
+    public async Task OversizedLineStartingNearTheCapAndEndingLaterIsSkippedAcrossSeveralPollsAsync()
     {
         string path = PathOf("log.txt");
         AppendFillerUpToTheCapMinus(path, 64);
@@ -289,8 +343,11 @@ public sealed class GameLogFollowerTests : IDisposable
         Append(path, string.Concat(Enumerable.Repeat(line, (GameLogConstants.MaxReadBytesPerPoll - missing) / 64)));
     }
 
+    /// <summary>
+    /// An over-long line that begins and ends within one poll is skipped, and the lines before and after it are delivered.
+    /// </summary>
     [Fact]
-    public async Task OversizedLineCompletedWithinOnePoll_IsSkippedAsync()
+    public async Task OversizedLineCompletedWithinOnePollIsSkippedAsync()
     {
         string path = PathOf("log.txt");
         byte[] chunk = new byte[GameLogConstants.MaxLineBytes + 10];
@@ -304,8 +361,11 @@ public sealed class GameLogFollowerTests : IDisposable
         Assert.Equal(["one", "two"], result.Lines);
     }
 
+    /// <summary>
+    /// A partial line of half the maximum length that is followed by a short ending in a later poll is returned as one complete line.
+    /// </summary>
     [Fact]
-    public async Task PartialLineBelowTheLimit_StillCompletesAfterLargeChunksAsync()
+    public async Task PartialLineBelowTheLimitStillCompletesAfterLargeChunksAsync()
     {
         string path = PathOf("log.txt");
         byte[] chunk = new byte[GameLogConstants.MaxLineBytes / 2];
@@ -315,12 +375,15 @@ public sealed class GameLogFollowerTests : IDisposable
         Append(path, "end\n");
         GameLogReadResultStruct result = await PollAsync(path);
 
-        Assert.Single(result.Lines);
-        Assert.EndsWith("yend", result.Lines[0], StringComparison.Ordinal);
+        string item = Assert.Single(result.Lines);
+        Assert.EndsWith("yend", item, StringComparison.Ordinal);
     }
 
+    /// <summary>
+    /// A file that is missing yields no lines and no restart, and after the file has been deleted again the follower keeps its position and yields no lines.
+    /// </summary>
     [Fact]
-    public async Task MissingFile_GivesNoLinesAndKeepsPositionAsync()
+    public async Task MissingFileGivesNoLinesAndKeepsPositionAsync()
     {
         string path = PathOf("log.txt");
 
@@ -337,8 +400,11 @@ public sealed class GameLogFollowerTests : IDisposable
         Assert.False(deleted.Restarted);
     }
 
+    /// <summary>
+    /// Polling a different path than before reads that file from its beginning and reports a restart.
+    /// </summary>
     [Fact]
-    public async Task PathChange_RestartsFromTheBeginningAsync()
+    public async Task PathChangeRestartsFromTheBeginningAsync()
     {
         string first = PathOf("a.txt");
         string second = PathOf("b.txt");
@@ -353,8 +419,11 @@ public sealed class GameLogFollowerTests : IDisposable
         Assert.Equal(["b1"], secondResult.Lines);
     }
 
+    /// <summary>
+    /// A file that another stream still holds open for writing can be read, and later writes to it are picked up by the next poll.
+    /// </summary>
     [Fact]
-    public async Task FileHeldOpenForWriting_CanBeFollowedAsync()
+    public async Task FileHeldOpenForWritingCanBeFollowedAsync()
     {
         string path = PathOf("log.txt");
         await using FileStream writer = new(path, FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
@@ -370,8 +439,11 @@ public sealed class GameLogFollowerTests : IDisposable
         Assert.Equal(["two"], second.Lines);
     }
 
+    /// <summary>
+    /// A file larger than the per-poll read limit is read over several polls that together return all 100,000 lines in order.
+    /// </summary>
     [Fact]
-    public async Task LargeInitialRead_ReturnsEveryLineAsync()
+    public async Task LargeInitialReadReturnsEveryLineAsync()
     {
         string path = PathOf("big.txt");
         const int LineCount = 100_000;
@@ -399,8 +471,11 @@ public sealed class GameLogFollowerTests : IDisposable
         Assert.Equal("[line 99999] some padding text to grow the file", lines[LineCount - 1]);
     }
 
+    /// <summary>
+    /// Polling with an already cancelled token throws an <see cref="System.OperationCanceledException"/>.
+    /// </summary>
     [Fact]
-    public async Task CancelledToken_ThrowsAsync()
+    public async Task CancelledTokenThrowsAsync()
     {
         string path = PathOf("log.txt");
         Append(path, "a\n");

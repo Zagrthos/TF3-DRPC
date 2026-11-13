@@ -21,13 +21,13 @@ internal sealed class AppLifecycleService(IMonitorService monitor, IDiscordServi
     private readonly IMonitorService _monitor = monitor;
     private readonly IDiscordService _discord = discord;
     private readonly ILogger<AppLifecycleService> _logger = logger;
-    private int _exiting;
+    private bool _exiting;
 
     public event EventHandler? Exiting;
 
     public async Task ExitAsync()
     {
-        if (Interlocked.Exchange(ref _exiting, 1) is not 0)
+        if (Interlocked.Exchange(ref _exiting, value: true))
             return;
 
         _logger.AppExiting();

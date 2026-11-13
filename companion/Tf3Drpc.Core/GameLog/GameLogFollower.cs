@@ -13,7 +13,7 @@ namespace Tf3Drpc.Core.GameLog;
 /// <summary>
 /// Reads the new complete lines of a growing log file, one poll at a time.
 /// </summary>
-public sealed class GameLogFollower
+internal sealed class GameLogFollower
 {
     private const byte LineFeed = (byte)'\n';
     private const byte CarriageReturn = (byte)'\r';

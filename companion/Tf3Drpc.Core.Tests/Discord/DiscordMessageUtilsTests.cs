@@ -9,6 +9,9 @@ using Xunit;
 
 namespace Tf3Drpc.Core.Tests.Discord;
 
+/// <summary>
+/// Tests of the SET_ACTIVITY frame built by <see cref="Tf3Drpc.Core.Utilities.DiscordMessageUtils"/>, focused on the store button.
+/// </summary>
 public sealed class DiscordMessageUtilsTests
 {
     private static JsonElement Activity(in PresenceContentStruct content, out string json)
@@ -19,8 +22,11 @@ public sealed class DiscordMessageUtilsTests
         return document.RootElement.GetProperty("args").GetProperty("activity").Clone();
     }
 
+    /// <summary>
+    /// A presence with a button label produces a frame whose single button carries that label and the Transport Fever 3 Steam store URL.
+    /// </summary>
     [Fact]
-    public void WithALabel_TheFrameCarriesTheStoreButton()
+    public void WithALabelTheFrameCarriesTheStoreButton()
     {
         JsonElement activity = Activity(new PresenceContentStruct() { Details = "Test", ButtonLabel = "Hol dir Transport Fever 3" }, out string json);
 
@@ -28,8 +34,11 @@ public sealed class DiscordMessageUtilsTests
         Assert.Equal(1, activity.GetProperty("buttons").GetArrayLength());
     }
 
+    /// <summary>
+    /// A presence without a button label produces a frame that contains no buttons key at all.
+    /// </summary>
     [Fact]
-    public void WithoutALabel_TheFrameHasNoButtonsKey()
+    public void WithoutALabelTheFrameHasNoButtonsKey()
     {
         JsonElement activity = Activity(new PresenceContentStruct() { Details = "Test" }, out string json);
 
@@ -37,6 +46,9 @@ public sealed class DiscordMessageUtilsTests
         Assert.False(activity.TryGetProperty("buttons", out _));
     }
 
+    /// <summary>
+    /// A button label with non-ASCII characters (Japanese text) is written to the frame and read back unchanged.
+    /// </summary>
     [Fact]
     public void TheLabelIsWrittenAsUtf8()
     {

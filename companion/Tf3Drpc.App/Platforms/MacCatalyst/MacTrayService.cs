@@ -21,7 +21,7 @@ using static Tf3Drpc.App.Utilities.ObjCRuntimeUtils;
 namespace Tf3Drpc.App.Platforms.MacCatalyst;
 
 /// <summary>
-/// The menu bar icon on macOS with its Language, Settings and Exit menu: AppKit's <c>NSStatusItem</c> through the Objective-C runtime.
+/// The menu bar icon on macOS with its Language, Settings and Exit menu: AppKit's <c language="text">NSStatusItem</c> through the Objective-C runtime.
 /// </summary>
 #pragma warning disable CA1812 // Avoid uninstantiated internal classes
 internal sealed class MacTrayService : ITrayService, IRecipient<AppStatusChangedMessage>, IRecipient<SettingsChangedMessage>
@@ -93,7 +93,7 @@ internal sealed class MacTrayService : ITrayService, IRecipient<AppStatusChanged
 
             if (button == 0 || image == 0)
             {
-                _logger.TrayCreated(false);
+                _logger.TrayCreated(created: false);
                 RemoveStatusItem();
 
                 return false;
@@ -105,7 +105,7 @@ internal sealed class MacTrayService : ITrayService, IRecipient<AppStatusChanged
             Send(button, "setToolTip:", toolTip.Handle);
             Send(_statusItem, "setMenu:", BuildMenu());
             RefreshTexts(_status);
-            _logger.TrayCreated(true);
+            _logger.TrayCreated(created: true);
 
             return true;
         }
@@ -217,7 +217,7 @@ internal sealed class MacTrayService : ITrayService, IRecipient<AppStatusChanged
         }
 
         nint menu = CreateMenu();
-        _languageMenuItem = CreateItem(null, 0);
+        _languageMenuItem = CreateItem(action: null, 0);
         Send(_languageMenuItem, "setSubmenu:", languageMenu);
         Send(languageMenu, "release");
         Add(menu, _languageMenuItem);

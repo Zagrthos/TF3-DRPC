@@ -22,7 +22,7 @@ internal sealed class WindowsPathService : PathServiceBase
     {
         try
         {
-            string? value = Registry.GetValue(SteamRegistryKey, "SteamPath", null) as string;
+            string? value = Registry.GetValue(SteamRegistryKey, "SteamPath", defaultValue: null) as string;
 
             return (string.IsNullOrWhiteSpace(value)) ? null : Path.GetFullPath(value);
         }

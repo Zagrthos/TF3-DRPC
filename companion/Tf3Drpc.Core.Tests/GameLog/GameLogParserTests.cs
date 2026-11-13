@@ -9,12 +9,18 @@ using Xunit;
 
 namespace Tf3Drpc.Core.Tests.GameLog;
 
+/// <summary>
+/// Tests of <see cref="Tf3Drpc.Core.GameLog.GameLogParser"/> on the sample game logs and on hand-written lines, valid and invalid.
+/// </summary>
 public sealed class GameLogParserTests
 {
     private const string GameReadyLine = "[2026-10-13 21:15:24Z - MESSAGE  - Main Thread      - Main           ]  Game is ready";
 
+    /// <summary>
+    /// In the session sample log, the 18 header lines of the 23 lines parse, and the continuation lines (indexes 2 and 6) do not.
+    /// </summary>
     [Fact]
-    public void SessionLog_ParsesHeaderLinesAndSkipsContinuationLines()
+    public void SessionLogParsesHeaderLinesAndSkipsContinuationLines()
     {
         string[] lines = SampleFiles.ReadLines("session.log");
         List<int> parsedIndexes = [];
@@ -33,8 +39,11 @@ public sealed class GameLogParserTests
         Assert.Contains(7, parsedIndexes);
     }
 
+    /// <summary>
+    /// The first line of the session sample log parses as a single-line message with a UTC timestamp, the message level and the text of the startup message.
+    /// </summary>
     [Fact]
-    public void SessionLog_FirstLineIsSingleLineMessage()
+    public void SessionLogFirstLineIsSingleLineMessage()
     {
         string[] lines = SampleFiles.ReadLines("session.log");
 
@@ -48,8 +57,11 @@ public sealed class GameLogParserTests
         Assert.False(entry.StartsMultiLine);
     }
 
+    /// <summary>
+    /// A session log header line that is followed by continuation lines parses with a message of "Memory types:" and is flagged as starting a multi-line entry.
+    /// </summary>
     [Fact]
-    public void SessionLog_MultiLineEntryStartsMultiLine()
+    public void SessionLogMultiLineEntryStartsMultiLine()
     {
         string[] lines = SampleFiles.ReadLines("session.log");
 
@@ -60,8 +72,11 @@ public sealed class GameLogParserTests
         Assert.True(entry.StartsMultiLine);
     }
 
+    /// <summary>
+    /// A session log line whose category is written in full-width characters parses, and its message is kept.
+    /// </summary>
     [Fact]
-    public void SessionLog_FullWidthCategoryParses()
+    public void SessionLogFullWidthCategoryParses()
     {
         string[] lines = SampleFiles.ReadLines("session.log");
 
@@ -72,8 +87,11 @@ public sealed class GameLogParserTests
         Assert.False(entry.StartsMultiLine);
     }
 
+    /// <summary>
+    /// A session log message with non-ASCII characters (an umlaut in a place name) parses with those characters intact.
+    /// </summary>
     [Fact]
-    public void SessionLog_NonAsciiMessageIsKept()
+    public void SessionLogNonAsciiMessageIsKept()
     {
         string[] lines = SampleFiles.ReadLines("session.log");
 
@@ -83,8 +101,11 @@ public sealed class GameLogParserTests
         Assert.Contains("Holzfällerlager", entry.Message, StringComparison.Ordinal);
     }
 
+    /// <summary>
+    /// The error entry of the crash sample log parses as a multi-line entry with the message "Ungraceful exit", and the continuation line after it does not parse.
+    /// </summary>
     [Fact]
-    public void CrashLog_ErrorEntryStartsMultiLine()
+    public void CrashLogErrorEntryStartsMultiLine()
     {
         string[] lines = SampleFiles.ReadLines("crash.log");
 
@@ -97,8 +118,11 @@ public sealed class GameLogParserTests
         Assert.False(GameLogParser.TryParse(lines[6], out GameLogEntryStruct _));
     }
 
+    /// <summary>
+    /// The verbose entry on the first line of the crash sample log parses with the verbose level and the message "Exception type: Lua error".
+    /// </summary>
     [Fact]
-    public void CrashLog_VerboseEntryParses()
+    public void CrashLogVerboseEntryParses()
     {
         string[] lines = SampleFiles.ReadLines("crash.log");
 
@@ -109,8 +133,11 @@ public sealed class GameLogParserTests
         Assert.Equal("Exception type: Lua error", entry.Message);
     }
 
+    /// <summary>
+    /// All 8 lines of the mission sample log are header lines and parse.
+    /// </summary>
     [Fact]
-    public void MissionLog_AllHeaderLinesParse()
+    public void MissionLogAllHeaderLinesParse()
     {
         string[] lines = SampleFiles.ReadLines("mission.log");
         int parsedCount = 0;
@@ -124,6 +151,9 @@ public sealed class GameLogParserTests
         Assert.Equal(8, parsedCount);
     }
 
+    /// <summary>
+    /// A header line without a trailing carriage return parses and yields its message.
+    /// </summary>
     [Fact]
     public void LineWithoutCarriageReturnParses()
     {
@@ -133,6 +163,9 @@ public sealed class GameLogParserTests
         Assert.Equal("Game is ready", entry.Message);
     }
 
+    /// <summary>
+    /// A header line with a trailing carriage return parses and the carriage return is not part of the message.
+    /// </summary>
     [Fact]
     public void LineWithTrailingCarriageReturnDropsIt()
     {
@@ -142,6 +175,9 @@ public sealed class GameLogParserTests
         Assert.Equal("Game is ready", entry.Message);
     }
 
+    /// <summary>
+    /// A line that is not a header (empty, garbage, continuation markers, wrong spacing after the bracket, an impossible date, an unknown level or a truncated header) is rejected and leaves a default entry.
+    /// </summary>
     [Theory]
     [InlineData("")]
     [InlineData("garbage")]
@@ -160,6 +196,9 @@ public sealed class GameLogParserTests
         Assert.Equal(default, entry);
     }
 
+    /// <summary>
+    /// A 200,000-character garbage line that starts like a header is rejected without throwing.
+    /// </summary>
     [Fact]
     public void HugeGarbageLineDoesNotThrow()
     {

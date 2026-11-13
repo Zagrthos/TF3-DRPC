@@ -31,6 +31,7 @@ How the app is built from them is in [companion architecture](../40-reference/co
 - Messages are `internal sealed record class ...Message(...)` in `Messages/`, with a one-line `<summary>` and `<param>` docs, sent through `IMessenger`.
 - A multi-value result on a service surface is an `internal readonly struct NameStruct : IEquatable<NameStruct>` in `Structs/`, in place of a tuple: with `[StructLayout(LayoutKind.Auto)]`, `init` properties, `Equals([NotNullWhen(true)] object? obj)` and `==`/`!=` operators with `in` parameters.
   Build it with an object initialiser.
+- A value that is exactly one of several shapes, such as a game log event, is an `internal closed record` with one `sealed record` per case, all in one file, and is matched with type patterns.
 
 ## XAML first
 

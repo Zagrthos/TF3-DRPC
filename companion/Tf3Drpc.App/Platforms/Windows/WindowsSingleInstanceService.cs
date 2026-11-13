@@ -19,7 +19,7 @@ internal sealed class WindowsSingleInstanceService : ISingleInstanceService
     public event EventHandler? ActivationRequested;
 
     /// <summary>
-    /// The handler for MAUI's <c>OnAppInstanceActivated</c> lifecycle hook; <see langword="true"/> means the activation is handled.
+    /// The handler for MAUI's <c language="csharp">OnAppInstanceActivated</c> lifecycle hook; <see langword="true"/> means the activation is handled.
     /// </summary>
     public bool HandleActivation(Microsoft.UI.Xaml.Application application, AppActivationArguments arguments)
     {

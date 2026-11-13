@@ -20,36 +20,26 @@ namespace Tf3Drpc.App.Services;
 /// Runs the one background loop that drives the <see cref="GameMonitor"/> and sends its status changes.
 /// </summary>
 #pragma warning disable CA1812 // Avoid uninstantiated internal classes
-internal sealed class MonitorService : IMonitorService
+internal sealed class MonitorService(
+    IGameProcessService processService,
+    IPathService pathService,
+    ISettingsService settingsService,
+    ITranslationService translationService,
+    IPresenceService presenceService,
+    IDiscordService discordService,
+    IMessenger messenger,
+    TimeProvider timeProvider,
+    ILoggerFactory loggerFactory
+)
+    : IMonitorService
 #pragma warning restore CA1812
 {
-    private readonly GameMonitor _monitor;
-    private readonly IMessenger _messenger;
-    private readonly TimeProvider _timeProvider;
-    private readonly ILogger<MonitorService> _logger;
+    private readonly GameMonitor _monitor = new(processService, pathService, settingsService, translationService, presenceService, discordService, timeProvider, loggerFactory.CreateLogger<GameMonitor>());
+    private readonly IMessenger _messenger = messenger;
+    private readonly TimeProvider _timeProvider = timeProvider;
+    private readonly ILogger<MonitorService> _logger = loggerFactory.CreateLogger<MonitorService>();
     private CancellationTokenSource? _cancellation;
     private Task _loop = Task.CompletedTask;
-
-#pragma warning disable IDE0290 // Use primary constructor: it cannot take its parameter list on separate lines
-    public MonitorService
-    (
-        IGameProcessService processService,
-        IPathService pathService,
-        ISettingsService settingsService,
-        ITranslationService translationService,
-        IPresenceService presenceService,
-        IDiscordService discordService,
-        IMessenger messenger,
-        TimeProvider timeProvider,
-        ILoggerFactory loggerFactory
-    )
-    {
-        _monitor = new GameMonitor(processService, pathService, settingsService, translationService, presenceService, discordService, timeProvider, loggerFactory.CreateLogger<GameMonitor>());
-        _messenger = messenger;
-        _timeProvider = timeProvider;
-        _logger = loggerFactory.CreateLogger<MonitorService>();
-    }
-#pragma warning restore IDE0290
 
     public AppStatusStruct Status
         => _monitor.Status;

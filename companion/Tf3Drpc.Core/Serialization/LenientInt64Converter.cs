@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 namespace Tf3Drpc.Core.Serialization;
 
 /// <summary>
-/// Reads an integer that the mod may have written as a fraction or with an exponent (<c>1.5</c>, <c>1.44228e+07</c>).
+/// Reads an integer that the mod may have written as a fraction or with an exponent (<c language="text">1.5</c>, <c language="text">1.44228e+07</c>).
 /// </summary>
 /// <remarks>
 /// The value is rounded toward zero; a number outside the range of <see cref="long"/> reads as <see langword="null"/>.

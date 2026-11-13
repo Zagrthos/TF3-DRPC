@@ -13,6 +13,9 @@ using Xunit;
 
 namespace Tf3Drpc.Core.Tests.Presence;
 
+/// <summary>
+/// Tests of the store button label in the presence and of how the "New Game" save name is shown in the chosen language.
+/// </summary>
 public sealed class PresenceStoreButtonTests
 {
     private static readonly CultureInfo English = CultureInfo.GetCultureInfo("en-US");
@@ -49,36 +52,48 @@ public sealed class PresenceStoreButtonTests
 
     #region Store button
 
+    /// <summary>
+    /// With the store button on, the presence of every game state from starting to playing carries the label "Get Transport Fever 3", or "Hol dir Transport Fever 3" in German.
+    /// </summary>
     [Theory]
     [InlineData(GameState.Starting)]
     [InlineData(GameState.MainMenu)]
     [InlineData(GameState.Loading)]
     [InlineData(GameState.Mission)]
     [InlineData(GameState.Playing)]
-    public void ButtonOn_EveryPresenceCarriesTheLabelInTheChosenLanguage(GameState state)
+    internal void ButtonOnEveryPresenceCarriesTheLabelInTheChosenLanguage(GameState state)
     {
         Assert.Equal("Get Transport Fever 3", Build(state, English, showButton: true).ButtonLabel);
         Assert.Equal("Hol dir Transport Fever 3", Build(state, German, showButton: true).ButtonLabel);
     }
 
+    /// <summary>
+    /// With the store button off, the presence of every game state from starting to playing carries no label.
+    /// </summary>
     [Theory]
     [InlineData(GameState.Starting)]
     [InlineData(GameState.MainMenu)]
     [InlineData(GameState.Loading)]
     [InlineData(GameState.Mission)]
     [InlineData(GameState.Playing)]
-    public void ButtonOff_NoPresenceCarriesALabel(GameState state)
+    internal void ButtonOffNoPresenceCarriesALabel(GameState state)
         => Assert.Null(Build(state, English, showButton: false).ButtonLabel);
 
+    /// <summary>
+    /// The store button is off by default, so the presence built without options has no label.
+    /// </summary>
     [Fact]
-    public void Default_HasNoButton()
+    public void DefaultHasNoButton()
     {
         Assert.True(PresenceBuilder.TryBuild(Snapshot(GameState.Playing), English, GameTexts.English, out PresenceContentStruct content));
         Assert.Null(content.ButtonLabel);
     }
 
+    /// <summary>
+    /// The presence preview carries the store button label when the option is on and none when it is off.
+    /// </summary>
     [Fact]
-    public void Preview_FollowsTheOption()
+    public void PreviewFollowsTheOption()
     {
         PresencePreview preview = new();
 
@@ -89,8 +104,11 @@ public sealed class PresenceStoreButtonTests
         Assert.Null(off.ButtonLabel);
     }
 
+    /// <summary>
+    /// Presence contents that differ only in the button label are unequal and have different hash codes, while contents with the same label are equal.
+    /// </summary>
     [Fact]
-    public void ContentsThatDifferOnlyInTheLabel_AreNotEqual()
+    public void ContentsThatDifferOnlyInTheLabelAreNotEqual()
     {
         PresenceContentStruct first = new() { Details = "A", ButtonLabel = "Get Transport Fever 3" };
         PresenceContentStruct second = new() { Details = "A" };
@@ -102,8 +120,11 @@ public sealed class PresenceStoreButtonTests
         Assert.Equal(first.GetHashCode(), same.GetHashCode());
     }
 
+    /// <summary>
+    /// Presence options that differ only in the store button or the game language texts are unequal, while options with the same game language texts are equal.
+    /// </summary>
     [Fact]
-    public void OptionsThatDifferOnlyInTheButtonOrTheGameTexts_AreNotEqual()
+    public void OptionsThatDifferOnlyInTheButtonOrTheGameTextsAreNotEqual()
     {
         GameTexts texts = Texts("Neues Spiel");
         PresenceOptionsStruct plain = new() { Preset = PresencePreset.Career };
@@ -117,30 +138,45 @@ public sealed class PresenceStoreButtonTests
 
     #region New Game
 
+    /// <summary>
+    /// A save name equal to the game's "New Game" text in the game language is shown with the "New Game" text of the chosen language, in English and French.
+    /// </summary>
     [Fact]
-    public void NewGame_OfTheGameLanguageIsShownInTheChosenLanguage()
+    public void NewGameOfTheGameLanguageIsShownInTheChosenLanguage()
     {
         Assert.Equal("New Game", RenderSaveName("Neues Spiel", GameTexts.English, Texts("Neues Spiel"), English));
         Assert.Equal("Nouvelle partie", RenderSaveName("Neues Spiel", Texts("Nouvelle partie"), Texts("Neues Spiel"), CultureInfo.GetCultureInfo("fr-FR")));
     }
 
+    /// <summary>
+    /// A save name other than the game's "New Game" text is shown unchanged.
+    /// </summary>
     [Fact]
-    public void NewGame_OtherNamesStayAsTheyAre()
+    public void NewGameOtherNamesStayAsTheyAre()
         => Assert.Equal("Archipelago2", RenderSaveName("Archipelago2", GameTexts.English, Texts("Neues Spiel"), English));
 
+    /// <summary>
+    /// Without game language texts, a save name that looks like a "New Game" text in another language is shown unchanged.
+    /// </summary>
     [Fact]
-    public void NewGame_WithoutGameLanguageTextsNothingIsMapped()
-        => Assert.Equal("Neues Spiel", RenderSaveName("Neues Spiel", GameTexts.English, null, English));
+    public void NewGameWithoutGameLanguageTextsNothingIsMapped()
+        => Assert.Equal("Neues Spiel", RenderSaveName("Neues Spiel", GameTexts.English, gameLanguage: null, English));
 
+    /// <summary>
+    /// When the game language is English, the save name "New Game" is shown with the German "Neues Spiel" of the chosen language.
+    /// </summary>
     [Fact]
-    public void NewGame_WithAnEnglishGameLanguageIsShownInTheChosenLanguage()
+    public void NewGameWithAnEnglishGameLanguageIsShownInTheChosenLanguage()
         => Assert.Equal("Neues Spiel", RenderSaveName("New Game", Texts("Neues Spiel"), GameTexts.English, German));
 
+    /// <summary>
+    /// The "New Game" comparison is case-sensitive, so "neues spiel" stays as it is, and a missing save name gives the "Playing" fallback as details.
+    /// </summary>
     [Fact]
-    public void NewGame_ComparesOrdinallyAndKeepsAMissingName()
+    public void NewGameComparesOrdinallyAndKeepsAMissingName()
     {
         Assert.Equal("neues spiel", RenderSaveName("neues spiel", GameTexts.English, Texts("Neues Spiel"), English));
-        Assert.Equal("Playing", RenderSaveName(null, GameTexts.English, Texts("Neues Spiel"), English));
+        Assert.Equal("Playing", RenderSaveName(saveName: null, GameTexts.English, Texts("Neues Spiel"), English));
     }
 
     #endregion New Game

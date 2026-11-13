@@ -12,12 +12,21 @@ namespace Tf3Drpc.Core.Structs;
 /// The game state at one moment; equal snapshots mean nothing changed.
 /// </summary>
 [StructLayout(LayoutKind.Auto)]
-public readonly struct GameStateSnapshotStruct : IEquatable<GameStateSnapshotStruct>
+internal readonly struct GameStateSnapshotStruct : IEquatable<GameStateSnapshotStruct>
 {
+    /// <summary>
+    /// The state of the game.
+    /// </summary>
     public GameState State { get; init; }
 
+    /// <summary>
+    /// The number of the running mission, or null when there is none.
+    /// </summary>
     public int? MissionNumber { get; init; }
 
+    /// <summary>
+    /// The time the shown timer counts from, or null for none.
+    /// </summary>
     public DateTimeOffset? TimerStart { get; init; }
 
     /// <summary>
@@ -27,6 +36,9 @@ public readonly struct GameStateSnapshotStruct : IEquatable<GameStateSnapshotStr
 
     internal ModStatus? Status { get; init; }
 
+    /// <summary>
+    /// Whether the game counts as paused.
+    /// </summary>
     public bool IsPaused { get; init; }
 
     /// <summary>
@@ -34,6 +46,7 @@ public readonly struct GameStateSnapshotStruct : IEquatable<GameStateSnapshotStr
     /// </summary>
     public bool UsesLogFallback { get; init; }
 
+    /// <inheritdoc/>
     public bool Equals(GameStateSnapshotStruct other)
         => (State == other.State) &&
             (MissionNumber == other.MissionNumber) &&
@@ -43,15 +56,27 @@ public readonly struct GameStateSnapshotStruct : IEquatable<GameStateSnapshotStr
             (IsPaused == other.IsPaused) &&
             (UsesLogFallback == other.UsesLogFallback);
 
+    /// <inheritdoc/>
     public override bool Equals([NotNullWhen(true)] object? obj)
         => (obj is GameStateSnapshotStruct other) && Equals(other);
 
+    /// <inheritdoc/>
     public override int GetHashCode()
         => HashCode.Combine(State, MissionNumber, TimerStart, GameBuild, Status, IsPaused, UsesLogFallback);
 
+    /// <summary>
+    /// Tells whether two values are equal.
+    /// </summary>
+    /// <param name="left">The first value.</param>
+    /// <param name="right">The second value.</param>
     public static bool operator ==(in GameStateSnapshotStruct left, in GameStateSnapshotStruct right)
         => left.Equals(right);
 
+    /// <summary>
+    /// Tells whether two values differ.
+    /// </summary>
+    /// <param name="left">The first value.</param>
+    /// <param name="right">The second value.</param>
     public static bool operator !=(in GameStateSnapshotStruct left, in GameStateSnapshotStruct right)
         => !left.Equals(right);
 }

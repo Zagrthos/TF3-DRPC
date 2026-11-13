@@ -14,7 +14,7 @@ namespace Tf3Drpc.Core.Structs;
 /// What shapes the presence besides the game state: the layout while playing, the custom templates, the store button and the game language's texts.
 /// </summary>
 [StructLayout(LayoutKind.Auto)]
-public readonly struct PresenceOptionsStruct : IEquatable<PresenceOptionsStruct>
+internal readonly struct PresenceOptionsStruct : IEquatable<PresenceOptionsStruct>
 {
     /// <summary>
     /// The layout while playing.
@@ -41,6 +41,7 @@ public readonly struct PresenceOptionsStruct : IEquatable<PresenceOptionsStruct>
     /// </summary>
     public GameTexts? GameLanguageTexts { get; init; }
 
+    /// <inheritdoc/>
     public bool Equals(PresenceOptionsStruct other)
         => (Preset == other.Preset) &&
             (RotationStep == other.RotationStep) &&
@@ -48,15 +49,27 @@ public readonly struct PresenceOptionsStruct : IEquatable<PresenceOptionsStruct>
             (ShowStoreButton == other.ShowStoreButton) &&
             ReferenceEquals(GameLanguageTexts, other.GameLanguageTexts);
 
+    /// <inheritdoc/>
     public override bool Equals([NotNullWhen(true)] object? obj)
         => (obj is PresenceOptionsStruct other) && Equals(other);
 
+    /// <inheritdoc/>
     public override int GetHashCode()
         => HashCode.Combine(Preset, RotationStep, Templates, ShowStoreButton, GameLanguageTexts);
 
+    /// <summary>
+    /// Tells whether two values are equal.
+    /// </summary>
+    /// <param name="left">The first value.</param>
+    /// <param name="right">The second value.</param>
     public static bool operator ==(in PresenceOptionsStruct left, in PresenceOptionsStruct right)
         => left.Equals(right);
 
+    /// <summary>
+    /// Tells whether two values differ.
+    /// </summary>
+    /// <param name="left">The first value.</param>
+    /// <param name="right">The second value.</param>
     public static bool operator !=(in PresenceOptionsStruct left, in PresenceOptionsStruct right)
         => !left.Equals(right);
 }

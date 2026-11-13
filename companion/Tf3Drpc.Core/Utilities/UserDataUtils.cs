@@ -9,7 +9,7 @@ namespace Tf3Drpc.Core.Utilities;
 /// <summary>
 /// Chooses between the Steam accounts of the machine.
 /// </summary>
-public static class UserDataUtils
+internal static class UserDataUtils
 {
     /// <summary>
     /// Returns the folder of the account whose game log was written last; without any log the first account, without accounts <see langword="null"/>.

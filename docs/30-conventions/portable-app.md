@@ -6,7 +6,7 @@ area: [app, windows, macos]
 covers:
   - companion/Tf3Drpc.App/Services/PathServiceBase.cs
   - companion/Tf3Drpc.App/Platforms/*/*PathService.cs
-last-reviewed: 2026-11-11
+last-reviewed: 2026-11-13
 ---
 
 # Portable app

@@ -75,7 +75,7 @@ internal sealed class GameLogReader(TimeProvider timeProvider)
         for (int i = 0; i < read.Lines.Count; i++)
         {
             if (GameLogParser.TryParse(read.Lines[i], out GameLogEntryStruct entry) &&
-                GameLogEventClassifier.TryClassify(entry, out GameLogEventStruct gameEvent))
+                GameLogEventClassifier.TryClassify(entry, out GameLogEvent? gameEvent))
             {
                 events.Add(new TimedGameLogEventStruct() { Timestamp = entry.Timestamp, GameEvent = gameEvent });
             }

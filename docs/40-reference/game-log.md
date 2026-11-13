@@ -6,7 +6,7 @@ area: [app, windows, macos]
 covers:
   - companion/Tf3Drpc.Core/GameLog/**
   - docs/40-reference/log-samples/**
-last-reviewed: 2026-11-11
+last-reviewed: 2026-11-13
 verified:
   - windows 2026-10-21
   - macos 2026-10-24 build 40425

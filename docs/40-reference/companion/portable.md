@@ -8,7 +8,7 @@ covers:
   - companion/Tf3Drpc.App/Platforms/*/*PathService.cs
   - companion/Tf3Drpc.App/Utilities/LogFileUtils.cs
   - companion/Tf3Drpc.App/Services/AppLifecycleService.cs
-last-reviewed: 2026-11-11
+last-reviewed: 2026-11-13
 verified:
   - macos 2026-10-20
 ---

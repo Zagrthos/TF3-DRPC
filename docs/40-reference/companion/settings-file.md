@@ -7,7 +7,7 @@ covers:
   - companion/Tf3Drpc.Core/Settings/**
   - companion/Tf3Drpc.Core/Serialization/**
   - companion/Tf3Drpc.App/Services/SettingsService.cs
-last-reviewed: 2026-11-11
+last-reviewed: 2026-11-13
 ---
 
 # Settings file
