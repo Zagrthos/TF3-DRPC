@@ -7,7 +7,7 @@ using Tf3Drpc.Core.Structs;
 
 namespace Tf3Drpc.Core.Tests;
 
-internal sealed record TimedEvent(DateTimeOffset Timestamp, GameLogEventStruct Event);
+internal sealed record TimedEvent(DateTimeOffset Timestamp, GameLogEvent Event);
 
 internal static class SampleFiles
 {
@@ -25,7 +25,7 @@ internal static class SampleFiles
         foreach (string line in lines)
         {
             if (GameLogParser.TryParse(line, out GameLogEntryStruct entry) &&
-                GameLogEventClassifier.TryClassify(entry, out GameLogEventStruct gameEvent))
+                GameLogEventClassifier.TryClassify(entry, out GameLogEvent? gameEvent))
             {
                 events.Add(new TimedEvent(entry.Timestamp, gameEvent));
             }

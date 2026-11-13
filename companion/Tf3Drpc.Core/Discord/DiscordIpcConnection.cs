@@ -25,7 +25,7 @@ internal sealed class DiscordIpcConnection : IAsyncDisposable
     private volatile bool _dead;
     private string? _activityNonce;
     private string? _rejectedNonce;
-    private int _disposed;
+    private bool _disposed;
 
     private DiscordIpcConnection(Stream stream, Action<int?, string?> onError, in TimeSpan writeTimeout)
     {
@@ -82,7 +82,7 @@ internal sealed class DiscordIpcConnection : IAsyncDisposable
 
     public async ValueTask DisposeAsync()
     {
-        if (Interlocked.Exchange(ref _disposed, 1) is not 0)
+        if (Interlocked.Exchange(ref _disposed, value: true))
             return;
 
         if (!_dead)

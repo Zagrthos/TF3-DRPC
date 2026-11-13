@@ -15,7 +15,7 @@ using Tf3Drpc.Core.Settings;
 namespace Tf3Drpc.App.Services;
 
 /// <summary>
-/// Keeps the settings in memory and saves them to <c>DATA/settings.json</c> when they change.
+/// Keeps the settings in memory and saves them to <c language="text">DATA/settings.json</c> when they change.
 /// </summary>
 #pragma warning disable CA1812 // Avoid uninstantiated internal classes
 internal sealed class SettingsService(IPathService paths, IMessenger messenger, ILogger<SettingsService> logger) : ISettingsService

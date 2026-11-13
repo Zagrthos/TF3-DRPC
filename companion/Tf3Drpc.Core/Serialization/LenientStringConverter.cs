@@ -8,7 +8,7 @@ namespace Tf3Drpc.Core.Serialization;
 /// Reads a text of the settings so that a value of the wrong type costs only that text, never the other settings.
 /// </summary>
 /// <remarks>
-/// Anything but a string (a number, a flag, an array, an object, <c>null</c>) reads as an empty text, which the settings normalisation replaces with the default.
+/// Anything but a string (a number, a flag, an array, an object, <see langword="null"/>) reads as an empty text, which the settings normalisation replaces with the default.
 /// </remarks>
 internal sealed class LenientStringConverter : JsonConverter<string>
 {

@@ -8,7 +8,7 @@ namespace Tf3Drpc.Core.Settings;
 /// <summary>
 /// The themes in display order and their settings values.
 /// </summary>
-public static class ThemeCatalog
+internal static class ThemeCatalog
 {
     private static readonly ThemeMode[] Themes =
     [

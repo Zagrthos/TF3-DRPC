@@ -75,7 +75,7 @@ internal sealed class MacPickerHandler : ViewHandler<IPicker, UIButton>
         {
             int index = i;
             // While the items source is rebuilt, an item's display text can still be null.
-            UIAction action = UIAction.Create(VirtualView.GetItem(i) ?? string.Empty, null, null, _ => OnSelected(index));
+            UIAction action = UIAction.Create(VirtualView.GetItem(i) ?? string.Empty, image: null, identifier: null, _ => OnSelected(index));
             action.State = (i == VirtualView.SelectedIndex) ? UIMenuElementState.On : UIMenuElementState.Off;
 
             // Mac Catalyst shows the discoverability title as the entry's tooltip.

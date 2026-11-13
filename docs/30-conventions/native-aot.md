@@ -7,7 +7,7 @@ covers:
   - companion/Tf3Drpc.App/Tf3Drpc.App.csproj
   - companion/Tf3Drpc.Core/Tf3Drpc.Core.csproj
   - companion/Directory.Build.props
-last-reviewed: 2026-11-11
+last-reviewed: 2026-11-13
 ---
 
 # Native AOT

@@ -40,6 +40,7 @@ internal static class PresencePresets
             PresencePreset.Network => Join(Label(GameLabel.Lines, PresencePlaceholder.Lines, gameTexts), Label(GameLabel.Vehicles, PresencePlaceholder.Vehicles, gameTexts)),
             PresencePreset.Era => Join(Label(GameLabel.Year, PresencePlaceholder.Year, gameTexts), Placeholder(PresencePlaceholder.Climate)),
             PresencePreset.Minimal => Join(OwnTexts.Get(OwnText.InGame, culture), Placeholder(PresencePlaceholder.Year)),
+            PresencePreset.Career or PresencePreset.Alternating or PresencePreset.Custom => Join(Placeholder(PresencePlaceholder.Rank), Placeholder(PresencePlaceholder.Mode)),
             _ => Join(Placeholder(PresencePlaceholder.Rank), Placeholder(PresencePlaceholder.Mode))
         };
 
@@ -52,6 +53,7 @@ internal static class PresencePresets
             PresencePreset.Network => Join(Label(GameLabel.Stations, PresencePlaceholder.Stations, gameTexts), Placeholder(PresencePlaceholder.Year)),
             PresencePreset.Era => Placeholder(PresencePlaceholder.Rank),
             PresencePreset.Minimal => null,
+            PresencePreset.Career or PresencePreset.Alternating or PresencePreset.Custom => Placeholder(PresencePlaceholder.Date),
             _ => Placeholder(PresencePlaceholder.Date)
         };
 

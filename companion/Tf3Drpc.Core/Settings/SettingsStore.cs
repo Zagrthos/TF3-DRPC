@@ -16,7 +16,7 @@ namespace Tf3Drpc.Core.Settings;
 /// <summary>
 /// Loads and saves the settings file.
 /// </summary>
-public static class SettingsStore
+internal static class SettingsStore
 {
     private static readonly JsonSourceGenContext IndentedContext = new(new JsonSerializerOptions() { WriteIndented = true, DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull });
 

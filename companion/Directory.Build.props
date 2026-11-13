@@ -5,7 +5,7 @@
     <AnalysisLevel>latest-all</AnalysisLevel>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-    <Features>Strict</Features>
+    <Features>Strict;runtime-async=on</Features> <!-- https://learn.microsoft.com/dotnet/core/whats-new/dotnet-11/runtime#runtime-async -->
     <GenerateDocumentationFile>true</GenerateDocumentationFile> <!-- The analysers need it; Directory.Build.targets removes the .xml files again -->
     <ImplicitUsings>disable</ImplicitUsings>
     <LangVersion>latest</LangVersion>
@@ -49,5 +49,10 @@
     <Product>TF3-DRPC</Product>
     <VersionPrefix>0.1.0</VersionPrefix>
   </PropertyGroup>
+
+  <!-- Every analyser rule that is on by default reports at least a warning -->
+  <ItemGroup>
+    <GlobalAnalyzerConfigFiles Include="$(MSBuildThisFileDirectory)Analyzers.globalconfig" />
+  </ItemGroup>
 
 </Project>

@@ -15,6 +15,9 @@ using Xunit;
 
 namespace Tf3Drpc.Core.Tests.Monitor;
 
+/// <summary>
+/// Tests of <see cref="GameMonitor"/> ticks, using fake services and real log files in a temporary folder, covering path resolution, log reading, profile and language handling, state changes and failures.
+/// </summary>
 public sealed class GameMonitorTests : IDisposable
 {
     private const string ExecutablePath = "/games/TransportFever3";
@@ -36,6 +39,9 @@ public sealed class GameMonitorTests : IDisposable
     private readonly RecordingMonitorLogger _logger = new();
     private readonly GameMonitor _monitor;
 
+    /// <summary>
+    /// Creates a unique temporary folder named with the prefix "tf3drpc-tests-", points the log path at a "stdout.txt" in it that the tests write themselves, configures a running game process with complete paths and builds the monitor on the fake services, a settable clock and a recording logger.
+    /// </summary>
     public GameMonitorTests()
     {
         Directory.CreateDirectory(_directory);
@@ -45,6 +51,9 @@ public sealed class GameMonitorTests : IDisposable
         _monitor = new GameMonitor(_services, _services, _services, _services, _services, _services, _clock, _logger);
     }
 
+    /// <summary>
+    /// Deletes the temporary folder and every file in it.
+    /// </summary>
     public void Dispose()
         => Directory.Delete(_directory, recursive: true);
 
@@ -88,8 +97,11 @@ public sealed class GameMonitorTests : IDisposable
     private PresenceContentStruct? LastUpdate()
         => _services.Updates[^1];
 
+    /// <summary>
+    /// When no game is running, a tick clears the presence and reports no status change, and a second identical tick again reports no change while the monitor stays in the not-running state.
+    /// </summary>
     [Fact]
-    public async Task NoGame_ClearsThePresenceAndTheSecondIdenticalTickReportsNoChangeAsync()
+    public async Task NoGameClearsThePresenceAndTheSecondIdenticalTickReportsNoChangeAsync()
     {
         _services.Process = default;
 
@@ -104,8 +116,11 @@ public sealed class GameMonitorTests : IDisposable
         Assert.Equal(0, _logger.Count("The game started"));
     }
 
+    /// <summary>
+    /// A change in the Discord connection state is returned in the status of the tick, logged once, and not reported again by an unchanged tick.
+    /// </summary>
     [Fact]
-    public async Task DiscordConnectionChange_ShowsInTheReturnedStatusAndIsLoggedAsync()
+    public async Task DiscordConnectionChangeShowsInTheReturnedStatusAndIsLoggedAsync()
     {
         _services.Process = default;
         _services.IsConnected = true;
@@ -119,8 +134,11 @@ public sealed class GameMonitorTests : IDisposable
         Assert.Null(await TickAsync());
     }
 
+    /// <summary>
+    /// When the game starts, the monitor resolves the paths once, reads the log from its beginning and publishes the playing state with the game build, the presence texts and the matching log messages.
+    /// </summary>
     [Fact]
-    public async Task GameStarts_ResolvesPathsReadsTheLogFromTheStartAndPublishesTheStateAsync()
+    public async Task GameStartsResolvesPathsReadsTheLogFromTheStartAndPublishesTheStateAsync()
     {
         WriteLog(Line(Start.AddSeconds(1), StartupMessage) + Line(Start.AddSeconds(2), BuildMessage) + Line(Start.AddSeconds(3), MainMenuMessage) + Line(Start.AddSeconds(5), ReadyMessage), Start.AddSeconds(5));
 
@@ -140,8 +158,11 @@ public sealed class GameMonitorTests : IDisposable
         Assert.Equal(1, _logger.Count("Game build: 40420."));
     }
 
+    /// <summary>
+    /// New lines appended to the log are read on the next tick and change the state to loading, while a tick without new lines reports no change.
+    /// </summary>
     [Fact]
-    public async Task NewLogLines_AreReadOnTheNextTickAndAnUnchangedTickReportsNoChangeAsync()
+    public async Task NewLogLinesAreReadOnTheNextTickAndAnUnchangedTickReportsNoChangeAsync()
     {
         WriteLog(Line(Start.AddSeconds(5), ReadyMessage), Start.AddSeconds(5));
         _ = await TickAsync();
@@ -156,8 +177,11 @@ public sealed class GameMonitorTests : IDisposable
         Assert.Equal("Loading", LastUpdate()?.Details);
     }
 
+    /// <summary>
+    /// Log lines timestamped before the process start are ignored, while a later line from the current session is applied.
+    /// </summary>
     [Fact]
-    public async Task LogLinesFromBeforeTheProcessStart_AreIgnoredAsync()
+    public async Task LogLinesFromBeforeTheProcessStartAreIgnoredAsync()
     {
         WriteLog(Line(Start.AddHours(-1), ReadyMessage), Start.AddSeconds(5));
 
@@ -170,8 +194,11 @@ public sealed class GameMonitorTests : IDisposable
         Assert.Equal(GameState.MainMenu, current.Value.Game.State);
     }
 
+    /// <summary>
+    /// A log file last written before the process start belongs to an earlier session and is not read at all, so the state stays at starting.
+    /// </summary>
     [Fact]
-    public async Task LogWrittenBeforeTheProcessStart_IsNotReadAsync()
+    public async Task LogWrittenBeforeTheProcessStartIsNotReadAsync()
     {
         WriteLog(Line(Start.AddHours(-1), ReadyMessage), Start.AddMinutes(-30));
 
@@ -181,8 +208,11 @@ public sealed class GameMonitorTests : IDisposable
         Assert.Equal(0, _logger.Count("Game log:"));
     }
 
+    /// <summary>
+    /// A game build that has not changed is logged only once even though the state changes from main menu to playing.
+    /// </summary>
     [Fact]
-    public async Task UnchangedGameBuild_IsLoggedOnlyOnceAcrossStateChangesAsync()
+    public async Task UnchangedGameBuildIsLoggedOnlyOnceAcrossStateChangesAsync()
     {
         WriteLog(Line(Start.AddSeconds(1), StartupMessage) + Line(Start.AddSeconds(2), BuildMessage) + Line(Start.AddSeconds(3), MainMenuMessage), Start.AddSeconds(3));
 
@@ -196,8 +226,11 @@ public sealed class GameMonitorTests : IDisposable
         Assert.Equal(1, _logger.Count("Game build: 40420."));
     }
 
+    /// <summary>
+    /// When the presence builder produces nothing, the playing state clears the presence and the status carries no presence details.
+    /// </summary>
     [Fact]
-    public async Task PresenceBuilderSaysNothing_ClearsThePresenceWhileTheGameRunsAsync()
+    public async Task PresenceBuilderSaysNothingClearsThePresenceWhileTheGameRunsAsync()
     {
         _services.BuildsPresence = false;
         WriteLog(Line(Start.AddSeconds(5), ReadyMessage), Start.AddSeconds(5));
@@ -210,8 +243,11 @@ public sealed class GameMonitorTests : IDisposable
         Assert.Null(LastUpdate());
     }
 
+    /// <summary>
+    /// Game paths that lack the log and profile are resolved again only after the 15-second retry interval, and the complete paths found then are used and logged once.
+    /// </summary>
     [Fact]
-    public async Task IncompletePaths_AreResolvedAgainOnlyAtTheRetryIntervalAsync()
+    public async Task IncompletePathsAreResolvedAgainOnlyAtTheRetryIntervalAsync()
     {
         _services.Paths = new GamePathsStruct() { GameDirectory = GameDirectory };
         WriteLog(Line(Start.AddSeconds(5), ReadyMessage), Start.AddSeconds(5));
@@ -229,8 +265,11 @@ public sealed class GameMonitorTests : IDisposable
         Assert.Equal(GameState.Playing, status?.Game.State);
     }
 
+    /// <summary>
+    /// Game paths that stay incomplete are resolved again at every retry interval until they are complete, after which they are no longer resolved.
+    /// </summary>
     [Fact]
-    public async Task IncompletePaths_AreResolvedOverAndOverUntilTheyAreCompleteAsync()
+    public async Task IncompletePathsAreResolvedOverAndOverUntilTheyAreCompleteAsync()
     {
         WriteLog(Line(Start.AddSeconds(5), ReadyMessage), Start.AddSeconds(5));
         _services.Paths = new GamePathsStruct() { GameDirectory = GameDirectory };
@@ -246,8 +285,11 @@ public sealed class GameMonitorTests : IDisposable
         Assert.Equal(4, _services.ResolvedExecutables.Count);
     }
 
+    /// <summary>
+    /// After a retry the monitor waits for the full retry interval again, so ticks one second apart do not resolve the paths again.
+    /// </summary>
     [Fact]
-    public async Task IncompletePaths_WaitTheRetryIntervalAgainAfterARetryAsync()
+    public async Task IncompletePathsWaitTheRetryIntervalAgainAfterARetryAsync()
     {
         _services.Paths = new GamePathsStruct() { GameDirectory = GameDirectory };
         _ = await TickAsync();
@@ -258,8 +300,11 @@ public sealed class GameMonitorTests : IDisposable
         Assert.Equal(2, _services.ResolvedExecutables.Count);
     }
 
+    /// <summary>
+    /// Incomplete paths that do not change are logged only once, and without a warning that the game files were not found when part of the paths is known.
+    /// </summary>
     [Fact]
-    public async Task UnchangedIncompletePaths_AreLoggedOnlyOnceAsync()
+    public async Task UnchangedIncompletePathsAreLoggedOnlyOnceAsync()
     {
         _services.Paths = new GamePathsStruct() { LogPath = _logPath };
 
@@ -271,8 +316,11 @@ public sealed class GameMonitorTests : IDisposable
         Assert.Equal(0, _logger.Count("The game's files were not found yet"));
     }
 
+    /// <summary>
+    /// Paths that disappear after being known log the warning that the game files were not found, once, while being resolved again at each retry interval.
+    /// </summary>
     [Fact]
-    public async Task PathsThatDisappear_LogThatTheGameFilesWereNotFoundAsync()
+    public async Task PathsThatDisappearLogThatTheGameFilesWereNotFoundAsync()
     {
         _services.Paths = new GamePathsStruct() { LogPath = _logPath };
         _ = await TickAsync();
@@ -286,8 +334,11 @@ public sealed class GameMonitorTests : IDisposable
         Assert.Contains(_logger.Entries, static (entry) => entry.Level is LogLevel.Warning);
     }
 
+    /// <summary>
+    /// When the game runs and no paths are found from the start, they are resolved at every retry interval, the not-found warning is logged only once and no paths are logged.
+    /// </summary>
     [Fact]
-    public async Task PathsMissingFromTheStart_WhileTheGameRuns_LogTheNotFoundWarningOnceAsync()
+    public async Task PathsMissingFromTheStartWhileTheGameRunsLogTheNotFoundWarningOnceAsync()
     {
         _services.Paths = default;
 
@@ -299,8 +350,11 @@ public sealed class GameMonitorTests : IDisposable
         Assert.Equal(0, _logger.Count("Game paths: log"));
     }
 
+    /// <summary>
+    /// When no game runs and no paths are found, they are still resolved at every retry interval and the not-found warning is logged only once.
+    /// </summary>
     [Fact]
-    public async Task PathsMissingFromTheStart_WithoutTheGame_LogTheNotFoundWarningOnceAsync()
+    public async Task PathsMissingFromTheStartWithoutTheGameLogTheNotFoundWarningOnceAsync()
     {
         _services.Process = default;
         _services.Paths = default;
@@ -313,8 +367,11 @@ public sealed class GameMonitorTests : IDisposable
         Assert.Equal(0, _logger.Count("Game paths: log"));
     }
 
+    /// <summary>
+    /// Paths found after being missing and then lost again log the not-found warning a second time and log the found paths once.
+    /// </summary>
     [Fact]
-    public async Task PathsFoundAfterBeingMissingAndLostAgain_LogTheNotFoundWarningAgainAsync()
+    public async Task PathsFoundAfterBeingMissingAndLostAgainLogTheNotFoundWarningAgainAsync()
     {
         _services.Paths = default;
         _ = await TickAsync();
@@ -329,8 +386,11 @@ public sealed class GameMonitorTests : IDisposable
         Assert.Equal(1, _logger.Count("Game paths: log"));
     }
 
+    /// <summary>
+    /// Complete paths are resolved only once and not again on later ticks, even a minute later.
+    /// </summary>
     [Fact]
-    public async Task CompletePaths_AreNotResolvedAgainAsync()
+    public async Task CompletePathsAreNotResolvedAgainAsync()
     {
         WriteLog(Line(Start.AddSeconds(5), ReadyMessage), Start.AddSeconds(5));
         _ = await TickAsync();
@@ -342,8 +402,11 @@ public sealed class GameMonitorTests : IDisposable
         Assert.Single(_services.ResolvedExecutables);
     }
 
+    /// <summary>
+    /// A log of a previous session is replaced by the current log when the paths are resolved again after the retry interval, so the state moves from starting to playing.
+    /// </summary>
     [Fact]
-    public async Task LogOfThePreviousSession_IsResolvedAgainAfterTheRetryIntervalAndTheCurrentLogIsReadAsync()
+    public async Task LogOfThePreviousSessionIsResolvedAgainAfterTheRetryIntervalAndTheCurrentLogIsReadAsync()
     {
         string oldLog = Path.Combine(_directory, "old.txt");
         WriteLog(oldLog, Line(Start.AddHours(-3), ReadyMessage), Start.AddHours(-3));
@@ -363,8 +426,11 @@ public sealed class GameMonitorTests : IDisposable
         Assert.Equal(GameState.Playing, switched.Value.Game.State);
     }
 
+    /// <summary>
+    /// The profile is read on the first tick with a running game and then again only after the 30-second profile interval.
+    /// </summary>
     [Fact]
-    public async Task Profile_IsReadOnTheFirstRunningTickAndAgainOnlyAfterTheIntervalAsync()
+    public async Task ProfileIsReadOnTheFirstRunningTickAndAgainOnlyAfterTheIntervalAsync()
     {
         _ = await TickAsync();
         _ = await TickAfterAsync(ProfileRead - TimeSpan.FromSeconds(1));
@@ -376,8 +442,11 @@ public sealed class GameMonitorTests : IDisposable
         Assert.Equal([ProfilePath, ProfilePath], _services.ProfileReads);
     }
 
+    /// <summary>
+    /// Once the game has stopped, the profile is read at each profile interval only until the game language is known, which then appears in the status.
+    /// </summary>
     [Fact]
-    public async Task Profile_IsReadWhileTheGameStopsOnlyUntilTheGameLanguageIsKnownAsync()
+    public async Task ProfileIsReadWhileTheGameStopsOnlyUntilTheGameLanguageIsKnownAsync()
     {
         _ = await TickAsync();
         _services.Process = default;
@@ -395,8 +464,11 @@ public sealed class GameMonitorTests : IDisposable
         Assert.Equal("de", learned.Value.Language.Code);
     }
 
+    /// <summary>
+    /// Starting a new game process reads the profile at once instead of waiting for the interval and picks up the new game language.
+    /// </summary>
     [Fact]
-    public async Task NewGameStart_ReadsTheProfileAtOnceAsync()
+    public async Task NewGameStartReadsTheProfileAtOnceAsync()
     {
         _services.GameLanguageCode = "fr";
         _ = await TickAsync();
@@ -410,8 +482,11 @@ public sealed class GameMonitorTests : IDisposable
         Assert.Equal("de", restarted?.Language.Code);
     }
 
+    /// <summary>
+    /// When the profile can no longer be read, the monitor keeps the game language it already knew.
+    /// </summary>
     [Fact]
-    public async Task UnreadableProfile_KeepsTheKnownGameLanguageAsync()
+    public async Task UnreadableProfileKeepsTheKnownGameLanguageAsync()
     {
         _services.GameLanguageCode = "fr";
         _ = await TickAsync();
@@ -422,8 +497,11 @@ public sealed class GameMonitorTests : IDisposable
         Assert.Equal("fr", _monitor.Status.Language.Code);
     }
 
+    /// <summary>
+    /// Changing the language in the settings is picked up on the next tick, which updates the status language, the presence text, the log and the loaded game texts.
+    /// </summary>
     [Fact]
-    public async Task SettingsLanguageChange_IsPickedUpOnTheNextTickAsync()
+    public async Task SettingsLanguageChangeIsPickedUpOnTheNextTickAsync()
     {
         _services.Settings = new AppSettings() { Language = "en" };
         _services.GameLanguageCode = "fr";
@@ -440,8 +518,11 @@ public sealed class GameMonitorTests : IDisposable
         Assert.Equal(new LoadedTexts(GameDirectory, "en", "fr"), _services.LoadedGameTexts[0]);
     }
 
+    /// <summary>
+    /// When the language setting follows the game, the language of the profile is used for the status, the log and the loaded game texts.
+    /// </summary>
     [Fact]
-    public async Task GameLanguageSetting_FollowsTheLanguageOfTheProfileAsync()
+    public async Task GameLanguageSettingFollowsTheLanguageOfTheProfileAsync()
     {
         _services.GameLanguageCode = "fr";
 
@@ -453,8 +534,11 @@ public sealed class GameMonitorTests : IDisposable
         Assert.Equal(new LoadedTexts(GameDirectory, "fr", "fr"), _services.LoadedGameTexts[^1]);
     }
 
+    /// <summary>
+    /// When the game process is replaced by one with a later start time, the monitor resolves the paths again, logs the start again and returns to the starting state instead of keeping the old state.
+    /// </summary>
     [Fact]
-    public async Task ReplacedGameProcess_ResolvesPathsAgainAndDoesNotCarryTheOldStateOverAsync()
+    public async Task ReplacedGameProcessResolvesPathsAgainAndDoesNotCarryTheOldStateOverAsync()
     {
         WriteLog(Line(Start.AddSeconds(5), ReadyMessage), Start.AddSeconds(5));
         AppStatusStruct? playing = await TickAsync();
@@ -473,8 +557,11 @@ public sealed class GameMonitorTests : IDisposable
         Assert.Equal("Starting", LastUpdate()?.Details);
     }
 
+    /// <summary>
+    /// When the process is replaced, the log is read from its beginning again for the new process, and an unchanged state reports no new status.
+    /// </summary>
     [Fact]
-    public async Task ReplacedGameProcess_ReadsTheLogFromTheStartAgainAsync()
+    public async Task ReplacedGameProcessReadsTheLogFromTheStartAgainAsync()
     {
         WriteLog(Line(Start.AddSeconds(5), ReadyMessage), Start.AddSeconds(5));
         _ = await TickAsync();
@@ -488,8 +575,11 @@ public sealed class GameMonitorTests : IDisposable
         Assert.Null(status);
     }
 
+    /// <summary>
+    /// Rewriting the log file with different content resets the state to starting, clears the game build and logs a restart.
+    /// </summary>
     [Fact]
-    public async Task RewrittenLog_ResetsTheStateAsync()
+    public async Task RewrittenLogResetsTheStateAsync()
     {
         WriteLog(Line(Start.AddSeconds(1), StartupMessage) + Line(Start.AddSeconds(2), BuildMessage) + Line(Start.AddSeconds(5), ReadyMessage), Start.AddSeconds(5));
         AppStatusStruct? playing = await TickAsync();
@@ -505,8 +595,11 @@ public sealed class GameMonitorTests : IDisposable
         Assert.Equal(1, _logger.Count("Game log: 0 new event(s), restarted: True."));
     }
 
+    /// <summary>
+    /// A second mission announced in the same poll as the first mission's end replaces the mission number, which is logged as the new state.
+    /// </summary>
     [Fact]
-    public async Task MissionChangeWithinOnePoll_IsLoggedAsync()
+    public async Task MissionChangeWithinOnePollIsLoggedAsync()
     {
         const string Mission1 = "Campaign/mission: urbangames_campaign::/info.campaign/urbangames_campaign_mission_01::/info.mission";
         const string Mission2 = "Campaign/mission: urbangames_campaign::/info.campaign/urbangames_campaign_mission_02::/info.mission";
@@ -520,8 +613,11 @@ public sealed class GameMonitorTests : IDisposable
         Assert.Equal(1, _logger.Count("Game state: Mission, mission 2."));
     }
 
+    /// <summary>
+    /// When the log yields no usable line for two minutes, the state falls back to playing and the status marks the log fallback, with one warning for each game session.
+    /// </summary>
     [Fact]
-    public async Task NoUsableLogLineForTwoMinutes_FallsBackToPlayingAndLogsOncePerGameSessionAsync()
+    public async Task NoUsableLogLineForTwoMinutesFallsBackToPlayingAndLogsOncePerGameSessionAsync()
     {
         WriteLog(Line(Start.AddSeconds(5), UnrelatedMessage), Start.AddSeconds(5));
         AppStatusStruct? starting = await TickAsync();
@@ -550,8 +646,11 @@ public sealed class GameMonitorTests : IDisposable
         Assert.Contains(_logger.Entries, static (entry) => (entry.Level is LogLevel.Warning) && entry.Message.Contains("gave no usable lines", StringComparison.Ordinal));
     }
 
+    /// <summary>
+    /// When the game stops, the monitor reports the not-running state, logs the stop once and clears the presence, and an unchanged tick afterwards reports no change.
+    /// </summary>
     [Fact]
-    public async Task GameStops_LogsItAndClearsThePresenceAsync()
+    public async Task GameStopsLogsItAndClearsThePresenceAsync()
     {
         WriteLog(Line(Start.AddSeconds(5), ReadyMessage), Start.AddSeconds(5));
         _ = await TickAsync();
@@ -568,8 +667,11 @@ public sealed class GameMonitorTests : IDisposable
         Assert.Equal(1, _logger.Count("The game stopped."));
     }
 
+    /// <summary>
+    /// An exception thrown by a dependency makes the tick return null and log one error with that exception, and the next tick works normally.
+    /// </summary>
     [Fact]
-    public async Task DependencyThrows_ReturnsNullLogsTheFailureAndTheNextTickWorksAsync()
+    public async Task DependencyThrowsReturnsNullLogsTheFailureAndTheNextTickWorksAsync()
     {
         InvalidOperationException failure = new("boom");
         _services.CheckException = failure;
@@ -588,8 +690,11 @@ public sealed class GameMonitorTests : IDisposable
         Assert.Equal(1, _logger.Count("A monitor tick failed."));
     }
 
+    /// <summary>
+    /// A tick with an already cancelled token throws an operation-cancelled exception and does not log a failure.
+    /// </summary>
     [Fact]
-    public async Task CancelledToken_PropagatesTheCancellationAsync()
+    public async Task CancelledTokenPropagatesTheCancellationAsync()
     {
         _services.Process = default;
         using CancellationTokenSource cancellation = new();
@@ -600,8 +705,11 @@ public sealed class GameMonitorTests : IDisposable
         Assert.Equal(0, _logger.Count("A monitor tick failed."));
     }
 
+    /// <summary>
+    /// An operation-cancelled exception thrown while the token is not cancelled makes the tick return null and is logged as a failed tick like any other error.
+    /// </summary>
     [Fact]
-    public async Task CancellationWithoutACancelledToken_IsLoggedLikeAnyOtherFailureAsync()
+    public async Task CancellationWithoutACancelledTokenIsLoggedLikeAnyOtherFailureAsync()
     {
         _services.UpdateException = new OperationCanceledException();
 

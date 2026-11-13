@@ -20,7 +20,7 @@ namespace Tf3Drpc.Core.Discord;
 /// closes the connection at once instead of sending a rate-limited clear, because Discord clears the presence
 /// of a closed connection.
 /// </remarks>
-public sealed class DiscordPresenceClient : IAsyncDisposable
+internal sealed class DiscordPresenceClient : IAsyncDisposable
 {
     private readonly IDiscordConnector _connector;
     private readonly TimeProvider _timeProvider;
@@ -43,7 +43,7 @@ public sealed class DiscordPresenceClient : IAsyncDisposable
         : this(new DiscordConnector(), timeProvider, logger)
     { }
 
-#pragma warning disable IDE0290 // Use primary constructor: it cannot take its parameter list on separate lines
+#pragma warning disable IDE0290 // Use primary constructor: a primary constructor is public and cannot take the internal IDiscordConnector
     internal DiscordPresenceClient
     (
         IDiscordConnector connector,
@@ -91,6 +91,7 @@ public sealed class DiscordPresenceClient : IAsyncDisposable
         }
     }
 
+    /// <inheritdoc/>
     public async ValueTask DisposeAsync()
         => await DropConnectionAsync();
 

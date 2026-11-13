@@ -57,7 +57,7 @@ internal sealed partial class WindowsPickerHandler : MauiHandlers.PickerHandler
 
             if (GetDescribedOption(element) is null)
             {
-                ToolTipService.SetToolTip(element, null);
+                ToolTipService.SetToolTip(element, value: null);
 
                 return;
             }

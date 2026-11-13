@@ -12,6 +12,6 @@ internal static class Program
         if (MacSingleInstanceService.HandOverToRunningInstance())
             return;
 
-        UIApplication.Main(args, null, typeof(AppDelegate));
+        UIApplication.Main(args, principalClass: null, typeof(AppDelegate));
     }
 }

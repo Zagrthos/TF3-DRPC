@@ -1,10 +1,10 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 
 using Tf3Drpc.Core.Constants;
-using Tf3Drpc.Core.Enums;
 using Tf3Drpc.Core.Serialization;
 using Tf3Drpc.Core.Status;
 using Tf3Drpc.Core.Structs;
@@ -15,41 +15,41 @@ namespace Tf3Drpc.Core.GameLog;
 /// <summary>
 /// Maps a parsed game log entry to the event the companion reacts to.
 /// </summary>
-public static class GameLogEventClassifier
+internal static class GameLogEventClassifier
 {
     /// <summary>
     /// Classifies an entry; unknown lines give <see langword="false"/>.
     /// </summary>
-    public static bool TryClassify(in GameLogEntryStruct entry, out GameLogEventStruct gameEvent)
+    public static bool TryClassify(in GameLogEntryStruct entry, [NotNullWhen(true)] out GameLogEvent? gameEvent)
     {
         string message = entry.Message;
-        gameEvent = default;
+        gameEvent = null;
 
         switch (message)
         {
             case GameLogConstants.StartupMessage:
-                gameEvent = new GameLogEventStruct() { Kind = GameLogEventKind.Startup };
+                gameEvent = new StartupEvent();
                 return true;
 
             case GameLogConstants.MainMenuMessage:
-                gameEvent = new GameLogEventStruct() { Kind = GameLogEventKind.MainMenu };
+                gameEvent = new MainMenuEvent();
                 return true;
 
             case GameLogConstants.GameReadyMessage:
-                gameEvent = new GameLogEventStruct() { Kind = GameLogEventKind.GameReady };
+                gameEvent = new GameReadyEvent();
                 return true;
 
             case GameLogConstants.GameStoppedMessage:
-                gameEvent = new GameLogEventStruct() { Kind = GameLogEventKind.GameStopped };
+                gameEvent = new GameStoppedEvent();
                 return true;
 
             // "Quit requested" isn't one: the game can stay open after it (seen 2026-10-17), and a real quit logs the shutdown a second later.
             case GameLogConstants.NormalShutdownMessage:
-                gameEvent = new GameLogEventStruct() { Kind = GameLogEventKind.Closing };
+                gameEvent = new ClosingEvent(IsCrash: false);
                 return true;
 
             case GameLogConstants.UngracefulExitMessage:
-                gameEvent = new GameLogEventStruct() { Kind = GameLogEventKind.Closing, IsCrash = true };
+                gameEvent = new ClosingEvent(IsCrash: true);
                 return true;
 
             default:
@@ -57,14 +57,14 @@ public static class GameLogEventClassifier
         }
     }
 
-    private static bool TryClassifyPrefixed(string message, out GameLogEventStruct gameEvent)
+    private static bool TryClassifyPrefixed(string message, [NotNullWhen(true)] out GameLogEvent? gameEvent)
     {
-        gameEvent = default;
+        gameEvent = null;
 
         if (message.StartsWith(GameLogConstants.LoadingGamePrefix, StringComparison.Ordinal))
         {
             string saveName = message[GameLogConstants.LoadingGamePrefix.Length..];
-            gameEvent = new GameLogEventStruct() { Kind = GameLogEventKind.LoadingGame, SaveName = saveName };
+            gameEvent = new LoadingGameEvent(saveName);
 
             return true;
         }
@@ -76,7 +76,7 @@ public static class GameLogEventClassifier
             if (build is null)
                 return false;
 
-            gameEvent = new GameLogEventStruct() { Kind = GameLogEventKind.GameBuild, GameBuild = build };
+            gameEvent = new GameBuildEvent(build.Value);
 
             return true;
         }
@@ -84,7 +84,7 @@ public static class GameLogEventClassifier
         if (message.StartsWith(GameLogConstants.MissionPrefix, StringComparison.Ordinal))
         {
             int? missionNumber = ParseMissionNumber(message);
-            gameEvent = new GameLogEventStruct() { Kind = GameLogEventKind.MissionLoading, MissionNumber = missionNumber };
+            gameEvent = new MissionLoadingEvent(missionNumber);
 
             return true;
         }
@@ -97,7 +97,7 @@ public static class GameLogEventClassifier
         if (status is null)
             return false;
 
-        gameEvent = new GameLogEventStruct() { Kind = GameLogEventKind.Status, Status = status };
+        gameEvent = new StatusEvent(status);
 
         return true;
     }

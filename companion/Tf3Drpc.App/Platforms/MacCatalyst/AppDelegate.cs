@@ -67,5 +67,5 @@ internal sealed class AppDelegate : MauiUIApplicationDelegate
     }
 
     private static UIKeyCommand CreateQuit(string title)
-        => UIKeyCommand.Create(title, null, new Selector(QuitAction), QuitKey, UIKeyModifierFlags.Command, null);
+        => UIKeyCommand.Create(title, image: null, new Selector(QuitAction), QuitKey, UIKeyModifierFlags.Command, propertyList: null);
 }

@@ -6,6 +6,8 @@ area: [app, tools]
 covers:
   - companion/TF3-DRPC.slnx
   - companion/global.json
+  - companion/.editorconfig
+  - companion/Analyzers.globalconfig
   - companion/Directory.Build.props
   - companion/Directory.Build.targets
   - companion/Directory.Packages.props
@@ -13,7 +15,7 @@ covers:
   - companion/Tf3Drpc.App/Tf3Drpc.App.csproj
   - companion/Tf3Drpc.Core/Tf3Drpc.Core.csproj
   - companion/Tf3Drpc.Core.Tests/Tf3Drpc.Core.Tests.csproj
-last-reviewed: 2026-11-11
+last-reviewed: 2026-11-13
 ---
 
 # Projects and build setup
@@ -60,6 +62,9 @@ The rules are in [C# style](../../30-conventions/csharp.md) and [Native AOT](../
 - All in `companion/`, where the commands run:
   - `TF3-DRPC.slnx`.
   - `Directory.Build.props`: the build policy, Debug and Release settings, trim analysis, our 13 satellite languages, file properties, and `EnableWindowsTargeting` so the Windows projects restore on macOS.
+  - `.editorconfig`: the local analyser entries on top of the shared one at the repository root; they turn on again the .NET rules the shared file turns off ([decision 0028](../../70-decisions/0028-dotnet-analysers-are-the-baseline.md)).
+  - `Analyzers.globalconfig`: raises every analyser rule that is on by default and reports below a warning to a warning ([decision 0027](../../70-decisions/0027-every-analyser-rule-at-least-a-warning.md)).
+    It lists each rule by ID, because `AnalysisLevel` `latest-all` ignores bulk entries; after an analyser update, add the new rules that are on and report below a warning, except those the shared `.editorconfig` configures.
   - `Directory.Build.targets`: keeps the `.xml` doc files out of the output.
   - `Directory.Packages.props`: central package versions.
     The analysers Meziantou, Roslynator and Sonar and `ThisAssembly.AssemblyInfo` are `GlobalPackageReference`s.
@@ -67,11 +72,13 @@ The rules are in [C# style](../../30-conventions/csharp.md) and [Native AOT](../
     Feeds from a user- or machine-wide NuGet configuration would otherwise cause NU1507.
   - The app project: MAUI, Windows, Native AOT, size and security settings, and the build targets listed under [publish size](#publish-size).
 - Every props and project file uses the same layout: topic groups with a comment header, alphabetical inside a group, a doc link after a non-obvious property.
-- Build policy: `LangVersion` latest, `Nullable` enable, `ImplicitUsings` disable, `Features` Strict, `CheckForOverflowUnderflow`, `AnalysisLevel` latest-all, `EnforceCodeStyleInBuild`, `GenerateDocumentationFile`, nullable warnings as errors.
+- Build policy: `LangVersion` latest (C# 15), `Nullable` enable, `ImplicitUsings` disable, `Features` Strict and `runtime-async=on` ([decision 0026](../../70-decisions/0026-runtime-async.md)), `CheckForOverflowUnderflow`, `AnalysisLevel` latest-all, `EnforceCodeStyleInBuild`, `GenerateDocumentationFile`, nullable warnings as errors.
 - Configurations Debug and Release only, no `Testing`.
   Release has no symbols (`DebugType none`); Debug embeds them.
   `UseArtifactsOutput` puts all output in `artifacts/`.
 - Tests: xunit v3 on Microsoft.Testing.Platform.
+- `Tf3Drpc.Core` and the app set `ThisAssemblyNamespace`: `InternalsVisibleTo` makes the generated `ThisAssembly` class of Core visible to the app and the tests, and without a namespace the two global classes collide (CS0436).
+  XAML refers to it as `{x:Static asm:ThisAssembly.Info.InformationalVersion}` with `xmlns:asm="clr-namespace:Tf3Drpc.App"`.
 
 ## Publish size
 
@@ -92,7 +99,8 @@ The Windows publish is about 83 MB, and `TF3-DRPC.exe` about 25 MB; without the 
 - Leaving out `Microsoft.Web.WebView2` makes the publish print 20 ILC messages "will always throw because: Failed to load assembly 'Microsoft.Web.WebView2.Core.Projection'", for the web view code in MAUI and WinUI.
   The app has no web view, so that code never runs; the messages are expected (see [Native AOT](../../30-conventions/native-aot.md#warnings)).
 - The macOS `.app` is about 21 MB (10 MB zipped), nearly all of it the Native AOT executable: macOS brings AppKit and UIKit, so nothing like the Windows App SDK has to ship.
-  It needs the optimised publish; with `UseOptimizedPublish=false` the full build first leaves the CoreCLR runtime, a 70 MB R2R image and the managed assemblies in `Contents/MonoBundle` (99 MB in all), which the executable never loads.
+  The publish runs the full build first (`UseOptimizedPublish` is `false`, the .NET 11 default), and from clean output folders the `.app` holds only the executable and its resources ([build pitfalls](../../20-development/build-pitfalls.md#if-it-fails)).
+  `NoDSymUtil` keeps the 44 MB `.dSYM` that a Native AOT build writes by default since .NET 11 out of `artifacts/`, because Release has no symbols.
 
 ## Extra app targets
 

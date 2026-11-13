@@ -6,7 +6,7 @@ area: [app, mod]
 covers:
   - companion/Tf3Drpc.Core.Tests/Tf3Drpc.Core.Tests.csproj
   - docs/40-reference/log-samples/**
-last-reviewed: 2026-11-11
+last-reviewed: 2026-11-13
 ---
 
 # Testing strategy
@@ -16,7 +16,9 @@ What is tested automatically, what needs a person, and what each kind of change 
 ## Automated tests
 
 - `Tf3Drpc.Core.Tests` uses xunit v3 on Microsoft.Testing.Platform and covers `Tf3Drpc.Core`, including the monitor's tick (`GameMonitor`).
-- It sees the internal types of `Tf3Drpc.Core` through `InternalsVisibleTo`; the test classes stay public, as xunit needs.
+- It sees the internal types of `Tf3Drpc.Core` through `InternalsVisibleTo`; the test classes stay public, as xunit needs (xUnit1000), and carry XML doc comments.
+- A test method whose parameters use an internal type is `internal`; xunit v3 finds internal test methods in a public class.
+- Test method names describe the behaviour in PascalCase without underscores (CA1707), for example `NotRunningAndClosingClearThePresence`.
 - The tests can't reference the MAUI app, so logic that can be tested lives in `Tf3Drpc.Core`; only the timer loop and the messenger stay in the app.
 - Parser tests read the real log lines in [docs/40-reference/log-samples/](../40-reference/log-samples/); `.gitattributes` keeps those files byte for byte, and they change only by copying real log output.
 - A test that relies on Windows behaviour (`FileShare` locks, named pipes) starts with `Assert.SkipUnless(OperatingSystem.IsWindows(), "…")`.

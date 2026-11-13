@@ -6,10 +6,10 @@ using Microsoft.Maui.Controls;
 namespace Tf3Drpc.App.Converters;
 
 /// <summary>
-/// Converts a value to whether it is set, for <c>IsVisible</c> bindings.
+/// Converts a value to whether it is set, for <c language="csharp">IsVisible</c> bindings.
 /// </summary>
 /// <remarks>
-/// A <c>DataTrigger</c> with <c>Value="{x:Null}"</c> can't do this: it only runs when the bound value changes away from its own default, which is null too.
+/// A <c language="xaml">DataTrigger</c> with <c language="xaml">Value="{x:Null}"</c> can't do this: it only runs when the bound value changes away from its own default, which is null too.
 /// </remarks>
 #pragma warning disable CA1812 // Avoid uninstantiated internal classes
 internal sealed class IsNotNullConverter : IValueConverter

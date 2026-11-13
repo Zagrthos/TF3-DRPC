@@ -16,7 +16,7 @@ using Tf3Drpc.Core.Translation;
 namespace Tf3Drpc.App.Services;
 
 /// <summary>
-/// Loads the game's texts from its <c>.mo</c> files, for the chosen language and for the game's own language, and serves the app's own texts.
+/// Loads the game's texts from its <c language="text">.mo</c> files, for the chosen language and for the game's own language, and serves the app's own texts.
 /// </summary>
 #pragma warning disable CA1812 // Avoid uninstantiated internal classes
 internal sealed class TranslationService(TimeProvider timeProvider, ILogger<TranslationService> logger) : ITranslationService

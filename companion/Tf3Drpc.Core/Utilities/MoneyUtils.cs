@@ -16,10 +16,10 @@ internal static class MoneyUtils
     private const double MaxAmount = 1e27;
 
     /// <summary>
-    /// Formats an amount compactly, such as <c>$15.6M</c>; <see langword="null"/> for NaN or infinity.
+    /// Formats an amount compactly, such as <c language="text">$15.6M</c>; <see langword="null"/> for NaN or infinity.
     /// </summary>
     /// <remarks>
-    /// The unit is picked after rounding, so 999,950 gives <c>$1M</c> and not <c>$1000K</c>.
+    /// The unit is picked after rounding, so 999,950 gives <c language="text">$1M</c> and not <c language="text">$1000K</c>.
     /// </remarks>
     public static string? FormatCompact(double amount, CultureInfo culture)
     {

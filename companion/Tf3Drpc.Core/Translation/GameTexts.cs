@@ -11,7 +11,7 @@ namespace Tf3Drpc.Core.Translation;
 /// <summary>
 /// The game's own texts for the presence, with English fallbacks.
 /// </summary>
-public sealed class GameTexts(IReadOnlyDictionary<string, string>? translations)
+internal sealed class GameTexts(IReadOnlyDictionary<string, string>? translations)
 {
     private static readonly string[] RankKeys =
     [
@@ -47,7 +47,7 @@ public sealed class GameTexts(IReadOnlyDictionary<string, string>? translations)
     /// <summary>
     /// The texts without a translation file; everything is English.
     /// </summary>
-    public static GameTexts English { get; } = new(null);
+    public static GameTexts English { get; } = new(translations: null);
 
     /// <summary>
     /// Returns the name of a rank from 1 to 15, otherwise <see langword="null"/>.
@@ -81,7 +81,7 @@ public sealed class GameTexts(IReadOnlyDictionary<string, string>? translations)
         => Lookup(label.TranslationKey, label.TranslationKey);
 
     /// <summary>
-    /// Returns the name of a climate resource such as <c>::/climates/tropical/tropical.clima</c>, otherwise <see langword="null"/>.
+    /// Returns the name of a climate resource such as <c language="text">::/climates/tropical/tropical.clima</c>, otherwise <see langword="null"/>.
     /// </summary>
     internal string? GetClimateName(string? climateResource)
     {

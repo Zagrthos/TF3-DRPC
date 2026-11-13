@@ -8,6 +8,6 @@ namespace Tf3Drpc.App.Platforms.MacCatalyst;
 /// The scene delegate that Info.plist names; MAUI creates the window in it.
 /// </summary>
 [Register("SceneDelegate")]
-#pragma warning disable CA1812 // Avoid uninstantiated internal classes
+#pragma warning disable CA1812 // Avoid uninstantiated internal classes; UIKit creates it from the UISceneDelegateClassName entry of Info.plist
 internal sealed class SceneDelegate : MauiUISceneDelegate;
 #pragma warning restore CA1812

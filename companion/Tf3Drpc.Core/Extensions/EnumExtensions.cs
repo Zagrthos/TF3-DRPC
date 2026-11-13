@@ -204,6 +204,7 @@ internal static class EnumExtensions
                 PresencePreset.Era => OwnText.PresetEra,
                 PresencePreset.Alternating => OwnText.PresetAlternating,
                 PresencePreset.Custom => OwnText.PresetCustom,
+                PresencePreset.Minimal => OwnText.PresetMinimal,
                 _ => OwnText.PresetMinimal
             };
     }
@@ -254,6 +255,7 @@ internal static class EnumExtensions
             {
                 ThemeMode.Light => OwnText.ThemeLight,
                 ThemeMode.Dark => OwnText.ThemeDark,
+                ThemeMode.System => OwnText.ThemeSystem,
                 _ => OwnText.ThemeSystem
             };
     }

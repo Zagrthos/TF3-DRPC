@@ -9,7 +9,7 @@ namespace Tf3Drpc.Core.Structs;
 /// The relevant events of one poll of the game log and whether the log started over.
 /// </summary>
 [StructLayout(LayoutKind.Auto)]
-public readonly struct GameLogPollResultStruct : IEquatable<GameLogPollResultStruct>
+internal readonly struct GameLogPollResultStruct : IEquatable<GameLogPollResultStruct>
 {
     public IReadOnlyList<TimedGameLogEventStruct> Events { get; init; }
 

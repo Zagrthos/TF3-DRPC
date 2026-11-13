@@ -3,12 +3,14 @@
   <!-- Project-Specific Build Properties -->
   <PropertyGroup>
     <IsAotCompatible>true</IsAotCompatible>
+    <ThisAssemblyNamespace>Tf3Drpc.Core</ThisAssemblyNamespace>
     <TargetFramework>net11.0</TargetFramework>
   </PropertyGroup>
 
-  <!-- Test access -->
+  <!-- The app and the tests see the internal types -->
   <ItemGroup>
     <InternalsVisibleTo Include="Tf3Drpc.Core.Tests" />
+    <InternalsVisibleTo Include="TF3-DRPC" />
   </ItemGroup>
 
   <!-- Own texts, strongly typed at build time -->

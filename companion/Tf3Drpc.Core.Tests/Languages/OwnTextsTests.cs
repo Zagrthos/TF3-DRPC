@@ -11,6 +11,9 @@ using Xunit;
 
 namespace Tf3Drpc.Core.Tests.Languages;
 
+/// <summary>
+/// Tests of <see cref="OwnTexts"/>, which holds the application's own translated texts for the 13 supported languages.
+/// </summary>
 public sealed class OwnTextsTests
 {
     // Words that are written the same as in English in these languages.
@@ -23,6 +26,9 @@ public sealed class OwnTextsTests
         (OwnText.PresetEra, "pt_BR")
     ];
 
+    /// <summary>
+    /// Every own text exists, and is not blank, in every supported language, and differs from the English text except for the few words listed as written the same as in English.
+    /// </summary>
     [Fact]
     public void EveryKeyExistsInAllCulturesAndDiffersFromEnglish()
     {
@@ -44,8 +50,11 @@ public sealed class OwnTextsTests
         }
     }
 
+    /// <summary>
+    /// The store button label fits into Discord's limit of button label bytes, measured as UTF-8, in every supported language.
+    /// </summary>
     [Fact]
-    public void StoreButton_FitsIntoDiscordsLimitInEveryLanguage()
+    public void StoreButtonFitsIntoDiscordsLimitInEveryLanguage()
     {
         foreach (LanguageInfo language in LanguageCatalog.All)
         {
@@ -55,8 +64,11 @@ public sealed class OwnTextsTests
         }
     }
 
+    /// <summary>
+    /// The words listed as identical to English, such as the minimal preset in German and French, really are equal to the English text.
+    /// </summary>
     [Fact]
-    public void IdenticalTranslations_AreReallyIdentical()
+    public void IdenticalTranslationsAreReallyIdentical()
     {
         for (int i = 0; i < IdenticalToEnglish.Length; i++)
         {
@@ -66,8 +78,11 @@ public sealed class OwnTextsTests
         }
     }
 
+    /// <summary>
+    /// A culture passed explicitly is used for the lookup instead of the current UI culture, which the test sets to Japanese while asking for German and English.
+    /// </summary>
     [Fact]
-    public void ExplicitCulture_IsUsedInsteadOfTheCurrentUiCulture()
+    public void ExplicitCultureIsUsedInsteadOfTheCurrentUiCulture()
     {
         CultureInfo previous = CultureInfo.CurrentUICulture;
 
@@ -84,6 +99,9 @@ public sealed class OwnTextsTests
         }
     }
 
+    /// <summary>
+    /// Sample texts have the expected translation in their culture, covering the settings, preset names, hints and store button texts across German, Spanish, Japanese, Chinese, Portuguese, Russian, French, Korean and English.
+    /// </summary>
     [Theory]
     [InlineData("de-DE", OwnText.StartingTheGame, "Spiel wird gestartet")]
     [InlineData("es-ES", OwnText.Language, "Idioma")]
@@ -105,7 +123,7 @@ public sealed class OwnTextsTests
     [InlineData("de-DE", OwnText.StoreButton, "Hol dir Transport Fever 3")]
     [InlineData("ja-JP", OwnText.ShowStoreButton, "Steamストアへのボタンを表示する")]
     [InlineData("ru-RU", OwnText.StoreButtonHint, "Другие видят эту кнопку под твоим статусом; Discord тебе её не показывает.")]
-    public void SpotChecks(string culture, OwnText text, string expected)
+    internal void SpotChecks(string culture, OwnText text, string expected)
         => Assert.Equal(expected, OwnTexts.Get(text, CultureInfo.GetCultureInfo(culture)));
 
     private static bool IsIdenticalToEnglish(OwnText text, string code)
@@ -119,7 +137,10 @@ public sealed class OwnTextsTests
         return false;
     }
 
+    /// <summary>
+    /// A culture with no translation, here the invariant culture, falls back to the English text.
+    /// </summary>
     [Fact]
-    public void UnknownCulture_FallsBackToEnglish()
+    public void UnknownCultureFallsBackToEnglish()
         => Assert.Equal("Exit", OwnTexts.Get(OwnText.Exit, CultureInfo.InvariantCulture));
 }
