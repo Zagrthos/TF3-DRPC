@@ -62,5 +62,6 @@ The menu matches the Windows tray.
 |---|---|
 | Native AOT as opt-in for publishing (CoreCLR otherwise) | `PublishAot` for releases |
 | XAML source generation (`MauiXamlInflator=SourceGen`) | AOT-safe XAML with lazy resource dictionaries; every binding is compiled (`XC0022`–`XC0025` are errors) |
+| Implicit XAML namespaces | the root elements leave out the default `xmlns` and `xmlns:x` declarations |
 | `OnAppInstanceActivated` / `AppInstance` | single instance on Windows |
 | `AppManifestEntry` items | `LSUIElement` |

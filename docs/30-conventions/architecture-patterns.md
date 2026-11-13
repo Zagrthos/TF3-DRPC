@@ -7,7 +7,7 @@ covers:
   - companion/Tf3Drpc.App/Extensions/ServiceCollectionExtensions.cs
   - companion/Tf3Drpc.App/PlatformServices.cs
   - companion/Tf3Drpc.App/App.xaml
-last-reviewed: 2026-11-11
+last-reviewed: 2026-11-13
 ---
 
 # Architecture patterns

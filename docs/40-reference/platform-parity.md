@@ -8,7 +8,7 @@ covers:
   - companion/Tf3Drpc.App/App.xaml
   - companion/Tf3Drpc.App/Views/SettingsWindow.xaml
   - companion/Tf3Drpc.Core/Discord/DiscordConnector.cs
-last-reviewed: 2026-11-11
+last-reviewed: 2026-11-13
 verified:
   - windows 2026-10-22
   - macos 2026-10-24 build 40425
