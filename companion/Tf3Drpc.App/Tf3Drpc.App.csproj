@@ -40,6 +40,7 @@
   <PropertyGroup Condition="'$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == 'maccatalyst'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks> <!-- [LibraryImport] for the Objective-C runtime -->
     <RuntimeIdentifier>maccatalyst-arm64</RuntimeIdentifier>
+    <NoDSymUtil>true</NoDSymUtil> <!-- Since .NET 11 a Native AOT build writes a 44 MB .dSYM next to the .app; Release has no symbols -->
     <SupportedOSPlatformVersion>26.0</SupportedOSPlatformVersion>
   </PropertyGroup>
 

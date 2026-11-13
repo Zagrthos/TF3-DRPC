@@ -13,7 +13,7 @@ covers:
   - companion/Tf3Drpc.App/Tf3Drpc.App.csproj
   - companion/Tf3Drpc.Core/Tf3Drpc.Core.csproj
   - companion/Tf3Drpc.Core.Tests/Tf3Drpc.Core.Tests.csproj
-last-reviewed: 2026-11-11
+last-reviewed: 2026-11-13
 ---
 
 # Projects and build setup
@@ -92,7 +92,8 @@ The Windows publish is about 83 MB, and `TF3-DRPC.exe` about 25 MB; without the 
 - Leaving out `Microsoft.Web.WebView2` makes the publish print 20 ILC messages "will always throw because: Failed to load assembly 'Microsoft.Web.WebView2.Core.Projection'", for the web view code in MAUI and WinUI.
   The app has no web view, so that code never runs; the messages are expected (see [Native AOT](../../30-conventions/native-aot.md#warnings)).
 - The macOS `.app` is about 21 MB (10 MB zipped), nearly all of it the Native AOT executable: macOS brings AppKit and UIKit, so nothing like the Windows App SDK has to ship.
-  It needs the optimised publish; with `UseOptimizedPublish=false` the full build first leaves the CoreCLR runtime, a 70 MB R2R image and the managed assemblies in `Contents/MonoBundle` (99 MB in all), which the executable never loads.
+  The publish runs the full build first (`UseOptimizedPublish` is `false`, the .NET 11 default), and from clean output folders the `.app` holds only the executable and its resources ([build pitfalls](../../20-development/build-pitfalls.md#if-it-fails)).
+  `NoDSymUtil` keeps the 44 MB `.dSYM` that a Native AOT build writes by default since .NET 11 out of `artifacts/`, because Release has no symbols.
 
 ## Extra app targets
 

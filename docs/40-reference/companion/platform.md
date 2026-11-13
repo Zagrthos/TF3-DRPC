@@ -7,7 +7,7 @@ covers:
   - companion/Tf3Drpc.App/Tf3Drpc.App.csproj
   - companion/Tf3Drpc.App/Platforms/**
   - companion/Tf3Drpc.App/Resources/Tray/**
-last-reviewed: 2026-11-11
+last-reviewed: 2026-11-13
 ---
 
 # Companion app platform
@@ -22,7 +22,7 @@ What differs between Windows and macOS, and what is decided for each difference,
 | | Windows | macOS |
 |---|---|---|
 | Target | WinUI 3, `net11.0-windows10.0.19041.0` | Mac Catalyst, `net11.0-maccatalyst` |
-| Native AOT | `PublishAot` with `UseOptimizedPublish=false` (the optimised publish skips `PrepareForRun`, where the Windows App SDK's MSIX tooling writes the `.pri` of an unpackaged app, and fails with `MSB3030`; generating the `.pri` explicitly fills `bin/` again, so it saves nothing); works, one known MAUI trim warning and 20 informational ILC messages about the left-out WebView2 (see [Native AOT](../../30-conventions/native-aot.md)) | `PublishAot`, `RuntimeIdentifier` `maccatalyst-arm64`, the optimised publish (a full build first would leave the CoreCLR runtime and a 70 MB R2R image in the `.app`); works, one informational ILC message about `UIKit.NSLayoutAnchor`1` |
+| Native AOT | `PublishAot` with `UseOptimizedPublish=false` (the optimised publish skips `PrepareForRun`, where the Windows App SDK's MSIX tooling writes the `.pri` of an unpackaged app, and fails with `MSB3030`; generating the `.pri` explicitly fills `bin/` again, so it saves nothing); works, one known MAUI trim warning and 20 informational ILC messages about the left-out WebView2 (see [Native AOT](../../30-conventions/native-aot.md)) | `PublishAot`, `RuntimeIdentifier` `maccatalyst-arm64`, `NoDSymUtil` (no `.dSYM`); works, one informational ILC message about `UIKit.NSLayoutAnchor`1` |
 | Tray / menu bar | no MAUI API; WinUIEx's `TrayIcon` with a WinUI `MenuFlyout` (no AOT or trim warnings) | no MAUI or UIKit API; AppKit's `NSStatusItem` through the Objective-C runtime, as `Drastic.Tray` does |
 | Minimum OS | Windows 10 2004 (`SupportedOSPlatformVersion` 10.0.19041.0) | macOS 26 (`SupportedOSPlatformVersion` 26.0) |
 | Shipped as | portable zip: unpackaged, self-contained (`WindowsPackageType=None`, `WindowsAppSDKSelfContained=true`); not code-signed, so SmartScreen warns at the first start | portable zip with the `.app`, not signed or notarised, so Gatekeeper stops the first start; never through the Mac App Store |
