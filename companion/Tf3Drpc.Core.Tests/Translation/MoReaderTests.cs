@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 
+using Tf3Drpc.Core.Constants;
 using Tf3Drpc.Core.Translation;
 
 using Xunit;
@@ -119,23 +120,47 @@ public sealed class MoReaderTests
     }
 
     /// <summary>
-    /// Every truncation of a valid file either fails with no entries or parses without throwing, and truncations to 20 and 40 bytes fail.
+    /// A truncated file fails with no entries exactly when the cut removes a byte that a table entry points to, and otherwise parses to the entries of the full file.
     /// </summary>
     [Fact]
-    public void EveryTruncationFailsWithoutThrowing()
+    public void TruncationFailsExactlyWhenItCutsDataTheParserNeeds()
     {
         byte[] file = Build(SampleEntries, bigEndian: false);
+        Assert.True(MoReader.TryParse(file, out IReadOnlyDictionary<string, string>? expected));
+        Assert.NotNull(expected);
+
+        // The parser reads the header, both tables and every string the tables point to, but never the NUL after a string.
+        int needed = TranslationConstants.MoHeaderBytes + (SampleEntries.Length * TranslationConstants.MoTableEntryBytes * 2);
+
+        for (int table = 0; table < 2; table++)
+        {
+            int tableStart = BinaryPrimitives.ReadInt32LittleEndian(file.AsSpan(12 + (table * 4)));
+
+            for (int i = 0; i < SampleEntries.Length; i++)
+            {
+                int length = BinaryPrimitives.ReadInt32LittleEndian(file.AsSpan(tableStart + (i * TranslationConstants.MoTableEntryBytes)));
+                int offset = BinaryPrimitives.ReadInt32LittleEndian(file.AsSpan(tableStart + (i * TranslationConstants.MoTableEntryBytes) + 4));
+                needed = Math.Max(needed, offset + length);
+            }
+        }
+
+        Assert.True(needed < file.Length);
 
         for (int length = 0; length < file.Length; length++)
         {
             bool parsed = MoReader.TryParse(file.AsSpan(0, length), out IReadOnlyDictionary<string, string>? entries);
 
-            if (!parsed)
+            if (length < needed)
+            {
+                Assert.False(parsed);
                 Assert.Null(entries);
+            }
+            else
+            {
+                Assert.True(parsed);
+                Assert.Equal(expected, entries);
+            }
         }
-
-        Assert.False(MoReader.TryParse(file.AsSpan(0, 20), out IReadOnlyDictionary<string, string>? _));
-        Assert.False(MoReader.TryParse(file.AsSpan(0, 40), out IReadOnlyDictionary<string, string>? _));
     }
 
     /// <summary>

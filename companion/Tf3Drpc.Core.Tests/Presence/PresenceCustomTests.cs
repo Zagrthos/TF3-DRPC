@@ -1,5 +1,6 @@
 using System;
 using System.Globalization;
+using System.Text.Json;
 
 using Tf3Drpc.Core.Constants;
 using Tf3Drpc.Core.Enums;
@@ -8,6 +9,7 @@ using Tf3Drpc.Core.Settings;
 using Tf3Drpc.Core.Status;
 using Tf3Drpc.Core.Structs;
 using Tf3Drpc.Core.Translation;
+using Tf3Drpc.Core.Utilities;
 
 using Xunit;
 
@@ -201,15 +203,24 @@ public sealed class PresenceCustomTests
     }
 
     /// <summary>
-    /// A hover template that is empty, blank, a single character or only an unknown placeholder gives no hover text, so the default hover applies.
+    /// A hover template that is empty, blank, a single character or only an unknown placeholder sets no hover text, so the SET_ACTIVITY payload falls back to the default "Transport Fever 3".
     /// </summary>
     [Theory]
     [InlineData("")]
     [InlineData("   ")]
     [InlineData("a")]
     [InlineData("{unknown}")]
-    public void HoverBlankOrShortGivesTheDefault(string hover)
-        => Assert.Null(Build(new PresenceTemplates() { Hover = hover }).LargeImageText);
+    public void HoverBlankOrShortSetsNoHoverText(string hover)
+    {
+        PresenceContentStruct content = Build(new PresenceTemplates() { Hover = hover });
+
+        byte[] payload = DiscordMessageUtils.BuildSetActivity(content, "nonce");
+        using JsonDocument document = JsonDocument.Parse(payload);
+        JsonElement assets = document.RootElement.GetProperty("args").GetProperty("activity").GetProperty("assets");
+
+        Assert.Null(content.LargeImageText);
+        Assert.Equal("Transport Fever 3", assets.GetProperty("large_text").GetString());
+    }
 
     /// <summary>
     /// The hover text does not receive the paused suffix when the game is paused.

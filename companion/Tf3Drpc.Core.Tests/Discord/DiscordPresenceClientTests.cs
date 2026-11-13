@@ -123,39 +123,6 @@ public sealed class DiscordPresenceClientTests : IAsyncDisposable
     }
 
     /// <summary>
-    /// The hover text becomes the large image text of the activity, and without a hover text the text defaults to "Transport Fever 3"; the image is always "cover".
-    /// </summary>
-    [Theory]
-    [InlineData("Archipelago2 in 1905", "Archipelago2 in 1905")]
-    [InlineData(null, "Transport Fever 3")]
-    public void SetActivityPutsTheHoverTextIntoLargeText(string? hover, string expected)
-    {
-        PresenceContentStruct content = new() { Details = "Mechanic", LargeImageText = hover };
-
-        byte[] payload = DiscordMessageUtils.BuildSetActivity(content, "nonce");
-        using JsonDocument document = JsonDocument.Parse(payload);
-        JsonElement assets = document.RootElement.GetProperty("args").GetProperty("activity").GetProperty("assets");
-
-        Assert.Equal(expected, assets.GetProperty("large_text").GetString());
-        Assert.Equal("cover", assets.GetProperty("large_image").GetString());
-    }
-
-    /// <summary>
-    /// Building a clear payload produces a SET_ACTIVITY command with the process id but without an activity.
-    /// </summary>
-    [Fact]
-    public void ClearPayloadOmitsTheActivity()
-    {
-        byte[] payload = DiscordMessageUtils.BuildSetActivity(content: null, "nonce");
-        using JsonDocument document = JsonDocument.Parse(payload);
-        JsonElement arguments = document.RootElement.GetProperty("args");
-
-        Assert.Equal("SET_ACTIVITY", document.RootElement.GetProperty("cmd").GetString());
-        Assert.Equal(Environment.ProcessId, arguments.GetProperty("pid").GetInt32());
-        Assert.False(arguments.TryGetProperty("activity", out JsonElement _));
-    }
-
-    /// <summary>
     /// A handshake that is answered with an error instead of ready leaves the client disconnected after a single connection attempt.
     /// </summary>
     [Fact]
@@ -341,7 +308,7 @@ public sealed class DiscordPresenceClientTests : IAsyncDisposable
     }
 
     /// <summary>
-    /// An inbound frame that is oversized or has an unknown opcode makes the client drop the connection and not reconnect before the interval has passed.
+    /// An inbound frame that is oversized or has an unknown opcode makes the client drop the connection and not reconnect before the interval has passed; once it has passed, the next update reconnects and sends the presence again.
     /// </summary>
     [Theory]
     [InlineData(1_000_000u, 1u)]
@@ -359,6 +326,14 @@ public sealed class DiscordPresenceClientTests : IAsyncDisposable
 
         Assert.False(_client.IsConnected);
         Assert.Equal(1, _connector.Calls);
+
+        Advance(TimeSpan.FromSeconds(15));
+        await UpdateAsync(Content("A"));
+
+        Assert.Equal(2, _connector.Calls);
+        Assert.True(_client.IsConnected);
+        ReceivedFrame frame = await _connector.Current.ReadFrameAsync(Token);
+        Assert.Contains("\"details\":\"A\"", frame.Json, StringComparison.Ordinal);
     }
 
     /// <summary>

@@ -10,7 +10,7 @@ using Xunit;
 namespace Tf3Drpc.Core.Tests.Discord;
 
 /// <summary>
-/// Tests of the SET_ACTIVITY frame built by <see cref="Tf3Drpc.Core.Utilities.DiscordMessageUtils"/>, focused on the store button.
+/// Tests of the SET_ACTIVITY frame built by <see cref="Tf3Drpc.Core.Utilities.DiscordMessageUtils"/>, covering the store button, the hover text and the clear payload.
 /// </summary>
 public sealed class DiscordMessageUtilsTests
 {
@@ -55,5 +55,38 @@ public sealed class DiscordMessageUtilsTests
         JsonElement activity = Activity(new PresenceContentStruct() { Details = "Test", ButtonLabel = "Transport Fever 3を入手" }, out _);
 
         Assert.Equal("Transport Fever 3を入手", activity.GetProperty("buttons")[0].GetProperty("label").GetString());
+    }
+
+    /// <summary>
+    /// The hover text becomes the large image text of the activity, and without a hover text the text defaults to "Transport Fever 3"; the image is always "cover".
+    /// </summary>
+    [Theory]
+    [InlineData("Archipelago2 in 1905", "Archipelago2 in 1905")]
+    [InlineData(null, "Transport Fever 3")]
+    public void SetActivityPutsTheHoverTextIntoLargeText(string? hover, string expected)
+    {
+        PresenceContentStruct content = new() { Details = "Mechanic", LargeImageText = hover };
+
+        byte[] payload = DiscordMessageUtils.BuildSetActivity(content, "nonce");
+        using JsonDocument document = JsonDocument.Parse(payload);
+        JsonElement assets = document.RootElement.GetProperty("args").GetProperty("activity").GetProperty("assets");
+
+        Assert.Equal(expected, assets.GetProperty("large_text").GetString());
+        Assert.Equal("cover", assets.GetProperty("large_image").GetString());
+    }
+
+    /// <summary>
+    /// Building a clear payload produces a SET_ACTIVITY command with the process id but without an activity.
+    /// </summary>
+    [Fact]
+    public void ClearPayloadOmitsTheActivity()
+    {
+        byte[] payload = DiscordMessageUtils.BuildSetActivity(content: null, "nonce");
+        using JsonDocument document = JsonDocument.Parse(payload);
+        JsonElement arguments = document.RootElement.GetProperty("args");
+
+        Assert.Equal("SET_ACTIVITY", document.RootElement.GetProperty("cmd").GetString());
+        Assert.Equal(Environment.ProcessId, arguments.GetProperty("pid").GetInt32());
+        Assert.False(arguments.TryGetProperty("activity", out JsonElement _));
     }
 }

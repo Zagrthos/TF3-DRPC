@@ -63,11 +63,19 @@ public sealed class MoneyUtilsTests
         => Assert.Equal(expected, MoneyUtils.FormatCompact(amount, German));
 
     /// <summary>
-    /// An amount below one thousand is shown as a whole number with no unit, so 999 is $999 in German too.
+    /// An amount below one thousand is shown as a whole number with no unit and no group separator, in English and in German, with 999.4 rounding to 999.
     /// </summary>
-    [Fact]
-    public void BelowOneThousandUsesTheGroupFormat()
-        => Assert.Equal("$999", MoneyUtils.FormatCompact(999, German));
+    [Theory]
+    [InlineData("en-US", 0, "$0")]
+    [InlineData("en-US", 1, "$1")]
+    [InlineData("en-US", 999, "$999")]
+    [InlineData("en-US", 999.4, "$999")]
+    [InlineData("de-DE", 0, "$0")]
+    [InlineData("de-DE", 1, "$1")]
+    [InlineData("de-DE", 999, "$999")]
+    [InlineData("de-DE", 999.4, "$999")]
+    public void BelowOneThousandIsAWholeNumberWithoutAUnit(string culture, double amount, string expected)
+        => Assert.Equal(expected, MoneyUtils.FormatCompact(amount, (culture is "de-DE") ? German : English));
 
     /// <summary>
     /// NaN and both infinities have no representation, so the result is <see langword="null"/>.

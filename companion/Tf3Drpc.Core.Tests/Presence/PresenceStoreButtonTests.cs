@@ -170,14 +170,18 @@ public sealed class PresenceStoreButtonTests
         => Assert.Equal("Neues Spiel", RenderSaveName("New Game", Texts("Neues Spiel"), GameTexts.English, German));
 
     /// <summary>
-    /// The "New Game" comparison is case-sensitive, so "neues spiel" stays as it is, and a missing save name gives the "Playing" fallback as details.
+    /// The "New Game" comparison is case-sensitive, so "neues spiel" stays as it is.
     /// </summary>
     [Fact]
-    public void NewGameComparesOrdinallyAndKeepsAMissingName()
-    {
-        Assert.Equal("neues spiel", RenderSaveName("neues spiel", GameTexts.English, Texts("Neues Spiel"), English));
-        Assert.Equal("Playing", RenderSaveName(saveName: null, GameTexts.English, Texts("Neues Spiel"), English));
-    }
+    public void NewGameComparisonIsCaseSensitive()
+        => Assert.Equal("neues spiel", RenderSaveName("neues spiel", GameTexts.English, Texts("Neues Spiel"), English));
+
+    /// <summary>
+    /// A missing save name gives the "Playing" fallback as details.
+    /// </summary>
+    [Fact]
+    public void MissingSaveNameGivesThePlayingFallback()
+        => Assert.Equal("Playing", RenderSaveName(saveName: null, GameTexts.English, Texts("Neues Spiel"), English));
 
     #endregion New Game
 }
