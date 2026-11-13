@@ -6,7 +6,7 @@ area: [app]
 covers:
   - .editorconfig
   - companion/Directory.Build.props
-last-reviewed: 2026-11-10
+last-reviewed: 2026-11-13
 ---
 
 # C# style

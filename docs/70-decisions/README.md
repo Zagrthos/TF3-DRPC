@@ -3,7 +3,7 @@ title: Decisions
 type: index
 audience: [contributor, maintainer, agent]
 area: [docs]
-last-reviewed: 2026-11-11
+last-reviewed: 2026-11-13
 ---
 
 # Decisions
@@ -40,3 +40,4 @@ Rows of that table that gave no reason, or that only restated the privacy rules 
 | [0023](0023-ci-on-github-actions.md) | CI on GitHub Actions with an immutable release built through the gh CLI | accepted | 2026-10-24 |
 | [0024](0024-first-release-unsigned.md) | The first release is unsigned on Windows and macOS | accepted | 2026-10-24 |
 | [0025](0025-game-build-in-the-settings-window-only.md) | The game build shows in the settings window only, untranslated | accepted | 2026-10-24 |
+| [0026](0026-runtime-async.md) | Runtime async for all our assemblies | accepted | 2026-11-13 |

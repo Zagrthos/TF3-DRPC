@@ -67,7 +67,7 @@ The rules are in [C# style](../../30-conventions/csharp.md) and [Native AOT](../
     Feeds from a user- or machine-wide NuGet configuration would otherwise cause NU1507.
   - The app project: MAUI, Windows, Native AOT, size and security settings, and the build targets listed under [publish size](#publish-size).
 - Every props and project file uses the same layout: topic groups with a comment header, alphabetical inside a group, a doc link after a non-obvious property.
-- Build policy: `LangVersion` latest, `Nullable` enable, `ImplicitUsings` disable, `Features` Strict, `CheckForOverflowUnderflow`, `AnalysisLevel` latest-all, `EnforceCodeStyleInBuild`, `GenerateDocumentationFile`, nullable warnings as errors.
+- Build policy: `LangVersion` latest (C# 15), `Nullable` enable, `ImplicitUsings` disable, `Features` Strict and `runtime-async=on` ([decision 0026](../../70-decisions/0026-runtime-async.md)), `CheckForOverflowUnderflow`, `AnalysisLevel` latest-all, `EnforceCodeStyleInBuild`, `GenerateDocumentationFile`, nullable warnings as errors.
 - Configurations Debug and Release only, no `Testing`.
   Release has no symbols (`DebugType none`); Debug embeds them.
   `UseArtifactsOutput` puts all output in `artifacts/`.
