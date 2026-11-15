@@ -105,13 +105,14 @@ jobs:
         if: steps.changes.outputs.build == 'true'
         run: dotnet workload install ${{ matrix.workload }}
 
+      # Every warning fails the build, except the NuGet audit warnings (NU1901-NU1904): a new advisory shows as an annotation without turning every pull request red.
       - name: Build Debug
         if: steps.changes.outputs.build == 'true'
-        run: dotnet build TF3-DRPC.slnx -c Debug
+        run: dotnet build TF3-DRPC.slnx -c Debug -warnaserror -warnnotaserror:NU1901,NU1902,NU1903,NU1904
 
       - name: Build Release
         if: steps.changes.outputs.build == 'true'
-        run: dotnet build TF3-DRPC.slnx -c Release
+        run: dotnet build TF3-DRPC.slnx -c Release -warnaserror -warnnotaserror:NU1901,NU1902,NU1903,NU1904
 
       - name: Test
         if: steps.changes.outputs.build == 'true'

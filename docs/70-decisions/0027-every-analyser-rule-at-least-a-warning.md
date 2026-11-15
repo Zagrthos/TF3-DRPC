@@ -23,7 +23,9 @@ MA0127 stays silent, with its reason in the file: a string pattern compiles to t
 
 ## Consequences
 
-- The build shows what the editor showed, so `dotnet build` and CI enforce it, and unused usings (IDE0005) are warnings in every build.
+- The build shows what the editor showed, and unused usings (IDE0005) are warnings in every build.
+- CI builds with `-warnaserror`, so a warning fails the pull request instead of showing only as an annotation.
+  NuGet audit warnings (NU1901–NU1904) stay warnings there: a new advisory for a package, transitive ones included, would otherwise fail every pull request without a code change.
 - A new analyser version can bring new rules; they report below a warning until they are added to the file.
 
 ## Alternatives considered
