@@ -22,9 +22,9 @@ Every project compiles with `runtime-async=on`, which `companion/Directory.Build
 
 ## Consequences
 
-- Our assemblies hold no async state machines, so live stack traces and the debugger show the real call chain, and async calls cost less.
+- Our async methods that return a `Task` or `ValueTask` have no state machine, so live stack traces and the debugger show the real call chain, and those calls cost less.
   Exception stack traces look the same as before.
-- `async void` event handlers and async iterators still get a state machine, because runtime async covers only methods that return a `Task` or `ValueTask`.
+  Runtime async covers only those methods: `async void` event handlers and async iterators keep the compiler's state machine.
 - As a preview, it may change in a .NET 11 servicing update or in .NET 12; a problem in it shows up in our async code paths, the Discord connection and the monitor loop first.
 - A project can opt out with `<UseRuntimeAsync>false</UseRuntimeAsync>` in its project file.
   The SDK doesn't know that property: our `Directory.Build.targets` reads it, as the dotnet/runtime repository does, which is why the switch is in the targets file and not in the props file, which is imported before the project file sets anything.

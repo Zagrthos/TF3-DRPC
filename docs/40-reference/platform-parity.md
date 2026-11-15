@@ -33,7 +33,7 @@ Every difference below is done or checked on a Mac (macOS 27, the Native AOT pub
 | Minimum window size 400 × 500 | Enforced by the XAML | Holds as well | **Checked**, nothing to fix ([below](#minimum-window-size)) |
 | Cmd+W | No equivalent | Only hides the window, like the close button | **Checked**, nothing to fix ([below](#cmdw)) |
 | Theme setting | Checked: light, dark and "Same as the system" switch the window at once, also at start | The same; the native title bar needed the window's appearance | **Fixed and checked** ([below](#theme-setting)) |
-| Game process and its path | `Process.GetProcessesByName`, `MainModule`; while the game runs, `Process.TryGetProcessById` with its start time | Same code, works in the Mac Catalyst app | **Checked** with the end-to-end test; the lookup by process ID (.NET 11) is checked on Windows only ([status](../10-overview/status.md#to-do)) |
+| Game process and its path | A search by name (`Process.GetProcessesByName`, `MainModule` for the path); while the game runs, a lookup by process ID and start time (`Process.TryGetProcessById`) | Same code (`GameProcessService`) | **Search by name checked** on both platforms with the end-to-end test; **lookup by process ID checked** on Windows with the game, unchecked on macOS ([status](../10-overview/status.md#to-do)) |
 | Discord connection | Named pipe | Unix socket in `$TMPDIR` | **Checked** with the end-to-end test |
 | Click on the tray icon | Double-click opens the settings, right-click the menu | A click opens the menu, with Settings… in it | Keep: each follows its platform |
 | Mouse wheel over a closed picker | Scrolls the page instead of changing the setting | The pop-up button ignores the wheel | Keep: nothing to fix on macOS |
@@ -88,6 +88,7 @@ A saved "Light mode" applies at start; with "Same as the system" the window foll
 The macOS end-to-end test confirmed:
 
 - `Process.GetProcessesByName("TransportFever3")` finds the game from the Mac Catalyst app, and `MainModule` gives its path: the app log has the start with the executable (`…/steamapps/common/Transport Fever 3/TransportFever3`) and the end of the game process.
+  The test ran before the app looked up a running game by its process ID, so it covers the search by name only.
 - The presence reaches Discord over the Unix socket, and Discord accepts it.
 
 ## Kept different
