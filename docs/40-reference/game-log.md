@@ -20,7 +20,7 @@ The companion learns everything from the game's log: the mod's [status lines](mo
 
 | | Windows | macOS (measured on macOS 27) |
 |---|---|---|
-| Game process | `TransportFever3` (`Process.GetProcessesByName`) | `TransportFever3` as well, an arm64 executable started by Steam as `./TransportFever3` (`Process.GetProcessesByName` finds it from the Mac Catalyst app) |
+| Game process | `TransportFever3` (`Process.GetProcessesByName`; while it runs, `Process.TryGetProcessById` with its start time) | `TransportFever3` as well, an arm64 executable started by Steam as `./TransportFever3` (`Process.GetProcessesByName` finds it from the Mac Catalyst app) |
 | Steam folder | `HKCU\Software\Valve\Steam` → `SteamPath` | `~/Library/Application Support/Steam` |
 | User data | `<Steam>\userdata\<steamid>\3493540\local\` | `<Steam>/userdata/<steamid>/3493540/local/`, created at the first game start |
 | Game log | `<userdata>\crash_dump\stdout.txt` | `<userdata>/crash_dump/stdout.txt`, the same lines as on Windows |

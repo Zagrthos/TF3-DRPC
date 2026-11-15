@@ -27,7 +27,7 @@
                         MaxLines="2"
                         Text="{Binding GameStatus}" />
                     <Label
-                        IsVisible="{Binding GameBuild, Converter={StaticResource IsNotNull}}"
+                        IsVisible="{GameBuild != null}"
                         MaxLines="1"
                         Style="{StaticResource SecondaryLabel}"
                         Text="{Binding GameBuild, StringFormat='Transport Fever 3 · Build {0}'}" />

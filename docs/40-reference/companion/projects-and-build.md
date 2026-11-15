@@ -40,7 +40,6 @@ In both projects, as far as they apply:
 | Folder | Content |
 |---|---|
 | `Constants/` | `<Area>Constants` classes with shared limits and tuning values |
-| `Converters/` | XAML value converters (app): `IsNotNullConverter` shows a label only while its value is set (a `DataTrigger` on `{x:Null}` doesn't fire for a value that is null from the start) |
 | `Enums/` | enums; their texts and keys come from `Extensions/EnumExtensions.cs` |
 | `Extensions/` | `ServiceCollectionExtensions` (app), `EnumExtensions`, as C# 14 `extension` blocks |
 | `Logging/` | `LogMessages.cs` with all `[LoggerMessage]` methods of the project |
@@ -65,14 +64,14 @@ The rules are in [C# style](../../30-conventions/csharp.md) and [Native AOT](../
   - `.editorconfig`: the local analyser entries on top of the shared one at the repository root; they turn on again the .NET rules the shared file turns off ([decision 0028](../../70-decisions/0028-dotnet-analysers-are-the-baseline.md)).
   - `Analyzers.globalconfig`: raises every analyser rule that is on by default and reports below a warning to a warning ([decision 0027](../../70-decisions/0027-every-analyser-rule-at-least-a-warning.md)).
     It lists each rule by ID, because `AnalysisLevel` `latest-all` ignores bulk entries; after an analyser update, add the new rules that are on and report below a warning, except those the shared `.editorconfig` configures.
-  - `Directory.Build.targets`: keeps the `.xml` doc files out of the output.
+  - `Directory.Build.targets`: adds `runtime-async=on` to `Features` unless a project sets `UseRuntimeAsync` to `false` ([decision 0026](../../70-decisions/0026-runtime-async.md)), and keeps the `.xml` doc files out of the output.
   - `Directory.Packages.props`: central package versions.
     The analysers Meziantou, Roslynator and Sonar and `ThisAssembly.AssemblyInfo` are `GlobalPackageReference`s.
   - `nuget.config`: nuget.org only.
     Feeds from a user- or machine-wide NuGet configuration would otherwise cause NU1507.
   - The app project: MAUI, Windows, Native AOT, size and security settings, and the build targets listed under [publish size](#publish-size).
 - Every props and project file uses the same layout: topic groups with a comment header, alphabetical inside a group, a doc link after a non-obvious property.
-- Build policy: `LangVersion` latest (C# 15), `Nullable` enable, `ImplicitUsings` disable, `Features` Strict and `runtime-async=on` ([decision 0026](../../70-decisions/0026-runtime-async.md)), `CheckForOverflowUnderflow`, `AnalysisLevel` latest-all, `EnforceCodeStyleInBuild`, `GenerateDocumentationFile`, nullable warnings as errors.
+- Build policy: `LangVersion` latest (C# 15), `Nullable` enable, `ImplicitUsings` disable, `Features` Strict and `runtime-async=on` ([decision 0026](../../70-decisions/0026-runtime-async.md)), `CheckForOverflowUnderflow`, `CheckSdkVulnerabilities` (NETSDK1238 and NETSDK1239 warn about a vulnerable or unsupported SDK), `AnalysisLevel` latest-all, `EnforceCodeStyleInBuild`, `GenerateDocumentationFile`, nullable warnings as errors.
 - Configurations Debug and Release only, no `Testing`.
   Release has no symbols (`DebugType none`); Debug embeds them.
   `UseArtifactsOutput` puts all output in `artifacts/`.

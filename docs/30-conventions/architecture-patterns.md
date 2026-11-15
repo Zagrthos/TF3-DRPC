@@ -7,7 +7,7 @@ covers:
   - companion/Tf3Drpc.App/Extensions/ServiceCollectionExtensions.cs
   - companion/Tf3Drpc.App/PlatformServices.cs
   - companion/Tf3Drpc.App/App.xaml
-last-reviewed: 2026-11-13
+last-reviewed: 2026-11-15
 ---
 
 # Architecture patterns
@@ -37,6 +37,8 @@ How the app is built from them is in [companion architecture](../40-reference/co
 
 - UI that XAML can express (window and title bar properties, visibility rules, text composition, styles) goes into XAML, not into C# or view-model properties.
 - C# stays for DI, services and the platform APIs XAML can't reach.
+- A simple computed value, such as a visibility rule, is a C# expression in XAML (`IsVisible="{GameBuild != null}"`, MAUI 11 with the XAML source generator) instead of a value converter.
+  The generator compiles it to a typed binding that follows the properties it reads.
 - Platform-specific XAML values with resources go through typed `OnPlatform<T>` resources in `App.xaml`, because the `{OnPlatform …}` markup extension with `StaticResource` values isn't trim safe (IL2026).
 - The Mac-only look comes from `MacPickerHandler`, `MacCheckBoxHandler` and the `Mac…` styles.
 

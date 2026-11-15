@@ -4,8 +4,9 @@
   <PropertyGroup>
     <AnalysisLevel>latest-all</AnalysisLevel>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <CheckSdkVulnerabilities>true</CheckSdkVulnerabilities> <!-- NETSDK1238 for an SDK with a known vulnerability, NETSDK1239 for one out of support -->
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-    <Features>Strict;runtime-async=on</Features> <!-- https://learn.microsoft.com/dotnet/core/whats-new/dotnet-11/runtime#runtime-async -->
+    <Features>Strict</Features> <!-- Directory.Build.targets adds runtime-async=on -->
     <GenerateDocumentationFile>true</GenerateDocumentationFile> <!-- The analysers need it; Directory.Build.targets removes the .xml files again -->
     <ImplicitUsings>disable</ImplicitUsings>
     <LangVersion>latest</LangVersion>
