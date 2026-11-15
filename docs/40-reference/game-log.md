@@ -6,7 +6,7 @@ area: [app, windows, macos]
 covers:
   - companion/Tf3Drpc.Core/GameLog/**
   - docs/40-reference/log-samples/**
-last-reviewed: 2026-11-11
+last-reviewed: 2026-11-13
 verified:
   - windows 2026-10-21
   - macos 2026-10-24 build 40425
@@ -20,12 +20,15 @@ The companion learns everything from the game's log: the mod's [status lines](mo
 
 | | Windows | macOS (measured on macOS 27) |
 |---|---|---|
-| Game process | `TransportFever3` (`Process.GetProcessesByName`) | `TransportFever3` as well, an arm64 executable started by Steam as `./TransportFever3` (`Process.GetProcessesByName` finds it from the Mac Catalyst app) |
+| Game process | `TransportFever3` | `TransportFever3` as well, an arm64 executable started by Steam as `./TransportFever3` |
 | Steam folder | `HKCU\Software\Valve\Steam` → `SteamPath` | `~/Library/Application Support/Steam` |
 | User data | `<Steam>\userdata\<steamid>\3493540\local\` | `<Steam>/userdata/<steamid>/3493540/local/`, created at the first game start |
 | Game log | `<userdata>\crash_dump\stdout.txt` | `<userdata>/crash_dump/stdout.txt`, the same lines as on Windows |
 | Game folder (translation files) | from the process path, `…\steamapps\common\Transport Fever 3\` | `<Steam>/steamapps/common/Transport Fever 3/`, no app bundle; translations in `base/strings/<lang>/LC_MESSAGES/base.mo` |
 
+- **Game process:** on both platforms the app searches for it by name (`Process.GetProcessesByName`, which works from the Mac Catalyst app as well).
+  Once found with its path and start time, the app looks the running game up by its process ID and checks the start time (`Process.TryGetProcessById`); the search by name runs again when that fails.
+  Which of the two is checked on which platform is in [Windows and macOS parity](platform-parity.md).
 - `3493540` is TF3's Steam app id.
   With several Steam accounts, use the one whose log was written last.
   A log dated more than a minute in the future (after a clock set back) counts only when every account's log is.

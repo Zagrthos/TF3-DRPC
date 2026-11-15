@@ -40,7 +40,7 @@ internal sealed class MacCheckBoxHandler : ViewHandler<ICheckBox, UISwitch>
     }
 
     private static void MapIsChecked(MacCheckBoxHandler handler, ICheckBox checkBox)
-        => handler.PlatformView.SetState(checkBox.IsChecked, false);
+        => handler.PlatformView.SetState(checkBox.IsChecked, animated: false);
 
     private void OnValueChanged(object? sender, EventArgs e)
     {

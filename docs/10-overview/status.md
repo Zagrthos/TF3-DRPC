@@ -3,7 +3,7 @@ title: Project status
 type: explanation
 audience: [player, contributor, maintainer, agent]
 area: [mod, app, docs]
-last-reviewed: 2026-11-11
+last-reviewed: 2026-11-15
 ---
 
 # Project status
@@ -39,3 +39,4 @@ When an issue is opened, its item here is replaced by a link to it.
 - **Translation checks** (`area-translations`): the app's own texts in 12 languages, the translocation text included (DeepL, 2026-10-20), checked by native speakers; each language ships once its check is done, independent of a release.
 - **CI image** (`area-tools`): move macOS from the `xcode-27` preview image to a regular image once one has Xcode 27.2.
 - **Pinned actions** (`area-tools`): raise the commit-pinned actions from time to time.
+- **Game process lookup on macOS** (`area-macos`): check with the game that `Process.TryGetProcessById` keeps finding it from the Mac Catalyst app while it runs, and that its end is noticed ([Windows and macOS parity](../40-reference/platform-parity.md)).

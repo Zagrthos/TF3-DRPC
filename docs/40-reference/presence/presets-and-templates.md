@@ -7,7 +7,7 @@ covers:
   - companion/Tf3Drpc.Core/Presence/**
   - companion/Tf3Drpc.Core/Constants/PresenceConstants.cs
   - companion/Tf3Drpc.Core/Settings/PresenceTemplates.cs
-last-reviewed: 2026-11-11
+last-reviewed: 2026-11-13
 ---
 
 # Presets and templates

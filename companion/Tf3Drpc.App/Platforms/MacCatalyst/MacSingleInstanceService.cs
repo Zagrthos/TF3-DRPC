@@ -39,7 +39,7 @@ internal sealed class MacSingleInstanceService : ISingleInstanceService
     public event EventHandler? ActivationRequested;
 
     /// <summary>
-    /// The handler for MAUI's <c>SceneOnActivated</c> lifecycle hook: a start of the running app from Finder or <c>open</c> sends it a reopen Apple event instead of starting a process.
+    /// The handler for MAUI's <c language="csharp">SceneOnActivated</c> lifecycle hook: a start of the running app from Finder or <c language="text">open</c> sends it a reopen Apple event instead of starting a process.
     /// </summary>
     /// <remarks>Registered here because the handler set at construction is replaced while the app finishes launching.</remarks>
     public void Attach()
@@ -78,7 +78,7 @@ internal sealed class MacSingleInstanceService : ISingleInstanceService
 
             using NSString name = new(bundleId + ShowSettingsSuffix);
             nint center = Send(GetClass("NSDistributedNotificationCenter"), "defaultCenter");
-            Send(center, "postNotificationName:object:userInfo:deliverImmediately:", name.Handle, 0, 0, true);
+            Send(center, "postNotificationName:object:userInfo:deliverImmediately:", name.Handle, 0, 0, fourth: true);
 
             return true;
         }

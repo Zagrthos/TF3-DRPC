@@ -20,7 +20,7 @@ internal interface ISettingsService : ISettingsSource
     bool LastSaveFailed { get; }
 
     /// <summary>
-    /// Changes the language setting (<c>game</c> or a language code) and saves it, also when it is unchanged but the last save failed; unknown values are ignored.
+    /// Changes the language setting (<c language="text">game</c> or a language code) and saves it, also when it is unchanged but the last save failed; unknown values are ignored.
     /// </summary>
     bool SetLanguage(string language);
 

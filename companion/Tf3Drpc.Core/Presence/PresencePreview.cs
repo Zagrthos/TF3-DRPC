@@ -14,7 +14,7 @@ namespace Tf3Drpc.Core.Presence;
 /// <remarks>
 /// The monitor loop remembers, the UI thread builds.
 /// </remarks>
-public sealed class PresencePreview
+internal sealed class PresencePreview
 {
     // The first status line of docs/40-reference/log-samples/session.log.
     private static readonly ModStatus ExampleStatus = new()

@@ -5,7 +5,7 @@ namespace Tf3Drpc.Core.Monitor;
 /// <summary>
 /// Resolves the language and loads the game's texts.
 /// </summary>
-public interface ILanguageResolver
+internal interface ILanguageResolver
 {
     /// <summary>
     /// Resolves the language setting against the game language.
@@ -13,7 +13,7 @@ public interface ILanguageResolver
     LanguageInfo Resolve(string setting, string? gameLanguageCode);
 
     /// <summary>
-    /// Reads the game's language code from its <c>profile.lua</c>.
+    /// Reads the game's language code from its <c language="text">profile.lua</c>.
     /// </summary>
     string? ReadGameLanguageCode(string? profilePath);
 

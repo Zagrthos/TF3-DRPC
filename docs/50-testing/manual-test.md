@@ -6,7 +6,7 @@ area: [app, mod, discord, windows]
 covers:
   - tools/install-mod.ps1
   - companion/Tf3Drpc.App/Tf3Drpc.App.csproj
-last-reviewed: 2026-11-11
+last-reviewed: 2026-11-13
 ---
 
 # Test by hand on Windows

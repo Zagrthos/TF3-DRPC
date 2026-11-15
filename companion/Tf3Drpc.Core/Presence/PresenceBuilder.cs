@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Globalization;
 
 using Tf3Drpc.Core.Constants;
@@ -15,7 +16,7 @@ namespace Tf3Drpc.Core.Presence;
 /// <summary>
 /// Builds the Discord presence from a game state.
 /// </summary>
-public static class PresenceBuilder
+internal static class PresenceBuilder
 {
     private static readonly PresenceTemplates DefaultTemplates = new();
 
@@ -64,6 +65,7 @@ public static class PresenceBuilder
     /// <param name="gameTexts">The game's own texts.</param>
     /// <param name="options">The layout while playing, the step of the alternating preset and the templates of the custom preset.</param>
     /// <param name="content">The presence.</param>
+    /// <exception cref="UnreachableException"><paramref name="snapshot"/> holds a state outside <see cref="GameState"/>.</exception>
     public static bool TryBuild
     (
         in GameStateSnapshotStruct snapshot,
@@ -120,8 +122,12 @@ public static class PresenceBuilder
 
                 break;
 
-            default:
+            case GameState.NotRunning:
+            case GameState.Closing:
                 return false;
+
+            default:
+                throw new UnreachableException($"Unexpected game state {snapshot.State}.");
         }
 
         content = new PresenceContentStruct()

@@ -5,7 +5,7 @@ namespace Tf3Drpc.Core.Constants;
 /// <summary>
 /// Fixed values of the presence templates and presets.
 /// </summary>
-public static class PresenceConstants
+internal static class PresenceConstants
 {
     /// <summary>
     /// How long the alternating preset shows one layout.

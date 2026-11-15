@@ -11,7 +11,7 @@ namespace Tf3Drpc.Core.Languages;
 /// <summary>
 /// The 13 languages of the game and the resolution of the language setting.
 /// </summary>
-public static class LanguageCatalog
+internal static class LanguageCatalog
 {
     private static readonly LanguageInfo[] Languages =
     [
@@ -57,13 +57,13 @@ public static class LanguageCatalog
     }
 
     /// <summary>
-    /// Tells whether a settings value is <c>game</c> or a known language code.
+    /// Tells whether a settings value is <c language="text">game</c> or a known language code.
     /// </summary>
     public static bool IsValidSetting(string? setting)
         => string.Equals(setting, LanguageConstants.GameSetting, StringComparison.Ordinal) || TryGet(setting, out LanguageInfo _);
 
     /// <summary>
-    /// Resolves the language setting; <c>game</c> uses the game language, anything unknown gives English.
+    /// Resolves the language setting; <c language="text">game</c> uses the game language, anything unknown gives English.
     /// </summary>
     public static LanguageInfo Resolve(string? setting, string? gameLanguageCode)
     {
@@ -74,7 +74,7 @@ public static class LanguageCatalog
     }
 
     /// <summary>
-    /// Reads <c>language.code</c> from the text of the game's <c>profile.lua</c>.
+    /// Reads <c language="lua">language.code</c> from the text of the game's <c language="text">profile.lua</c>.
     /// </summary>
     public static bool TryReadLanguageCode(string profileText, out string code)
     {

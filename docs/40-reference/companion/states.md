@@ -6,7 +6,7 @@ area: [app]
 covers:
   - companion/Tf3Drpc.Core/State/**
   - companion/Tf3Drpc.Core/Constants/GameStateConstants.cs
-last-reviewed: 2026-11-11
+last-reviewed: 2026-11-13
 ---
 
 # Game states

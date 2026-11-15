@@ -9,7 +9,7 @@ covers:
   - .gitattributes
   - tools/test-run/.swift-format
   - tools/test-run/tf3mac.swift
-last-reviewed: 2026-11-13
+last-reviewed: 2026-11-15
 ---
 
 # Set up a Mac

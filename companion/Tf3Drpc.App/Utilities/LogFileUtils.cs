@@ -12,7 +12,7 @@ namespace Tf3Drpc.App.Utilities;
 internal static class LogFileUtils
 {
     /// <summary>
-    /// Deletes <c>TF3-DRPC_*.log</c> files older than the retention time in <paramref name="logDirectory"/>.
+    /// Deletes <c language="text">TF3-DRPC_*.log</c> files older than the retention time in <paramref name="logDirectory"/>.
     /// </summary>
     public static void DeleteOldFiles(string logDirectory, in DateTime nowUtc)
     {

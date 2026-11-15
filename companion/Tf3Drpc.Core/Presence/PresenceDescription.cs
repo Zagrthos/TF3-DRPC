@@ -10,7 +10,7 @@ namespace Tf3Drpc.Core.Presence;
 /// <summary>
 /// Turns a preset into the text that describes what it would show on Discord.
 /// </summary>
-public static class PresenceDescription
+internal static class PresenceDescription
 {
     /// <summary>
     /// Describes a preset: its two lines, or for the alternating preset the lines of every layout it rotates through, separated by a blank line.

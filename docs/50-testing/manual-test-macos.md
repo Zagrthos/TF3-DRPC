@@ -7,7 +7,7 @@ covers:
   - tools/install-mod.ps1
   - tools/test-run/tf3mac.swift
   - companion/Tf3Drpc.App/Tf3Drpc.App.csproj
-last-reviewed: 2026-11-11
+last-reviewed: 2026-11-13
 verified:
   - macos 2026-10-24 build 40425
 ---

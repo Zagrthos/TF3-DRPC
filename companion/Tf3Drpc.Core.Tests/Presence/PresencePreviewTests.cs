@@ -11,6 +11,9 @@ using Xunit;
 
 namespace Tf3Drpc.Core.Tests.Presence;
 
+/// <summary>
+/// Tests of <see cref="PresencePreview"/>, which builds the settings preview of the presence from the last seen game status, or from an example status when there is none.
+/// </summary>
 public sealed class PresencePreviewTests
 {
     private static readonly CultureInfo English = CultureInfo.GetCultureInfo("en-US");
@@ -22,8 +25,11 @@ public sealed class PresencePreviewTests
         return preview.Build(English, GameTexts.English, options, out usesExample);
     }
 
+    /// <summary>
+    /// With no remembered status the preview builds from the example status and reports that it did, so the career preset shows "Mechanic" over "September 1905", the network preset shows "Lines 44 · Vehicles 118" over "Stations 74 · 1905", and there is no start timestamp.
+    /// </summary>
     [Fact]
-    public void WithoutAStatus_TheExampleIsUsed()
+    public void WithoutAStatusTheExampleIsUsed()
     {
         PresencePreview preview = new();
 
@@ -39,8 +45,11 @@ public sealed class PresencePreviewTests
         Assert.Null(career.StartTimestamp);
     }
 
+    /// <summary>
+    /// The example status carries the values of the real status line, so the custom placeholders render "Archipelago2 · 3,466 · 9,424" and "$14.4M · $70.4M".
+    /// </summary>
     [Fact]
-    public void ExampleValues_MatchTheRealStatusLine()
+    public void ExampleValuesMatchTheRealStatusLine()
     {
         PresencePreview preview = new();
         PresenceTemplates templates = new()
@@ -55,8 +64,11 @@ public sealed class PresencePreviewTests
         Assert.Equal("$14.4M · $70.4M", content.State);
     }
 
+    /// <summary>
+    /// After a playing snapshot is remembered, the preview uses that status instead of the example and shows it as not paused, even though the snapshot was flagged as paused.
+    /// </summary>
     [Fact]
-    public void AfterRemember_TheLastStatusIsUsedAndNotPaused()
+    public void AfterRememberTheLastStatusIsUsedAndNotPaused()
     {
         PresencePreview preview = new();
         ModStatus status = new() { Version = 1, Rank = 5, Year = 1920, Month = 3, Speedup = 0 };
@@ -70,6 +82,9 @@ public sealed class PresencePreviewTests
         Assert.Equal(GameTexts.English.GetRankName(5), content.Details);
     }
 
+    /// <summary>
+    /// The remembered status survives a later snapshot of the main menu, so the preview still shows "March 1920".
+    /// </summary>
     [Fact]
     public void TheLastStatusStaysAfterLeavingTheGame()
     {
@@ -83,8 +98,11 @@ public sealed class PresencePreviewTests
         Assert.Equal("March 1920", content.State);
     }
 
+    /// <summary>
+    /// Custom templates are rendered against the example status, giving "Year 1905", "Tropical" and the hover "Hover 44".
+    /// </summary>
     [Fact]
-    public void CustomTemplates_AreApplied()
+    public void CustomTemplatesAreApplied()
     {
         PresencePreview preview = new();
         PresenceTemplates templates = new() { Details = "Year {year}", State = "{climate}", Hover = "Hover {lines}" };
@@ -96,8 +114,11 @@ public sealed class PresencePreviewTests
         Assert.Equal("Hover 44", content.LargeImageText);
     }
 
+    /// <summary>
+    /// The alternating preset in the preview follows the rotation step, showing the career, network and era layouts for steps 0, 1 and 2.
+    /// </summary>
     [Fact]
-    public void Alternating_FollowsTheStep()
+    public void AlternatingFollowsTheStep()
     {
         PresencePreview preview = new();
 

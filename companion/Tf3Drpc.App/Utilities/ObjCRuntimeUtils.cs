@@ -6,26 +6,26 @@ using ObjCRuntime;
 namespace Tf3Drpc.App.Utilities;
 
 /// <summary>
-/// Messages to AppKit objects, which Mac Catalyst has no bindings for; each overload is one <c>objc_msgSend</c> signature.
+/// Messages to AppKit objects, which Mac Catalyst has no bindings for; each overload is one <c language="text">objc_msgSend</c> signature.
 /// </summary>
 internal static partial class ObjCRuntimeUtils
 {
     private const string ObjCLibrary = "/usr/lib/libobjc.dylib";
 
     /// <summary>
-    /// A point size, as AppKit's <c>NSSize</c>.
+    /// A point size, as AppKit's <c language="text">NSSize</c>.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     internal readonly record struct NativeSize(double Width, double Height);
 
     /// <summary>
-    /// A point, as AppKit's <c>NSPoint</c>.
+    /// A point, as AppKit's <c language="text">NSPoint</c>.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     internal readonly record struct NativePoint(double X, double Y);
 
     /// <summary>
-    /// A rectangle in screen points from the bottom left, as AppKit's <c>NSRect</c>.
+    /// A rectangle in screen points from the bottom left, as AppKit's <c language="text">NSRect</c>.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     internal readonly record struct NativeRect(double X, double Y, double Width, double Height);

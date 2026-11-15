@@ -8,7 +8,7 @@ namespace Tf3Drpc.Core.Presence;
 /// <summary>
 /// The presets in display order and their settings values.
 /// </summary>
-public static class PresetCatalog
+internal static class PresetCatalog
 {
     private static readonly PresencePreset[] Presets =
     [

@@ -9,10 +9,16 @@ using Xunit;
 
 namespace Tf3Drpc.Core.Tests.Presence;
 
+/// <summary>
+/// Tests of <see cref="PlaceholderCatalog"/>, the list of placeholders that custom presence templates can use.
+/// </summary>
 public sealed class PlaceholderCatalogTests
 {
+    /// <summary>
+    /// The catalogue has 15 placeholders, from "{rank}" first to "{saveName}" last, each name written in braces.
+    /// </summary>
     [Fact]
-    public void All_HasFifteenEntriesWithBraces()
+    public void AllHasFifteenEntriesWithBraces()
     {
         Assert.Equal(15, PlaceholderCatalog.All.Count);
         Assert.Equal("{rank}", PlaceholderCatalog.All[0].Name);
@@ -25,6 +31,9 @@ public sealed class PlaceholderCatalogTests
         }
     }
 
+    /// <summary>
+    /// Every placeholder has a non-blank description resource key that no other placeholder shares.
+    /// </summary>
     [Fact]
     public void EveryPlaceholderHasItsOwnDescription()
     {
@@ -39,6 +48,9 @@ public sealed class PlaceholderCatalogTests
         }
     }
 
+    /// <summary>
+    /// Only the money placeholders "{companyValue}" and "{balance}" and the save name "{saveName}" are marked as private.
+    /// </summary>
     [Fact]
     public void OnlyMoneyAndTheSaveNameArePrivate()
     {

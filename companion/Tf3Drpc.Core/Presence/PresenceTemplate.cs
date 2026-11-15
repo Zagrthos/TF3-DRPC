@@ -12,7 +12,7 @@ using Tf3Drpc.Core.Utilities;
 namespace Tf3Drpc.Core.Presence;
 
 /// <summary>
-/// Renders a template: parts separated by a middle dot, with <c>{name}</c> placeholders for status values.
+/// Renders a template: parts separated by a middle dot, with <c language="text">{name}</c> placeholders for status values.
 /// </summary>
 internal static class PresenceTemplate
 {

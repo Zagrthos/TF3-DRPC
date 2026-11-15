@@ -9,7 +9,7 @@ namespace Tf3Drpc.Core.Resources;
 /// <summary>
 /// The companion app's own texts in a given culture.
 /// </summary>
-public static class OwnTexts
+internal static class OwnTexts
 {
     /// <summary>
     /// Returns a text for an explicit culture; a missing translation falls back to English.
@@ -20,7 +20,7 @@ public static class OwnTexts
         string key = text.ResourceKey;
 
         if (key.Length is 0)
-            throw new ArgumentOutOfRangeException(nameof(text), text, null);
+            throw new ArgumentOutOfRangeException(nameof(text), text, message: null);
 
         return Texts.ResourceManager.GetString(key, culture) ?? key;
     }

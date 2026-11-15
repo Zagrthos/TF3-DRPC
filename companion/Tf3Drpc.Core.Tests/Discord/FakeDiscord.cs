@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Text.Json;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Tf3Drpc.Core.Discord;
 using Tf3Drpc.Core.Enums;
 using Tf3Drpc.Core.Utilities;
+using Xunit;
 
 namespace Tf3Drpc.Core.Tests.Discord;
 
@@ -255,7 +257,7 @@ internal sealed class FakeServer(ByteQueue incoming, PipeStream stream)
         => SendRawAsync(DiscordFrameUtils.Encode(opcode, Encoding.UTF8.GetBytes(json)));
 
     public async Task SendRawAsync(byte[] bytes)
-        => await _stream.WriteAsync(bytes);
+        => await _stream.WriteAsync(bytes, TestContext.Current.CancellationToken);
 
     public async Task RejectActivitiesAsync(Action<string> onActivity, CancellationToken cancellationToken)
     {
@@ -394,6 +396,9 @@ internal sealed class FakeConnector(CancellationToken cancellationToken) : IDisc
 
             case HandshakeReply.Silent:
                 break;
+
+            default:
+                throw new UnreachableException($"Unexpected handshake reply {Reply}.");
         }
     }
 }

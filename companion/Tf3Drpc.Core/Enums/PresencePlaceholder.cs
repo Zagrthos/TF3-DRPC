@@ -1,7 +1,7 @@
 namespace Tf3Drpc.Core.Enums;
 
 /// <summary>
-/// A value a presence template can show, written as <c>{name}</c>.
+/// A value a presence template can show, written as <c language="text">{name}</c>.
 /// </summary>
 internal enum PresencePlaceholder
 {

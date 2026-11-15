@@ -1,5 +1,10 @@
 <Project>
 
+  <!-- Runtime async (decision 0026), still a preview in .NET 11: here and not in Directory.Build.props, so a project file can opt out with <UseRuntimeAsync>false</UseRuntimeAsync> -->
+  <PropertyGroup Condition="'$(UseRuntimeAsync)' != 'false'">
+    <Features>$(Features);runtime-async=on</Features> <!-- https://learn.microsoft.com/dotnet/core/whats-new/dotnet-11/runtime#runtime-async -->
+  </PropertyGroup>
+
   <!-- Delete the docs of the project and of its project references after the build (if not publishing) -->
   <Target Name="DeleteXmlFileAfterBuild" AfterTargets="Build" Condition="'$(IsPublishing)' != 'true'">
     <ItemGroup>

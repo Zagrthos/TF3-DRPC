@@ -11,7 +11,7 @@ namespace Tf3Drpc.Core.Presence;
 /// <summary>
 /// The placeholders of the templates in display order.
 /// </summary>
-public static class PlaceholderCatalog
+internal static class PlaceholderCatalog
 {
     private static readonly PlaceholderInfoStruct[] Placeholders = Build();
 

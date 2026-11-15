@@ -87,6 +87,7 @@ internal sealed partial class CompanionApplication : Application, IRecipient<Set
         {
             ThemeMode.Light => AppTheme.Light,
             ThemeMode.Dark => AppTheme.Dark,
+            ThemeMode.System => AppTheme.Unspecified,
             _ => AppTheme.Unspecified
         };
 

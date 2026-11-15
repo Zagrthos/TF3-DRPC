@@ -5,7 +5,7 @@ namespace Tf3Drpc.Core.Monitor;
 /// <summary>
 /// Gives the current settings.
 /// </summary>
-public interface ISettingsSource
+internal interface ISettingsSource
 {
     /// <summary>
     /// The current settings.

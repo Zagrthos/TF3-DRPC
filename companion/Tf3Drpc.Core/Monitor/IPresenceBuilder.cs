@@ -6,7 +6,7 @@ namespace Tf3Drpc.Core.Monitor;
 /// <summary>
 /// Builds the Discord presence from the game state.
 /// </summary>
-public interface IPresenceBuilder
+internal interface IPresenceBuilder
 {
     /// <summary>
     /// Builds the presence; <see langword="false"/> means it is cleared.

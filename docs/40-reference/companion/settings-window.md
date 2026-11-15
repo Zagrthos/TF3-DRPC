@@ -13,7 +13,7 @@ covers:
   - companion/Tf3Drpc.App/Platforms/MacCatalyst/MacCheckBoxHandler.cs
   - companion/Tf3Drpc.App/Platforms/Windows/WindowsWindowService.cs
   - companion/Tf3Drpc.App/Platforms/Windows/WindowsPickerHandler.cs
-last-reviewed: 2026-11-11
+last-reviewed: 2026-11-13
 verified:
   - windows 2026-10-22
   - macos 2026-10-24 build 40425

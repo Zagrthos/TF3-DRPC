@@ -11,7 +11,7 @@ namespace Tf3Drpc.Core.GameLog;
 /// <summary>
 /// Parses the header of a game log line.
 /// </summary>
-public static class GameLogParser
+internal static class GameLogParser
 {
     private const string TimeFormat = "yyyy-MM-dd HH:mm:ss";
 

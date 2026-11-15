@@ -17,7 +17,7 @@ namespace Tf3Drpc.App.Services;
 internal abstract class PathServiceBase : IPathService
 {
     private volatile bool _isDataWritable;
-    private int _logFileFailed;
+    private bool _logFileFailed;
 
     protected PathServiceBase(string portableDirectory)
     {
@@ -26,7 +26,7 @@ internal abstract class PathServiceBase : IPathService
         SettingsFilePath = Path.Combine(DataDirectory, AppConstants.SettingsFileName);
         _isDataWritable = ProbeDirectory(DataDirectory);
         IsLogDirectoryWritable = _isDataWritable && ProbeDirectory(LogDirectory);
-        _logFileFailed = (IsLogDirectoryWritable) ? 0 : 1;
+        _logFileFailed = !IsLogDirectoryWritable;
     }
 
     public string DataDirectory { get; }
@@ -44,7 +44,7 @@ internal abstract class PathServiceBase : IPathService
     public bool IsLogDirectoryWritable { get; }
 
     public bool IsLogFileAvailable
-        => Volatile.Read(ref _logFileFailed) is 0;
+        => !Volatile.Read(ref _logFileFailed);
 
     public bool RefreshDataWritable()
     {
@@ -54,7 +54,7 @@ internal abstract class PathServiceBase : IPathService
     }
 
     public bool ReportLogFileFailure()
-        => Interlocked.Exchange(ref _logFileFailed, 1) is 0;
+        => !Interlocked.Exchange(ref _logFileFailed, value: true);
 
     public GamePathsStruct ResolveGamePaths(string? runningExecutablePath)
     {

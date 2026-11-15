@@ -8,7 +8,7 @@ namespace Tf3Drpc.Core.Serialization;
 /// Reads a flag of the settings so that a value of the wrong type costs only that flag, never the other settings.
 /// </summary>
 /// <remarks>
-/// Anything but <c>true</c> and <c>false</c> (a string, a number, an object, <c>null</c>) reads as <see langword="false"/>.
+/// Anything but <see langword="true"/> and <see langword="false"/> (a string, a number, an object, <see langword="null"/>) reads as <see langword="false"/>.
 /// </remarks>
 internal sealed class LenientBooleanConverter : JsonConverter<bool>
 {

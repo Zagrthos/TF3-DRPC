@@ -37,7 +37,8 @@ Discord accepts a new status at most every 15 seconds, so a change can take that
 - The **Discord desktop app**, running and logged in.
   The browser version of Discord can't receive a status from other programs.
   Discord's activity privacy settings must allow sharing your activity.
-- **Windows 10 (version 2004) or later**, or **macOS 26 or later** on a Mac with Apple silicon.
+- **Windows 10 (version 2004) or later** on a 64-bit processor that Windows 10 officially supports, or **macOS 26 or later** on a Mac with Apple silicon.
+  The Windows app needs the x86-64-v2 instruction sets (SSE4.2 and POPCNT, among others); on an older processor it stops at once with "The current CPU is missing one or more of the baseline instruction sets".
   The macOS app is experimental; see [below](#macos-experimental).
 
 ## Installation

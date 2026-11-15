@@ -17,56 +17,45 @@ namespace Tf3Drpc.Core.Monitor;
 /// <summary>
 /// Runs one tick of the monitor: process check, log, language, presence, Discord; call it from one loop only.
 /// </summary>
-public sealed class GameMonitor
+/// <param name="processSource">Tells whether the game runs.</param>
+/// <param name="pathResolver">Finds the paths of the game.</param>
+/// <param name="settingsSource">Gives the current settings.</param>
+/// <param name="languageResolver">Resolves the language and loads the game's texts.</param>
+/// <param name="presenceBuilder">Builds the presence from the game state.</param>
+/// <param name="presenceSink">Receives the presence.</param>
+/// <param name="timeProvider">The clock of the monitor.</param>
+/// <param name="logger">The log of the monitor.</param>
+internal sealed class GameMonitor
+(
+    IGameProcessSource processSource,
+    IGamePathResolver pathResolver,
+    ISettingsSource settingsSource,
+    ILanguageResolver languageResolver,
+    IPresenceBuilder presenceBuilder,
+    IPresenceSink presenceSink,
+    TimeProvider timeProvider,
+    ILogger<GameMonitor> logger
+)
 {
-    private readonly IGameProcessSource _processSource;
-    private readonly IGamePathResolver _pathResolver;
-    private readonly ISettingsSource _settingsSource;
-    private readonly ILanguageResolver _languageResolver;
-    private readonly IPresenceBuilder _presenceBuilder;
-    private readonly IPresenceSink _presenceSink;
-    private readonly TimeProvider _timeProvider;
-    private readonly ILogger<GameMonitor> _logger;
+    private readonly IGameProcessSource _processSource = processSource;
+    private readonly IGamePathResolver _pathResolver = pathResolver;
+    private readonly ISettingsSource _settingsSource = settingsSource;
+    private readonly ILanguageResolver _languageResolver = languageResolver;
+    private readonly IPresenceBuilder _presenceBuilder = presenceBuilder;
+    private readonly IPresenceSink _presenceSink = presenceSink;
+    private readonly TimeProvider _timeProvider = timeProvider;
+    private readonly ILogger<GameMonitor> _logger = logger;
     private readonly GameProcessTracker _processTracker = new();
-    private readonly GameLogReader _logReader;
-    private readonly GameStateMachine _stateMachine;
+    private readonly GameLogReader _logReader = new(timeProvider);
+    private readonly GameStateMachine _stateMachine = new(timeProvider);
     private GamePathsStruct _paths;
     private long? _pathAttemptTimestamp;
     private long? _profileReadTimestamp;
     private bool _fallbackLogged;
     private bool _pathsNotFoundLogged;
     private string? _gameLanguageCode;
-    private LanguageInfo _language = LanguageCatalog.Resolve(LanguageConstants.DefaultCode, null);
-    private StatusHolder _statusHolder = new(new AppStatusStruct() { Language = LanguageCatalog.Resolve(LanguageConstants.DefaultCode, null) });
-
-#pragma warning disable IDE0290 // Use primary constructor: it cannot take its parameter list on separate lines
-    /// <summary>
-    /// Creates a monitor that reads from the given sources and writes to the presence sink.
-    /// </summary>
-    public GameMonitor
-    (
-        IGameProcessSource processSource,
-        IGamePathResolver pathResolver,
-        ISettingsSource settingsSource,
-        ILanguageResolver languageResolver,
-        IPresenceBuilder presenceBuilder,
-        IPresenceSink presenceSink,
-        TimeProvider timeProvider,
-        ILogger<GameMonitor> logger
-    )
-    {
-        _processSource = processSource;
-        _pathResolver = pathResolver;
-        _settingsSource = settingsSource;
-        _languageResolver = languageResolver;
-        _presenceBuilder = presenceBuilder;
-        _presenceSink = presenceSink;
-        _timeProvider = timeProvider;
-        _logger = logger;
-        _logReader = new GameLogReader(timeProvider);
-        _stateMachine = new GameStateMachine(timeProvider);
-    }
-#pragma warning restore IDE0290
+    private LanguageInfo _language = LanguageCatalog.Resolve(LanguageConstants.DefaultCode, gameLanguageCode: null);
+    private StatusHolder _statusHolder = new(new AppStatusStruct() { Language = LanguageCatalog.Resolve(LanguageConstants.DefaultCode, gameLanguageCode: null) });
 
     #region Public API
 

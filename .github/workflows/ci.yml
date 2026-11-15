@@ -105,17 +105,20 @@ jobs:
         if: steps.changes.outputs.build == 'true'
         run: dotnet workload install ${{ matrix.workload }}
 
+      # Every warning fails the build, except the advisories for packages (NU1901-NU1904) and for the SDK (NETSDK1238, NETSDK1239):
+      # a new advisory shows as an annotation without turning every pull request red.
       - name: Build Debug
         if: steps.changes.outputs.build == 'true'
-        run: dotnet build TF3-DRPC.slnx -c Debug
+        run: dotnet build TF3-DRPC.slnx -c Debug -warnaserror -warnnotaserror:NU1901,NU1902,NU1903,NU1904,NETSDK1238,NETSDK1239
 
       - name: Build Release
         if: steps.changes.outputs.build == 'true'
-        run: dotnet build TF3-DRPC.slnx -c Release
+        run: dotnet build TF3-DRPC.slnx -c Release -warnaserror -warnnotaserror:NU1901,NU1902,NU1903,NU1904,NETSDK1238,NETSDK1239
 
+      # The tests take seconds: the timeout stops a hung test, and the failure limit a broken build that fails everything.
       - name: Test
         if: steps.changes.outputs.build == 'true'
-        run: dotnet test TF3-DRPC.slnx
+        run: dotnet test TF3-DRPC.slnx --timeout 5m --maximum-failed-tests 20
 
       - name: Build the release zip
         if: github.event_name == 'push'

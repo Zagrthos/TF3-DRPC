@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
+
+using Tf3Drpc.Core.GameLog;
 
 namespace Tf3Drpc.Core.Structs;
 
@@ -8,15 +11,15 @@ namespace Tf3Drpc.Core.Structs;
 /// A classified game log event with the time of its log line.
 /// </summary>
 [StructLayout(LayoutKind.Auto)]
-public readonly struct TimedGameLogEventStruct : IEquatable<TimedGameLogEventStruct>
+internal readonly struct TimedGameLogEventStruct : IEquatable<TimedGameLogEventStruct>
 {
     public DateTimeOffset Timestamp { get; init; }
 
-    public GameLogEventStruct GameEvent { get; init; }
+    public required GameLogEvent GameEvent { get; init; }
 
     public bool Equals(TimedGameLogEventStruct other)
         => (Timestamp == other.Timestamp) &&
-            GameEvent.Equals(other.GameEvent);
+            EqualityComparer<GameLogEvent>.Default.Equals(GameEvent, other.GameEvent);
 
     public override bool Equals([NotNullWhen(true)] object? obj)
         => (obj is TimedGameLogEventStruct other) && Equals(other);

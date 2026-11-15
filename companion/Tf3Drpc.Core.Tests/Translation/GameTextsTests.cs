@@ -7,6 +7,9 @@ using Xunit;
 
 namespace Tf3Drpc.Core.Tests.Translation;
 
+/// <summary>
+/// Tests of <see cref="GameTexts"/>, which looks up the game's own rank, mission, mode, label and climate names with an English fallback.
+/// </summary>
 public sealed class GameTextsTests
 {
     private static readonly string[] EnglishRanks =
@@ -33,8 +36,11 @@ public sealed class GameTextsTests
             ["Tropical"] = "Tropisch"
         });
 
+    /// <summary>
+    /// Without a translation file, ranks 1 to 15 have their English names, from "Junior" to "Tycoon".
+    /// </summary>
     [Fact]
-    public void WithoutFile_EveryRankIsEnglish()
+    public void WithoutFileEveryRankIsEnglish()
     {
         for (int rank = 1; rank is <= 15; rank++)
         {
@@ -42,18 +48,24 @@ public sealed class GameTextsTests
         }
     }
 
+    /// <summary>
+    /// A rank outside 1 to 15 (0, 16 or -1) has no name, in both the English and a translated set of texts.
+    /// </summary>
     [Theory]
     [InlineData(0)]
     [InlineData(16)]
     [InlineData(-1)]
-    public void RankOutsideTheRange_IsNull(int rank)
+    public void RankOutsideTheRangeIsNull(int rank)
     {
         Assert.Null(GameTexts.English.GetRankName(rank));
         Assert.Null(German().GetRankName(rank));
     }
 
+    /// <summary>
+    /// Without a translation file, missions 1 to 8 have their English names, from "Saving Mardi Gras" to "Final Countdown".
+    /// </summary>
     [Fact]
-    public void WithoutFile_EveryMissionIsEnglish()
+    public void WithoutFileEveryMissionIsEnglish()
     {
         for (int mission = 1; mission is <= 8; mission++)
         {
@@ -61,14 +73,20 @@ public sealed class GameTextsTests
         }
     }
 
+    /// <summary>
+    /// A mission number outside 1 to 8 (0 or 9) has no name.
+    /// </summary>
     [Theory]
     [InlineData(0)]
     [InlineData(9)]
-    public void MissionOutsideTheRange_IsNull(int mission)
+    public void MissionOutsideTheRangeIsNull(int mission)
         => Assert.Null(GameTexts.English.GetMissionName(mission));
 
+    /// <summary>
+    /// Without a translation file, the three game modes and the campaign, paused and loading labels have their English texts.
+    /// </summary>
     [Fact]
-    public void WithoutFile_ModesAndLabelsAreEnglish()
+    public void WithoutFileModesAndLabelsAreEnglish()
     {
         Assert.Equal("Tycoon", GameTexts.English.GetModeName(GameMode.Tycoon));
         Assert.Equal("Sandbox Mode", GameTexts.English.GetModeName(GameMode.Sandbox));
@@ -78,8 +96,11 @@ public sealed class GameTextsTests
         Assert.Equal("Loading...", GameTexts.English.GetLabel(GameLabel.Loading));
     }
 
+    /// <summary>
+    /// Keys present in the translation are used and keys it lacks fall back to English, so rank 2 is "Mechaniker" while rank 3 stays "Engineer".
+    /// </summary>
     [Fact]
-    public void TranslatedKeys_AreUsedAndMissingKeysFallBack()
+    public void TranslatedKeysAreUsedAndMissingKeysFallBack()
     {
         GameTexts texts = German();
 
@@ -94,14 +115,20 @@ public sealed class GameTextsTests
         Assert.Equal("Kampagne", texts.GetLabel(GameLabel.Campaign));
     }
 
+    /// <summary>
+    /// A translation whose value is empty is ignored and the English rank name is used.
+    /// </summary>
     [Fact]
-    public void EmptyTranslation_FallsBack()
+    public void EmptyTranslationFallsBack()
     {
         GameTexts texts = new(new Dictionary<string, string>(System.StringComparer.Ordinal) { ["Mechanic"] = string.Empty });
 
         Assert.Equal("Mechanic", texts.GetRankName(2));
     }
 
+    /// <summary>
+    /// A climate resource name gives its display name for the four known climates, and gives null for an unknown climate, a wrong file name, a mission climate, an empty string or <see langword="null"/>.
+    /// </summary>
     [Theory]
     [InlineData("::/climates/tropical/tropical.clima", "Tropical")]
     [InlineData("::/climates/temperate/temperate.clima", "Temperate")]
@@ -115,7 +142,10 @@ public sealed class GameTextsTests
     public void ClimateNames(string? resource, string? expected)
         => Assert.Equal(expected, GameTexts.English.GetClimateName(resource));
 
+    /// <summary>
+    /// A climate name is translated when the texts contain a translation, so the tropical climate is "Tropisch" in German.
+    /// </summary>
     [Fact]
-    public void ClimateName_IsTranslated()
+    public void ClimateNameIsTranslated()
         => Assert.Equal("Tropisch", German().GetClimateName("::/climates/tropical/tropical.clima"));
 }

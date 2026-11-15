@@ -8,7 +8,7 @@ covers:
   - companion/Tf3Drpc.Core/Constants/Discord*.cs
   - companion/Tf3Drpc.Core/Utilities/Discord*.cs
   - companion/Tf3Drpc.App/Services/DiscordService.cs
-last-reviewed: 2026-11-11
+last-reviewed: 2026-11-13
 ---
 
 # Discord connection
