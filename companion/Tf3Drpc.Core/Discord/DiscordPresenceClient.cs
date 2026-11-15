@@ -20,13 +20,25 @@ namespace Tf3Drpc.Core.Discord;
 /// closes the connection at once instead of sending a rate-limited clear, because Discord clears the presence
 /// of a closed connection.
 /// </remarks>
-internal sealed class DiscordPresenceClient : IAsyncDisposable
+/// <param name="connector">Opens the connection to the Discord client.</param>
+/// <param name="timeProvider">The clock of the client.</param>
+/// <param name="logger">The log of the client.</param>
+/// <param name="readyTimeout">How long to wait for Discord's ready message; <see langword="null"/> for the default.</param>
+/// <param name="writeTimeout">How long a write may take; <see langword="null"/> for the default.</param>
+internal sealed class DiscordPresenceClient(
+    IDiscordConnector connector,
+    TimeProvider timeProvider,
+    ILogger<DiscordPresenceClient> logger,
+    TimeSpan? readyTimeout = null,
+    TimeSpan? writeTimeout = null
+)
+    : IAsyncDisposable
 {
-    private readonly IDiscordConnector _connector;
-    private readonly TimeProvider _timeProvider;
-    private readonly ILogger<DiscordPresenceClient> _logger;
-    private readonly TimeSpan _readyTimeout;
-    private readonly TimeSpan _writeTimeout;
+    private readonly IDiscordConnector _connector = connector;
+    private readonly TimeProvider _timeProvider = timeProvider;
+    private readonly ILogger<DiscordPresenceClient> _logger = logger;
+    private readonly TimeSpan _readyTimeout = readyTimeout ?? DiscordIpcConstants.ReadyTimeout;
+    private readonly TimeSpan _writeTimeout = writeTimeout ?? DiscordIpcConstants.WriteTimeout;
     private DiscordIpcConnection? _connection;
     private PresenceContentStruct? _lastSent;
     private PresenceContentStruct? _rejectedContent;
@@ -42,24 +54,6 @@ internal sealed class DiscordPresenceClient : IAsyncDisposable
     public DiscordPresenceClient(TimeProvider timeProvider, ILogger<DiscordPresenceClient> logger)
         : this(new DiscordConnector(), timeProvider, logger)
     { }
-
-#pragma warning disable IDE0290 // Use primary constructor: a primary constructor is public and cannot take the internal IDiscordConnector
-    internal DiscordPresenceClient
-    (
-        IDiscordConnector connector,
-        TimeProvider timeProvider,
-        ILogger<DiscordPresenceClient> logger,
-        TimeSpan? readyTimeout = null,
-        TimeSpan? writeTimeout = null
-    )
-    {
-        _connector = connector;
-        _timeProvider = timeProvider;
-        _logger = logger;
-        _readyTimeout = readyTimeout ?? DiscordIpcConstants.ReadyTimeout;
-        _writeTimeout = writeTimeout ?? DiscordIpcConstants.WriteTimeout;
-    }
-#pragma warning restore IDE0290
 
     #region Public API
 

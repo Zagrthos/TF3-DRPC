@@ -26,7 +26,7 @@ A .NET analyser rule (`CA`, `IDE`, `CS`) is respected: `companion/.editorconfig`
 - Test methods are named without underscores, every public type and member has an XML doc comment, and switch statements end in a throwing `default:` (IDE0010) instead of following Roslynator RCS1069, RCS1070 and RCS1136.
 - Classes with a multi-line parameter list use primary constructors (IDE0290) in the layout RCS0039 accepts.
 - A .NET rule stays off only on request: CA2007, IDE0046, IDE0047 and IDE0058 remain off as the shared file sets them, and IDE0046 would nest conditional expressions.
-- A suppression of a .NET rule needs a reason the compiler forces, such as CS0051 for the explicit constructor of `DiscordPresenceClient`.
+- A suppression of a .NET rule needs a reason the compiler forces, such as CA1515 on the public `WinUIApplication`: WinUI's generated partial class is public (CS0262), and WinUI XAML has no `x:ClassModifier` (WMC0011).
 
 ## Alternatives considered
 
