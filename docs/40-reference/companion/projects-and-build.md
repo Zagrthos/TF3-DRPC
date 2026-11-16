@@ -15,7 +15,7 @@ covers:
   - companion/Tf3Drpc.App/Tf3Drpc.App.csproj
   - companion/Tf3Drpc.Core/Tf3Drpc.Core.csproj
   - companion/Tf3Drpc.Core.Tests/Tf3Drpc.Core.Tests.csproj
-last-reviewed: 2026-11-13
+last-reviewed: 2026-11-16
 ---
 
 # Projects and build setup
@@ -73,6 +73,7 @@ The rules are in [C# style](../../30-conventions/csharp.md) and [Native AOT](../
 - Every props and project file uses the same layout: topic groups with a comment header, alphabetical inside a group, a doc link after a non-obvious property.
 - Build policy: `LangVersion` latest (C# 15), `Nullable` enable, `ImplicitUsings` disable, `Features` Strict and `runtime-async=on` ([decision 0026](../../70-decisions/0026-runtime-async.md)), `CheckForOverflowUnderflow`, `CheckSdkVulnerabilities` (NETSDK1238 and NETSDK1239 warn about a vulnerable or unsupported SDK), `AnalysisLevel` latest-all, `EnforceCodeStyleInBuild`, `GenerateDocumentationFile`, nullable warnings as errors.
 - Configurations Debug and Release only, no `Testing`.
+  The solution names the platforms `x64` and `ARM64` (`x64` is the default) so the configuration picker shows them; the solution maps every project to `AnyCPU` under both, and the CPU comes from the `RuntimeIdentifier` (`maccatalyst-arm64`, or `-r` at publish).
   Release has no symbols (`DebugType none`); Debug embeds them.
   `UseArtifactsOutput` puts all output in `artifacts/`.
 - Tests: xunit v3 on Microsoft.Testing.Platform.
